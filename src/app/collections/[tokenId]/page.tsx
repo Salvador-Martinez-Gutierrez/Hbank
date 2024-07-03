@@ -1,9 +1,8 @@
 import React from 'react'
 import CollectionInfo from '../components/CollectionInfo'
-import ListedItems from '../components/ListedItems'
-import Analytics from '../components/Analytics'
-import TabNav from '../components/TabNav'
 import updateFloorPrice from '@/app/services/updateFloorPrice'
+import TabNav from '../components/TabNav'
+import { fetchOwnersData } from '@/app/services/fetchOwnersData'
 import { fetchListedTokensSentx } from '@/app/services/fetchListedTokensSentx'
 import { fetchListedTokensKabila } from '@/app/services/fetchListedTokensKabila'
 
@@ -86,12 +85,12 @@ const Collection = async ({ params }: { params: Params }) => {
   const tokenId: string = params.tokenId
   const updatedListedItems = await updateListedItems(tokenId)
   const updatedCollections = await updateFloorPrice()
+  const ownersList = await fetchOwnersData(tokenId)
+
   return (
     <main className='bg-neutral-900 text-neutral-200'>
       <CollectionInfo tokenId={tokenId} updatedCollections={updatedCollections} />
-      {/*<TabNav />*/}
-      <ListedItems tokenId={tokenId} updatedListedItems={updatedListedItems} />
-      {/*<Analytics /> */}
+      <TabNav updatedListedItems={updatedListedItems} ownersList={ownersList} tokenId={tokenId} />
     </main>
   )
 }

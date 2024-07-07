@@ -13,11 +13,21 @@ function NftCard({ token, tokenId }) {
       window.open(`https://market.kabila.app/en/collections/${modifiedTokenId}`, '_blank')
     }
   }
-  // IPFs URL for the NFT Image
-  const imageUrl = token.imageCid
-    ? `https://cyan-certain-partridge-419.mypinata.cloud/ipfs/${token.imageCid.replace('ipfs://', '')}?pinataGatewayToken=CpSGmN7ulVRyThI-BuiHKuSCJSH9bFSxuVW2lXNac1d895Eeb2vHACSgKPD84Inq`
-    : '/path/to/default/image.jpg' // Define the image depending on the market the NFT is listed on
+
+  // Determine the URL for the NFT Image based on the imageCid format
+  let imageUrl = '/path/to/default/image.jpg'; // Default image
+
+  if (token.imageCid?.startsWith('ipfs://')) {
+    imageUrl = `https://cyan-certain-partridge-419.mypinata.cloud/ipfs/${token.imageCid.replace('ipfs://', '')}?pinataGatewayToken=CpSGmN7ulVRyThI-BuiHKuSCJSH9bFSxuVW2lXNac1d895Eeb2vHACSgKPD84Inq`;
+  } else if (token.imageCid?.startsWith('ar://')) {
+    imageUrl = `https://arweave.net/${token.imageCid.replace('ar://', '')}`;
+  } else if (token.imageCid?.startsWith('hcs://')) {
+    // Handle hcs:// URLs if possible; otherwise, use a default image or handle accordingly
+    imageUrl = '/path/to/default/hcs/image.jpg';
+  }
+
   const marketUrl = token.marketplace === 'Kabila' ? '/KabilaLogo.jpg' : '/SentxLogo.png'
+
   return (
     <div className='overflow-hidden rounded-xl bg-card text-card-foreground shadow-md group relative flex cursor-pointer flex-col shadow-custom'>
       <div className='relative'>

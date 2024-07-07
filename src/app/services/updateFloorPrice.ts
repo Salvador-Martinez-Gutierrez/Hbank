@@ -15,6 +15,13 @@ const updateFloorPrice = async (): Promise<Record<string, TokenData>> => {
       const floorPriceKabila = await fetchFloorPriceKabila(`${tokenId}&_=${cacheBuster}`)
 
       tokenData.floorPrice = Math.min(floorPriceSentx, floorPriceKabila)
+
+      if (floorPriceSentx === null) {
+        tokenData.floorPrice = floorPriceKabila
+      } else if (floorPriceKabila === null) {
+        tokenData.floorPrice = floorPriceSentx
+      }
+
     } catch (error) {
       console.error(`Failed to update floor price for tokenId ${tokenId}:`, error)
     }

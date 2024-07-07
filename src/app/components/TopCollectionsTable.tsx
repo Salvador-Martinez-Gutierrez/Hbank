@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import collections from '../collectionsData/collections'
 import Link from 'next/link'
 import type { TokenData } from '../collectionsData/collections'
@@ -23,6 +23,10 @@ const formatNumber = (number: number) => {
 }
 
 const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections }) => {
+  const [sortOrderByFloorPrice, setSortOrderByFloorPrice] = useState<'asc' | 'desc'>('asc')
+  const [sortOrderByMarketCap, setSortOrderByMarketCap] = useState<'asc' | 'desc'>('asc')
+  const [sortOrderByFDV, setSortOrderByFDV] = useState<'asc' | 'desc'>('asc')
+
   // Client-side auto-refresh every 15 minutes
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,15 +36,70 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
     return () => { clearInterval(interval) }
   }, [])
 
+  // Toggle sort order by floor price
+  const toggleSortOrderByFloorPrice = () => {
+    setSortOrderByFloorPrice(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'))
+  }
+
+  // Sort collections by floor price
+  const sortedCollectionsByFloorPrice = Object.entries(updatedCollections).sort(([, a], [, b]) => {
+    if (sortOrderByFloorPrice === 'asc') {
+      return a.floorPrice - b.floorPrice
+    } else {
+      return b.floorPrice - a.floorPrice
+    }
+  })
+
+  // Toggle sort order by marketcap
+  //const toggleSortOrderByMarketCap = () => {
+  //  setSortOrderByMarketCap(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'))
+  //}
+
+  // Sort collections by marketcap
+  // const sortedCollectionsByMarketCap = Object.entries(updatedCollections).sort(([, a], [, b]) => {
+  //  if (sortOrderByMarketCap === 'asc') {
+  //    return a.floorPrice - b.floorPrice
+  //  } else {
+  //    return b.floorPrice - a.floorPrice
+  //  }
+  // })
+
+  // Toggle sort order by FDV
+  //const toggleSortOrderByFDV = () => {
+  //  setSortOrderByFDV(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'))
+  //}
+
+  // Sort collections by FDV
+  //const sortedCollectionsByFDV = Object.entries(updatedCollections).sort(([, a], [, b]) => {
+  //  if (sortOrderByFDV === 'asc') {
+  //    return a.floorPrice - b.floorPrice
+  //  } else {
+  //    return b.floorPrice - a.floorPrice
+  //  }
+  //})
+
   return (
-    <Table>
+    <Table className='min-h-screen'>
       <TableHeader>
-        <TableRow className='hover:bg-neutral-900 bg-neutral-900 sticky z-10'>
+        <TableRow className='hover:bg-zink-800 bg-neutral-900 sticky z-10'>
           <TableHead>#</TableHead>
           <TableHead>Collection</TableHead>
-          <TableHead className="text-right whitespace-nowrap">FloorPrice</TableHead>
-          <TableHead className="text-right whitespace-nowrap">Market Cap</TableHead>
-          <TableHead className="text-right whitespace-nowrap">FDV</TableHead>
+          <TableHead className="text-right whitespace-nowrap relative">
+            <button onClick={toggleSortOrderByFloorPrice} className="flex items-center justify-end space-x-1 w-full">
+              <span>FloorPrice</span>
+              {sortOrderByFloorPrice === 'asc' ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              )}
+            </button>
+          </TableHead>
+          <TableHead className="text-right whitespace-nowrap relative">MarketCap</TableHead>
+          <TableHead className="text-right whitespace-nowrap relative">FDV</TableHead>
           <TableHead className="text-right whitespace-nowrap">Minted Supply</TableHead>
           <TableHead className="text-right whitespace-nowrap">Max Supply</TableHead>
           <TableHead className="text-right whitespace-nowrap">Burnt Supply</TableHead>
@@ -48,8 +107,8 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Object.entries(updatedCollections).map(([tokenId, tokenData], index) => {
-          const floorPrice = updatedCollections[tokenId].floorPrice
+        {sortedCollectionsByFloorPrice.map(([tokenId, tokenData], index) => {
+          const floorPrice = tokenData.floorPrice
           const mintedSupply = collections[tokenId].mintedSupply
           const maxSupply = collections[tokenId].maxSupply
           const burntSupply = collections[tokenId].burntSupply
@@ -61,11 +120,11 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
               <TableCell className="font-medium text-left whitespace-nowrap">{index + 1}</TableCell>
               <TableCell className='whitespace-nowrap truncate text-left'>
                 <Link className='flex' target="_blank" href={`/collections/${tokenId}`}>
-                    <CollectionAvatar url={collections[tokenId].url} />
-                    <div className="flex flex-col ml-2 overflow-hidden">
-                      <span className="truncate">{tokenData.name}</span>
-                      <span className="text-muted-foreground text-sm truncate">{tokenId}</span>
-                    </div>
+                  <CollectionAvatar url={collections[tokenId].url} />
+                  <div className="flex flex-col ml-2 overflow-hidden">
+                    <span className="truncate">{tokenData.name}</span>
+                    <span className="text-muted-foreground text-sm truncate">{tokenId}</span>
+                  </div>
                 </Link>
               </TableCell>
               <TableCell className="text-right whitespace-nowrap">{`${formatNumber(floorPrice)} ℏ`}</TableCell>

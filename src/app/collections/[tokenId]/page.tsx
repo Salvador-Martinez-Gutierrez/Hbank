@@ -88,7 +88,7 @@ const Collection = async ({ params }: { params: Params }) => {
   const ownersList = await fetchOwnersData(tokenId)
 
   return (
-    <main className='bg-neutral-900 text-neutral-200'>
+    <main className='bg-neutral-900 text-neutral-200 min-h-screen'>
       <CollectionInfo tokenId={tokenId} updatedCollections={updatedCollections} />
       <TabNav updatedListedItems={updatedListedItems} ownersList={ownersList} tokenId={tokenId} />
     </main>

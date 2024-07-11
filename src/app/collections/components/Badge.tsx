@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 
 interface SerialBadgeProps {
-  serialId: string
+  serialId: number
 }
 
 const SerialBadge: React.FC<SerialBadgeProps> = ({ serialId }) => {

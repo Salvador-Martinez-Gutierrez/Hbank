@@ -1,8 +1,14 @@
 import Image from 'next/image'
 import SerialBadge from './Badge'
 import collections from '@/app/collectionsData/collections'
+import type { normalizedItem } from '../[tokenId]/page'
 
-function NftCard({ token, tokenId }) {
+interface NftCardProps {
+  token: normalizedItem
+  tokenId: string
+}
+
+const NftCard: React.FC<NftCardProps> = ({ token, tokenId }) => {
   // Sends the user to the corresponding URL to buy the NFT
   const handleBuyClick = () => {
     if (token.marketplace === 'Sentx') {
@@ -15,12 +21,12 @@ function NftCard({ token, tokenId }) {
   }
 
   // Determine the URL for the NFT Image based on the imageCid format
-  let imageUrl = '/path/to/default/image.jpg'; // Default image
+  let imageUrl = '/path/to/default/image.jpg' // Default image
 
   if (token.imageCid?.startsWith('ipfs://')) {
-    imageUrl = `https://cyan-certain-partridge-419.mypinata.cloud/ipfs/${token.imageCid.replace('ipfs://', '')}?pinataGatewayToken=CpSGmN7ulVRyThI-BuiHKuSCJSH9bFSxuVW2lXNac1d895Eeb2vHACSgKPD84Inq`;
+    imageUrl = `https://cyan-certain-partridge-419.mypinata.cloud/ipfs/${token.imageCid.replace('ipfs://', '')}?pinataGatewayToken=CpSGmN7ulVRyThI-BuiHKuSCJSH9bFSxuVW2lXNac1d895Eeb2vHACSgKPD84Inq`
   } else if (token.imageCid?.startsWith('ar://')) {
-    imageUrl = `https://arweave.net/${token.imageCid.replace('ar://', '')}`;
+    imageUrl = `https://arweave.net/${token.imageCid.replace('ar://', '')}`
   } else if (token.imageCid?.startsWith('hcs://')) {
     // Handle hcs:// URLs if possible; otherwise, use a default image or handle accordingly
     imageUrl = '/path/to/default/hcs/image.jpg'

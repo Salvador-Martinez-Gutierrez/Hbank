@@ -44,7 +44,7 @@ const ListedItems: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId }
                   Load More
               </Button>
             </div>
-          )}
+          )}1
     </main>
   )
 }

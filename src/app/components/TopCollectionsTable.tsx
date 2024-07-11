@@ -48,8 +48,8 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
         </TableRow>
       </TableHeader>
       <TableBody>
-        {updatedCollections.map(([tokenId, tokenData], index) => {
-          const floorPrice = tokenData.floorPrice
+        {Object.entries(updatedCollections).map(([tokenId, tokenData], index) => {
+          const floorPrice = tokenData.floorPrice ?? 0
           const mintedSupply = collections[tokenId].mintedSupply
           const maxSupply = collections[tokenId].maxSupply
           const burntSupply = collections[tokenId].burntSupply

@@ -2,7 +2,7 @@ export interface TokenData {
   name: string
   sentxName: string
   url: string
-  floorPrice: null | number
+  floorPrice: number | null
   royalties: number
   maxSupply: number
   mintedSupply: number

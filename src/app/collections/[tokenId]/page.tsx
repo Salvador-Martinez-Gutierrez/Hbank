@@ -41,6 +41,17 @@ interface KabilaItem {
   statusDate: string
 }
 
+export interface normalizedItem {
+  listingId: string
+  serialNumber: number
+  price: number
+  metadataCid: string
+  imageCid: string
+  name: string
+  createdAt: string
+  marketplace: string
+}
+
 const updateListedItems = async (tokenId: string) => {
   const listedItemsSentx = await fetchListedTokensSentx(tokenId)
   const listedItemsKabila = await fetchListedTokensKabila(tokenId)
@@ -72,7 +83,7 @@ const updateListedItems = async (tokenId: string) => {
   const combinedListedItems = [...normalizedSentx, ...normalizedKabila]
 
   // Sort combined items by price from lower to higher
-  const sortedListedItems = combinedListedItems.sort((a, b) => a.price - b.price)
+  const sortedListedItems: normalizedItem [] = combinedListedItems.sort((a, b) => a.price - b.price)
 
   return sortedListedItems
 }

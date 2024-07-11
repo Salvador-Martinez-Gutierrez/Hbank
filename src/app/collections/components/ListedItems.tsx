@@ -2,11 +2,17 @@
 
 import React, { useEffect, useState } from 'react'
 import NftCard from './NftCard'
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
+import type { normalizedItem } from '../[tokenId]/page'
 
 const ITEMS_PER_PAGE = 30
 
-const ListedItems = ({ updatedListedItems, tokenId }) => {
+interface ListedItemsProps {
+  updatedListedItems: normalizedItem[]
+  tokenId: string
+}
+
+const ListedItems: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId }) => {
   const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE)
 
   // Client-side auto-refresh every 15 minutes
@@ -24,8 +30,6 @@ const ListedItems = ({ updatedListedItems, tokenId }) => {
 
   return (
     <main className='pb-12 px-4 lg:px-8 xl:px-16'>
-      {updatedListedItems && updatedListedItems.length > 0 ? (
-        <>
           <div className="grid h-fit w-full max-w-full grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
             {updatedListedItems.slice(0, visibleItems).map(token => (
               <NftCard key={token.listingId} token={token} tokenId={tokenId} />
@@ -41,10 +45,6 @@ const ListedItems = ({ updatedListedItems, tokenId }) => {
               </Button>
             </div>
           )}
-        </>
-      ) : (
-        <p>There are no listed items...</p>
-      )}
     </main>
   )
 }

@@ -4,7 +4,11 @@ import {
   AvatarImage
 } from '@/components/ui/avatar'
 
-export default function CollectionAvatar ({ url }) {
+interface AvatarProps {
+  url: string
+}
+
+const CollectionAvatar: React.FC<AvatarProps> = ({ url }) => {
   return (
       <Avatar>
         <AvatarImage src={url} alt="@shadcn" />
@@ -12,3 +16,5 @@ export default function CollectionAvatar ({ url }) {
       </Avatar>
   )
 }
+
+export default CollectionAvatar

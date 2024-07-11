@@ -23,7 +23,7 @@ function NftCard({ token, tokenId }) {
     imageUrl = `https://arweave.net/${token.imageCid.replace('ar://', '')}`;
   } else if (token.imageCid?.startsWith('hcs://')) {
     // Handle hcs:// URLs if possible; otherwise, use a default image or handle accordingly
-    imageUrl = '/path/to/default/hcs/image.jpg';
+    imageUrl = '/path/to/default/hcs/image.jpg'
   }
 
   const marketUrl = token.marketplace === 'Kabila' ? '/KabilaLogo.jpg' : '/SentxLogo.png'

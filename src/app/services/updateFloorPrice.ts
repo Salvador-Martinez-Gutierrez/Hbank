@@ -11,8 +11,8 @@ const updateFloorPrice = async (): Promise<Record<string, TokenData>> => {
   const updatePromises = Object.entries(updatedCollections).map(async ([tokenId, tokenData]) => {
     try {
       // Modify the URLs inside the fetch functions to include cacheBuster
-      const floorPriceSentx = await fetchFloorPriceSentx(`${tokenId}&_=${cacheBuster}`)
-      const floorPriceKabila = await fetchFloorPriceKabila(`${tokenId}&_=${cacheBuster}`)
+      const floorPriceSentx: number = await fetchFloorPriceSentx(`${tokenId}&_=${cacheBuster}`)
+      const floorPriceKabila: number = await fetchFloorPriceKabila(`${tokenId}&_=${cacheBuster}`)
 
       tokenData.floorPrice = Math.min(floorPriceSentx, floorPriceKabila)
 
@@ -21,7 +21,6 @@ const updateFloorPrice = async (): Promise<Record<string, TokenData>> => {
       } else if (floorPriceKabila === null) {
         tokenData.floorPrice = floorPriceSentx
       }
-
     } catch (error) {
       console.error(`Failed to update floor price for tokenId ${tokenId}:`, error)
     }

@@ -8,7 +8,19 @@ import {
   TableRow
 } from '@/components/ui/table'
 
-const Holders = ({ ownersList }) => {
+interface Owners {
+  account: string
+  balance: number
+  decimals: number
+  rank: number
+  pct: number
+}
+
+interface HoldersProps {
+  ownersList: Owners[]
+}
+
+const Holders: React.FC<HoldersProps> = ({ ownersList }) => {
   return (
     <Table>
       <TableHeader>

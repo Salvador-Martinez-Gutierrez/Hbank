@@ -1,5 +1,11 @@
 import { Badge } from '@/components/ui/badge'
 
-export default function SerialBadge ({ serialId }) {
+interface SerialBadgeProps {
+  serialId: string
+}
+
+const SerialBadge: React.FC<SerialBadgeProps> = ({ serialId }) => {
   return <Badge className="bg-white border-gray-600 text-muted-foreground">{`#${serialId}`}</Badge>
 }
+
+export default SerialBadge

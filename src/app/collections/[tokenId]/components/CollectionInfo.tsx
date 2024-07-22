@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import MarketData from './MarketData'
-import type { TokenData } from '../../collectionsData/collections'
+import type { TokenData } from '../../../collectionsData/collections'
 
 interface CollectionInfoProps {
   tokenId: string

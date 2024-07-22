@@ -1,4 +1,4 @@
-export const fetchListedTokensKabila = async (tokenId: string) => {
+export const getListedTokensKabila = async (tokenId: string) => {
   try {
     const cacheBuster = new Date().getTime() // Unique cache-busting timestamp
     const url = `https://labs.kabila.app/api/marketplace/manager/nft-items?tokenIds=${tokenId}&orderBy=price&orderDir=ASC&_=${cacheBuster}`

@@ -3,7 +3,7 @@ import React from 'react'
 export default function Terms () {
   return (
    <>
-   <div>
+   <div className='bg-neutral-900 text-neutral-200 px-4 py-8 lg:px-8 xl:px-16'>
      <h1>Privacy Policy</h1>
      <p>Last updated: April 15th, 2024.</p>
    <p>At Hbank, we&apos;re strongly committed to protecting and respecting your privacy.</p>

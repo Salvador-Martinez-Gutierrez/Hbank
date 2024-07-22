@@ -1,7 +1,7 @@
 import collections from '../collectionsData/collections'
 import type { TokenData } from '../collectionsData/collections'
-import { fetchFloorPriceSentx } from './fetchFloorPriceSentx'
-import { fetchFloorPriceKabila } from './fetchFloorPriceKabila'
+import { getFloorPriceSentx } from './getFloorPriceSentx'
+import { getFloorPriceKabila } from './getFloorPriceKabila'
 
 const updateFloorPrice = async (): Promise<Record<string, TokenData>> => {
   const updatedCollections: Record<string, TokenData> = { ...collections }
@@ -11,8 +11,8 @@ const updateFloorPrice = async (): Promise<Record<string, TokenData>> => {
   const updatePromises = Object.entries(updatedCollections).map(async ([tokenId, tokenData]) => {
     try {
       // Modify the URLs inside the fetch functions to include cacheBuster
-      const floorPriceSentx: number = await fetchFloorPriceSentx(`${tokenId}&_=${cacheBuster}`)
-      const floorPriceKabila: number = await fetchFloorPriceKabila(`${tokenId}&_=${cacheBuster}`)
+      const floorPriceSentx: number = await getFloorPriceSentx(`${tokenId}&_=${cacheBuster}`)
+      const floorPriceKabila: number = await getFloorPriceKabila(`${tokenId}&_=${cacheBuster}`)
 
       tokenData.floorPrice = Math.min(floorPriceSentx, floorPriceKabila)
 

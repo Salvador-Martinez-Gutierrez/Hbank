@@ -2,7 +2,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage
-} from '@/components/ui/avatar'
+} from '@/app/collections/components/ui/avatar'
 
 interface AvatarProps {
   url: string

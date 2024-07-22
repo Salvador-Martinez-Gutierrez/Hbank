@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import NftCard from './NftCard'
-import { Button } from '@/components/ui/button'
-import type { normalizedItem } from '../[tokenId]/page'
+import { Button } from '@/app/collections/components/ui/button'
+import type { normalizedItem } from '../page'
 
 const ITEMS_PER_PAGE = 30
 
@@ -44,7 +44,7 @@ const ListedItems: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId }
                   Load More
               </Button>
             </div>
-          )}1
+          )}
     </main>
   )
 }

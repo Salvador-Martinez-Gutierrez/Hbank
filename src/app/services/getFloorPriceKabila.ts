@@ -1,4 +1,4 @@
-export const fetchFloorPriceKabila = async (tokenId: string) => {
+export const getFloorPriceKabila = async (tokenId: string) => {
   try {
     // Adding a cache-busting query parameter
     const cacheBuster = new Date().getTime()

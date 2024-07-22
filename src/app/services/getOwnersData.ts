@@ -1,4 +1,4 @@
-export const fetchOwnersData = async (tokenId: string) => {
+export const getOwnersData = async (tokenId: string) => {
   try {
     const apiKeySentx = process.env.API_KEY_SENTX
 

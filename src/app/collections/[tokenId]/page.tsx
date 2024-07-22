@@ -1,10 +1,10 @@
 import React from 'react'
-import CollectionInfo from '../components/CollectionInfo'
+import CollectionInfo from './components/CollectionInfo'
 import updateFloorPrice from '@/app/services/updateFloorPrice'
-import TabNav from '../components/TabNav'
-import { fetchOwnersData } from '@/app/services/fetchOwnersData'
-import { fetchListedTokensSentx } from '@/app/services/fetchListedTokensSentx'
-import { fetchListedTokensKabila } from '@/app/services/fetchListedTokensKabila'
+import TabNav from './components/TabNav'
+import { getOwnersData } from '@/app/services/getOwnersData'
+import { getListedTokensSentx } from '@/app/services/getListedTokensSentx'
+import { getListedTokensKabila } from '@/app/services/getListedTokensKabila'
 
 interface SentxItem {
   marketplaceListingId: number
@@ -53,8 +53,8 @@ export interface normalizedItem {
 }
 
 const updateListedItems = async (tokenId: string) => {
-  const listedItemsSentx = await fetchListedTokensSentx(tokenId)
-  const listedItemsKabila = await fetchListedTokensKabila(tokenId)
+  const listedItemsSentx = await getListedTokensSentx(tokenId)
+  const listedItemsKabila = await getListedTokensKabila(tokenId)
   // Normalize data from the first API (Sentx)
   const normalizedSentx = await listedItemsSentx.map((item: SentxItem) => ({
     listingId: item.marketplaceListingId,
@@ -96,7 +96,7 @@ const Collection = async ({ params }: { params: Params }) => {
   const tokenId: string = params.tokenId
   const updatedListedItems = await updateListedItems(tokenId)
   const updatedCollections = await updateFloorPrice()
-  const ownersList = await fetchOwnersData(tokenId)
+  const ownersList = await getOwnersData(tokenId)
 
   return (
     <main className='bg-neutral-900 text-neutral-200 min-h-screen'>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/app/collections/components/ui/button'
 
 export default function SurveyButton () {
   const redirectToUrl = () => {

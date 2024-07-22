@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/app/collections/components/ui/badge'
 
 interface SerialBadgeProps {
   serialId: number

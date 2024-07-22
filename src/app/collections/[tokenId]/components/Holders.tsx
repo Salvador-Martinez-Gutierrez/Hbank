@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import {
   Table,
   TableBody,
@@ -6,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table'
+} from '@/app/collections/components/ui/table'
 
 interface Owners {
   account: string
@@ -41,7 +42,11 @@ const Holders: React.FC<HoldersProps> = ({ ownersList }) => {
           return (
             <TableRow key={account}>
               <TableCell className="font-medium text-left whitespace-nowrap">{rank}</TableCell>
-              <TableCell className='whitespace-nowrap truncate text-left'>{account}</TableCell>
+              <TableCell className='whitespace-nowrap truncate text-left'>
+                <Link className='flex hover:text-black hover:underline' target='_blank' href={`/address/${account}`}>
+                  {account}
+                </Link>
+              </TableCell>
               <TableCell className="text-right whitespace-nowrap">{balance}</TableCell>
               <TableCell className="font-medium text-right whitespace-nowrap">{(pct * 100).toFixed(2)}%</TableCell>
             </TableRow>

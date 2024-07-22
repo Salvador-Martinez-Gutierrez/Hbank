@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
-import ListedItems from '../components/ListedItems'
-import Holders from '../components/Holders'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { normalizedItem } from '../[tokenId]/page'
+import ListedItems from './ListedItems'
+import Holders from './Holders'
+import { Tabs, TabsList, TabsTrigger } from '@/app/collections/components/ui/tabs'
+import type { normalizedItem } from '../page'
 
 interface Owner {
   account: string

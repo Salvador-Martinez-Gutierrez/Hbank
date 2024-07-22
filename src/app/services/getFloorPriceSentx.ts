@@ -1,4 +1,4 @@
-export const fetchFloorPriceSentx = async (tokenId: string) => {
+export const getFloorPriceSentx = async (tokenId: string) => {
   try {
     const apiKeySentx = process.env.API_KEY_SENTX
     const cacheBuster = new Date().getTime() // Unique cache-busting timestamp

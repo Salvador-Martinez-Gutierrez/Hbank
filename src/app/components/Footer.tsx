@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const Footer = () => {
   return (
-    <footer className='bg-black min-h-[650]'>
+    <footer className='bg-black h-[125px]'>
       <div className='flex justify-center p-4'>
       <Link target="_blank" href={'https://twitter.com/300SMG'}>
         <Image
@@ -26,10 +26,10 @@ const Footer = () => {
 
       <div className='text-white text-sm flex justify-center pb-4 gap-3'>
         <Link target="_blank" href={'/terms'}>
-          <button className='underline'>Terms of Use</button>
+          <button>Terms of Use</button>
         </Link>
         <Link target="_blank" href={'/privacy'}>
-          <button className='underline'>Privacy Policy</button>
+          <button>Privacy Policy</button>
         </Link>
       </div>
     </footer>

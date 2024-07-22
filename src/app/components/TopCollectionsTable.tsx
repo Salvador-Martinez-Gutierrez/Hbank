@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table'
+} from '@/app/collections/components/ui/table'
 
 interface TopCollectionsProps {
   updatedCollections: Record<string, TokenData>

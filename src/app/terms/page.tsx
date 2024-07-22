@@ -1,9 +1,6 @@
-import React from 'react'
-
 export default function Terms () {
   return (
-    <>
-   <div>
+   <div className='bg-neutral-900 text-neutral-200 py-8 px-4 lg:px-8 xl:px-16'>
     <h1>Terms of Use</h1>
     <p>Last updated: April 15th, 2024</p>
 
@@ -122,6 +119,5 @@ export default function Terms () {
     <p>17.8 Any heading or section title contained herein is for convenience of reference only and shall not affect the meaning or interpretation of these Terms. The terms &quot;include&quot; and &quot;including&quot; are deemed to include the phrase &quot;without limitation&quot; immediately thereafter.</p>
     <p>17.9 Unless expressly provided to the contrary in these Terms, a person who is not a party to these Terms has no rights at law and in equity to enforce or enjoy the benefit of any term in these Terms.</p>
    </div>
-   </>
   )
 }

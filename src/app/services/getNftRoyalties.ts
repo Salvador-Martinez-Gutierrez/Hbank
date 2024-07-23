@@ -2,32 +2,31 @@
 
 const getNftRoyalties = async (tokenId: string): Promise<number> => {
   try {
-      const response = await fetch(`https://mainnet-public.mirrornode.hedera.com/api/v1/tokens/${tokenId}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      });
-
-      if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
+    const response = await fetch(`https://mainnet-public.mirrornode.hedera.com/api/v1/tokens/${tokenId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
       }
+    })
 
-      const data = await response.json();
-      const royaltyFees = data.custom_fees.royalty_fees;
-      let totalRoyalties = 0;
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`)
+    }
 
-      // Sum up the numerators from royalty_fees array
-      for (const fee of royaltyFees) {
-          totalRoyalties += fee.amount.numerator;
-      }
+    const data = await response.json()
+    const royaltyFees = data.custom_fees.royalty_fees
+    let totalRoyalties = 0
 
-      return totalRoyalties;
+    // Sum up the numerators from royalty_fees array
+    for (const fee of royaltyFees) {
+      totalRoyalties += fee.amount.numerator
+    }
+
+    return totalRoyalties
   } catch (error) {
-      console.error('Error fetching token royalties:', error);
-      throw error; // Optionally handle or rethrow the error
+    console.error('Error fetching token royalties:', error)
+    throw error
   }
-};
+}
 
-export default getNftRoyalties;
-  
+export default getNftRoyalties

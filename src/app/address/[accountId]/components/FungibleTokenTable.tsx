@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow
 } from '@/app/collections/components/ui/table'
-import Link from 'next/link'
 import CollectionAvatar from '@/app/components/Avatar'
 import getTokenIcon from '@/app/services/getTokenIcon'
 import type { Token } from '../page'
@@ -73,13 +72,13 @@ const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsEx
         .map((token) => (
           <TableRow key={token.token_id}>
             <TableCell className='flex-1 min-w-[150px] max-w-[150px] text-left whitespace-nowrap'>
-              <Link className='flex' target='_blank' href={`/collections/${token.token_id}`}>
-                <CollectionAvatar url={icons[token.token_id]} />
+              <div className='flex'>
+                <CollectionAvatar url={icons[token.token_id] ?? '/NotFound.png'} />
                 <div className='flex flex-col ml-2 overflow-hidden'>
                   <span className='truncate'>{token.name}</span>
                   <span className='text-muted-foreground text-sm truncate'>{token.token_id}</span>
                 </div>
-              </Link>
+              </div>
             </TableCell>
             <TableCell className='flex-grow text-right whitespace-nowrap'>{(token.balance).toFixed(4)}</TableCell>
             <TableCell className='flex-grow text-right whitespace-nowrap'>{`$${(token.price ?? 0).toFixed(4)}`}</TableCell>

@@ -9,7 +9,7 @@ const WalletTrackerHome = () => {
         <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold px-8 pb-4 md:px-4 lg:px-24 xl:px-28'>
           Easily track your Hedera Portfolio
         </h1>
-        <h2 className='text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground w-full max-w-[420px] md:max-w-[800px] md:px-4 lg:px-8 xl:px-16'>
+        <h2 className='text-lg px-4 sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground w-full max-w-[420px] md:max-w-[800px] md:px-4 lg:px-8 xl:px-16'>
           Introduce a valid Account ID and discover the value of all the assets it holds
         </h2>
       </div>

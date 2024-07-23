@@ -38,13 +38,14 @@ const WalletChecker = ({ showButton }: WalletCheckerProps) => {
             type="text"
             value={accountId}
             onChange={(e) => { setAccountId(e.target.value) }}
-            className='items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 text-sm text-muted-foreground bg-zinc-800'
+            className='items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-sm text-white placeholder:text-muted-foreground bg-zinc-800'
             placeholder={showButton ? 'Ex. 0.0.1234567' : 'Search Account ID...'}
           />
           {showButton && (
           <Button
             type="submit"
-            className="mt-2 border border-white hover:bg-zinc-800 w-full"
+            variant='secondary'
+            className="mt-2 border border-white w-full"
           >
             Check Wallet
           </Button>

@@ -1,8 +1,6 @@
-// Returns a list of up to 50 HTS & NFT with the balances holded by an account Id
-
 async function getAccountTokenBalance (accountId: string) {
-  const url = `https://mainnet-public.mirrornode.hedera.com/api/v1/accounts/${accountId}/tokens`
-
+  const apiKeyHedera = process.env.VALIDATION_CLOUD_KEY
+  const url = `https://mainnet.hedera.validationcloud.io/v1/${apiKeyHedera}/api/v1/accounts/${accountId}`
   try {
     console.log('Fetching account info...')
     const response = await fetch(url)
@@ -13,7 +11,7 @@ async function getAccountTokenBalance (accountId: string) {
     }
 
     const data = await response.json()
-    const tokens = data.tokens
+    const tokens = data.balance.tokens
     return tokens
   } catch (error) {
     console.error('Error fetching account info:', error)

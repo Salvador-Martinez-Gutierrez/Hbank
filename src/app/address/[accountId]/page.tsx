@@ -3,8 +3,7 @@ import NonFungibleTokenTable from './components/NonFungibleTokenTable'
 import getAccountHbarBalance from '../../services/getAccountHbarBalance'
 import getAccountTokenBalance from '../../services/getAccountTokenBalance'
 import getHbarPrice from '../../services/getHbarPrice'
-import getTokenName from '../../services/getTokenName'
-import getTokenType from '../../services/getTokenType'
+import getTokenData from '../../services/getTokenData'
 import getTokenPrice from '../../services/getTokenPrice'
 import { getFloorPriceKabila } from '../../services/getFloorPriceKabila'
 import { getFloorPriceSentx } from '../../services/getFloorPriceSentx'
@@ -62,8 +61,7 @@ const Portfolio = async ({ params }: { params: Params }) => {
   // Extend the object tokenHoldings by adding the name, type, and price properties
   const tokenHoldingsExtended = await Promise.all(
     tokenHoldings.filter(token => token.balance > 0).map(async (token) => {
-      const name = await getTokenName(token.token_id)
-      const type = await getTokenType(token.token_id)
+      const { name, type, decimals } = await getTokenData(token.token_id)
       let price = 0
       if (type === 'FUNGIBLE_COMMON') {
         price = await getTokenPrice(token.token_id)
@@ -82,7 +80,7 @@ const Portfolio = async ({ params }: { params: Params }) => {
         token_id: token.token_id,
         name,
         type,
-        balance: (token.balance) * Math.pow(10, -token.decimals),
+        balance: (token.balance) * Math.pow(10, -decimals),
         price
       }
     })

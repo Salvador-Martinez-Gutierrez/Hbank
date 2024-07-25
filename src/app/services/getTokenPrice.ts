@@ -10,15 +10,15 @@ const getTokenPrice = async (tokenId: string): Promise<number> => {
     })
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.status}`)
+      throw new Error(`Error: ${tokenId}`)
     }
 
     const data = await response.json()
     const priceUsd: number = data.priceUsd
     return priceUsd
   } catch (error) {
-    console.error('Error fetching token data:', error)
-    throw error // Optionally handle or rethrow the error
+    console.error(`Error fetching token data: ${tokenId}`, error)
+    return 0
   }
 }
 

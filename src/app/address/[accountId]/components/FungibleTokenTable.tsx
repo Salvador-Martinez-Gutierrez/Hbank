@@ -68,7 +68,7 @@ const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsEx
           </TableHeader>
           <TableBody>
       {tokenHoldingsExtended
-        .filter(token => token.price !== null && typeof token.price !== 'undefined' && token.type === 'FUNGIBLE_COMMON')
+        .filter(token => token.price !== null && typeof token.price !== 'undefined' && token.price > 0 && token.type === 'FUNGIBLE_COMMON')
         .map((token) => (
           <TableRow key={token.token_id}>
             <TableCell className='flex-1 min-w-[150px] max-w-[150px] text-left whitespace-nowrap'>

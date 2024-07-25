@@ -1,5 +1,6 @@
 async function getAccountHbarBalance (accountId: string): Promise<number> {
-  const url = `https://mainnet-public.mirrornode.hedera.com/api/v1/accounts/${accountId}`
+  const apiKeyHedera = process.env.VALIDATION_CLOUD_KEY
+  const url = `https://mainnet.hedera.validationcloud.io/v1/${apiKeyHedera}/api/v1/accounts/${accountId}`
   try {
     console.log('Fetching account info...')
     const response = await fetch(url)

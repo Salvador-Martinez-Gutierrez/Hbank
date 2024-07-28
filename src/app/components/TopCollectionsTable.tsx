@@ -1,5 +1,3 @@
-'use client'
-import React, { useEffect } from 'react'
 import collections from '../collectionsData/collections'
 import Link from 'next/link'
 import type { TokenData } from '../collectionsData/collections'
@@ -23,14 +21,33 @@ const formatNumber = (number: number) => {
 }
 
 const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections }) => {
-  // Client-side auto-refresh every 15 minutes
-  useEffect(() => {
-    const interval = setInterval(() => {
-      window.location.reload()
-    }, 900000)
-
-    return () => { clearInterval(interval) }
-  }, [])
+  const getInfoByTokenId = (tokenId: string) => {
+    // Check if the tokenId exists in collections
+    const tokenData = updatedCollections[tokenId]
+    if (tokenData !== undefined) {
+    // Return the URL and name if the tokenId exists
+      return {
+        url: tokenData.url,
+        name: tokenData.name,
+        floorPrice: tokenData.floorPrice,
+        maxSupply: tokenData.maxSupply,
+        mintedSupply: tokenData.mintedSupply,
+        burntSupply: tokenData.burntSupply,
+        royalties: tokenData.royalties
+      }
+    } else {
+      // Return undefined for both URL and name if the tokenId does not exist
+      return {
+        url: '',
+        name: '',
+        floorPrice: null,
+        maxSupply: undefined,
+        mintedSupply: undefined,
+        burntSupply: undefined,
+        royalties: 0
+      }
+    }
+  }
 
   return (
     <Table className='min-h-screen'>
@@ -49,7 +66,8 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
       </TableHeader>
       <TableBody>
         {Object.entries(updatedCollections).map(([tokenId, tokenData], index) => {
-          const floorPrice = tokenData.floorPrice ?? 0
+          const tokenInfo = getInfoByTokenId(tokenId)
+          const floorPrice = tokenInfo.floorPrice ?? 0
           const mintedSupply = collections[tokenId].mintedSupply
           const maxSupply = collections[tokenId].maxSupply
           const burntSupply = collections[tokenId].burntSupply

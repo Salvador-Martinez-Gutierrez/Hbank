@@ -66,13 +66,14 @@ const Portfolio = async ({ params }: { params: Params }) => {
       if (type === 'FUNGIBLE_COMMON') {
         price = await getTokenPrice(token.token_id)
       } else if (type === 'NON_FUNGIBLE_UNIQUE' && typeof hbarPrice !== 'undefined') {
-        const priceKabila: number = await getFloorPriceKabila(token.token_id)
-        const priceSentx: number = await getFloorPriceSentx(token.token_id)
-        price = Math.min(priceSentx, priceKabila) * hbarPrice
-        if (priceSentx === 0) {
+        const priceKabila: number | null = await getFloorPriceKabila(token.token_id)
+        const priceSentx: number | null = await getFloorPriceSentx(token.token_id)
+        if (priceSentx === null && priceKabila !== null) {
           price = priceKabila * hbarPrice
-        } else if (priceKabila === 0) {
+        } else if (priceKabila === null && priceSentx !== null) {
           price = priceSentx * hbarPrice
+        } else if (typeof priceKabila === 'number' && typeof priceSentx === 'number') {
+          price = Math.min(priceSentx, priceKabila) * hbarPrice
         }
       }
 

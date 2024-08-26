@@ -43,7 +43,7 @@ const collections: Record<string, TokenData> = {
   '0.0.2179656': {
     name: 'Siwas',
     sentxName: 'siwas-by-kabila',
-    url: 'https://pbs.twimg.com/profile_images/1776203956831600640/FB1gmUBp_400x400.jpg',
+    url: 'https://pbs.twimg.com/media/GUSMdDXXEAEQyzl?format=jpg&name=large',
     floorPrice: null,
     royalties: 7,
     maxSupply: 9700,

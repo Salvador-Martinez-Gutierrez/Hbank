@@ -22,10 +22,8 @@ const formatNumber = (number: number) => {
 
 const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections }) => {
   const getInfoByTokenId = (tokenId: string) => {
-    // Check if the tokenId exists in collections
     const tokenData = updatedCollections[tokenId]
     if (tokenData !== undefined) {
-    // Return the URL and name if the tokenId exists
       return {
         url: tokenData.url,
         name: tokenData.name,
@@ -36,7 +34,6 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
         royalties: tokenData.royalties
       }
     } else {
-      // Return undefined for both URL and name if the tokenId does not exist
       return {
         url: '',
         name: '',
@@ -48,6 +45,17 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
       }
     }
   }
+
+  // Sort collections by FDV (Floor Price * (Max Supply - Burnt Supply)) in descending order
+  const sortedCollections = Object.entries(updatedCollections).sort(([tokenIdA, tokenDataA], [tokenIdB, tokenDataB]) => {
+    const tokenInfoA = getInfoByTokenId(tokenIdA)
+    const tokenInfoB = getInfoByTokenId(tokenIdB)
+
+    const FDVA = (tokenInfoA.floorPrice ?? 0) * (collections[tokenIdA].maxSupply - collections[tokenIdA].burntSupply)
+    const FDVB = (tokenInfoB.floorPrice ?? 0) * (collections[tokenIdB].maxSupply - collections[tokenIdB].burntSupply)
+
+    return FDVB - FDVA // Sort descending
+  })
 
   return (
     <Table className='min-h-screen'>
@@ -65,7 +73,7 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Object.entries(updatedCollections).map(([tokenId, tokenData], index) => {
+        {sortedCollections.map(([tokenId, tokenData], index) => {
           const tokenInfo = getInfoByTokenId(tokenId)
           const floorPrice = tokenInfo.floorPrice ?? 0
           const mintedSupply = collections[tokenId].mintedSupply

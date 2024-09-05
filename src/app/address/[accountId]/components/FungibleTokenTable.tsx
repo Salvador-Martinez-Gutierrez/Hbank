@@ -50,9 +50,11 @@ const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsEx
     <section>
       <div className='flex justify-start items-center mx-4 md:mx-4 lg:mx-8 xl:mx-16 pt-8 pb-2'>
         <h2 className='text-2xl font-bold'>
-          Assets
+          Coins
         </h2>
         <span className='text-2xl semibold pl-2'>
+        </span>
+        <span className='text-xl semibold pl-2'>
           {`$${totalValue.toFixed(4)}`}
         </span>
       </div>

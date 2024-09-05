@@ -39,7 +39,7 @@ const ListedItems: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId }
             <div className="flex justify-center mt-4">
               <Button
                 onClick={loadMoreItems}
-                className="bg-gray-500 text-white hover:bg-gray-600"
+                className='bg-neutral-900 hover:bg-neutral-800 inline-flex cursor-pointer justify-start mt-4 px-16 py-2 text-gray-300 text-sm border border-gray-300'
                 >
                   Load More
               </Button>

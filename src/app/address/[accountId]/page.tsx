@@ -97,8 +97,8 @@ const Portfolio = async ({ params }: { params: Params }) => {
 
   return (
     <div className='min-h-[calc(100vh-200px)] bg-neutral-900 text-neutral-200'>
-    <header className='flex flex-col justify-start items-start text-left pb-8 md:text-left md:items-start md:justify-start'>
-        <h2 className='text-3xl font-bold pt-8 px-4 pb-2 md:px-4 lg:px-8 xl:px-16'>
+     <header className='flex flex-col justify-start items-start text-left pb-8 md:text-left md:items-start md:justify-start'>
+        <h2 className='text-3xl font-bold pt-8 pb-2 px-4 md:px-4 lg:px-8 xl:px-16'>
           {accountId}
         </h2>
         <label className= 'text-lg text-muted-foreground w-full max-w-[420px] md:max-w-[800px] px-4 md:px-4 lg:px-8 xl:px-16'>
@@ -107,7 +107,7 @@ const Portfolio = async ({ params }: { params: Params }) => {
         <p className='text-2xl font-bold w-full max-w-[420px] md:max-w-[800px] px-4 md:px-4 lg:px-8 xl:px-16'>
           ${totalWorth.toFixed(2)}
         </p>
-    </header>
+     </header>
       <FungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended }/>
       <NonFungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended }/>
     </div>

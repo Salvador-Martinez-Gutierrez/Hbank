@@ -20,6 +20,8 @@ const updateFloorPrice = async (): Promise<Record<string, TokenData>> => {
         tokenData.floorPrice = floorPriceSentx
       } else if (typeof floorPriceKabila === 'number' && typeof floorPriceSentx === 'number') {
         tokenData.floorPrice = Math.min(floorPriceSentx, floorPriceKabila)
+      } else if (floorPriceKabila === null && floorPriceSentx === null) {
+        tokenData.floorPrice = null
       }
     } catch (error) {
       console.error(`Failed to update floor price for tokenId ${tokenId}:`, error)

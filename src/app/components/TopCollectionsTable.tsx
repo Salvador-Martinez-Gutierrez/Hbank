@@ -106,7 +106,7 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
             <TableRow key={tokenId} className='hover:bg-neutral-800'>
               <TableCell className='font-medium text-left whitespace-nowrap'>{index + 1}</TableCell>
               <TableCell className='whitespace-nowrap truncate text-left'>
-                <Link className='flex' href={`/collections/${tokenId}`}>
+                <Link className='flex' href={`/collections/${tokenId}`} prefetch>
                   <CollectionAvatar url={collections[tokenId].url} />
                   <div className='flex flex-col ml-2 overflow-hidden'>
                     <span className='truncate'>{tokenData.name}</span>

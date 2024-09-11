@@ -13,7 +13,7 @@ interface TabMainProps {
 
 const TabMain: React.FC<TabMainProps> = ({ updatedCollections }) => {
   return (
-    <>
+    <section>
       <div className="min-h-10 w-full px-4 lg:px-8 xl:px-16 mb-4">
         <Tabs defaultValue="account" className="w-full flex justify-center">
           <TabsList className="w-full md:w-[400px] bg-zinc-600 relative">
@@ -44,13 +44,11 @@ const TabMain: React.FC<TabMainProps> = ({ updatedCollections }) => {
           </TabsList>
         </Tabs>
       </div>
-      <div>
-        <div className="justify-center items-center text-center px-4 pb-8 lg:px-8 xl:px-16">
-          <TopCollectionsTable updatedCollections={updatedCollections} variant="simple" />
-          <SeeMoreMarketAggregatorButton />
-        </div>
+      <div className="justify-center items-center text-center px-4 pb-8 lg:px-8 xl:px-16">
+        <TopCollectionsTable updatedCollections={updatedCollections} variant="simple" />
       </div>
-    </>
+      <SeeMoreMarketAggregatorButton />
+    </section>
   )
 }
 

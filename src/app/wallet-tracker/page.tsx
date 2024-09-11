@@ -1,5 +1,3 @@
-'use client'
-
 import WalletChecker from './components/WalletChecker'
 
 const WalletTrackerHome = () => {

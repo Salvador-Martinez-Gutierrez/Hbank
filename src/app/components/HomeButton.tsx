@@ -1,21 +1,16 @@
-'use client'
+import Link from 'next/link'
 import Image from 'next/image'
 
-export default function PortfolioTrackerButton () {
-  const redirectToHome = () => {
-    window.location.href = '/'
-  }
-
+export default function HomeButton () {
   return (
-    <button
-      onClick={redirectToHome}
-    >
-      <Image
-          src='/Logo.png'
+    <Link href="/" passHref>
+        <Image
+          src="/Logo.png"
           alt="logo"
           width={137}
           height={50}
+          priority
         />
-    </button>
+    </Link>
   )
 }

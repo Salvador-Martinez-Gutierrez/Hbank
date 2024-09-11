@@ -1,6 +1,6 @@
 import collections from '../collectionsData/collections'
-import Link from 'next/link'
 import type { TokenData } from '../collectionsData/collections'
+import Link from 'next/link'
 import CollectionAvatar from './Avatar'
 import {
   Table,
@@ -73,7 +73,7 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
   return (
     <Table className={`mx-auto ${variant === 'simple' ? 'max-w-[450px] md:max-w-[1100px]' : ''}`}>
       <TableHeader>
-        <TableRow className='hover:bg-zink-800 bg-neutral-900 sticky z-10'>
+        <TableRow className='hover:bg-neutral-900 bg-neutral-900 sticky z-10'>
           <TableHead>#</TableHead>
           <TableHead>Collection</TableHead>
           <TableHead className='text-right whitespace-nowrap relative'>Floor Price</TableHead>
@@ -103,10 +103,10 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
           const FDV = floorPrice * (maxSupply - burntSupply)
 
           return (
-            <TableRow key={tokenId}>
+            <TableRow key={tokenId} className='hover:bg-neutral-800'>
               <TableCell className='font-medium text-left whitespace-nowrap'>{index + 1}</TableCell>
               <TableCell className='whitespace-nowrap truncate text-left'>
-                <Link className='flex' target='_blank' href={`/collections/${tokenId}`}>
+                <Link className='flex' href={`/collections/${tokenId}`}>
                   <CollectionAvatar url={collections[tokenId].url} />
                   <div className='flex flex-col ml-2 overflow-hidden'>
                     <span className='truncate'>{tokenData.name}</span>

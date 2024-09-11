@@ -9,6 +9,12 @@ const nextConfig = {
       'cyan-certain-partridge-419.mypinata.cloud',
       'market.kabila.app',
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 

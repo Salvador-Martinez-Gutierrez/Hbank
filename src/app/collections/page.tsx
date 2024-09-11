@@ -1,6 +1,7 @@
-import React from 'react'
-import updateFloorPrice from '../services/updateFloorPrice'
+import React, { Suspense } from 'react'
 import TopCollectionsTable from '../components/TopCollectionsTable'
+import updateFloorPrice from '../services/updateFloorPrice'
+import TopCollectionsTableSkeleton from '../components/TopCollectionsTableSkeleton'
 
 const Collections = async () => {
   const updatedCollections = await updateFloorPrice()
@@ -15,7 +16,9 @@ const Collections = async () => {
         </h2>
       </div>
       <div className='justify-center items-center text-center px-4 pb-8 lg:px-8 xl:px-16'>
-        <TopCollectionsTable updatedCollections={updatedCollections} />
+       <Suspense fallback={<TopCollectionsTableSkeleton/>}>
+          <TopCollectionsTable updatedCollections={updatedCollections}/>
+       </Suspense>
       </div>
     </main>
   )

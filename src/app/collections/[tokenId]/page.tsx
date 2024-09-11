@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import CollectionInfo from './components/CollectionInfo'
+import CollectionInfoSkeleton from './components/CollectionInfoSkeleton'
 import updateFloorPrice from '@/app/services/updateFloorPrice'
 import TabNav from './components/TabNav'
 import { getOwnersData } from '@/app/services/getOwnersData'
@@ -100,8 +101,12 @@ const Collection = async ({ params }: { params: Params }) => {
 
   return (
     <main className='bg-neutral-900 text-neutral-200 min-h-screen'>
-      <CollectionInfo tokenId={tokenId} updatedCollections={updatedCollections} />
-      <TabNav updatedListedItems={updatedListedItems} ownersList={ownersList} tokenId={tokenId} />
+      <Suspense fallback={<CollectionInfoSkeleton/>}>
+        <CollectionInfo tokenId={tokenId} updatedCollections={updatedCollections} />
+      </Suspense>
+      <Suspense>
+        <TabNav updatedListedItems={updatedListedItems} ownersList={ownersList} tokenId={tokenId} />
+      </Suspense>
     </main>
   )
 }

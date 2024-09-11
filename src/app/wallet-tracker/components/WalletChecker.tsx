@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation' // Use the correct import for App Router
 import { Button } from '@/app/collections/components/ui/button'
 import ErrorAlertModal from './ErrorAlertModal'
 
@@ -8,11 +9,11 @@ interface WalletCheckerProps {
 }
 
 const WalletChecker = ({ showButton }: WalletCheckerProps) => {
+  const router = useRouter() // Ensure it's called in a proper context
   const [accountId, setAccountId] = useState('')
   const [error, setError] = useState('')
 
   const isValidAccountId = (accountId: string): boolean => {
-    // Regular expression to match the pattern shard.realm.account with non-negative integers
     const hederaAccountIdPattern = /^\d+\.\d+\.\d+$/
     return hederaAccountIdPattern.test(accountId)
   }
@@ -21,8 +22,7 @@ const WalletChecker = ({ showButton }: WalletCheckerProps) => {
     event.preventDefault()
     if (isValidAccountId(accountId)) {
       setError('')
-      // Redirect to a specific URL, e.g., /wallet/[walletId]
-      window.location.href = `/address/${accountId}`
+      router.push(`/address/${accountId}`) // Use router.push for navigation
     } else {
       setError('Invalid wallet address. Please enter a valid address.')
     }

@@ -26,7 +26,6 @@ interface TokenWithDecimals extends Token {
 
 const Portfolio = async ({ params }: { params: Params }) => {
   const accountId: string = params.accountId
-  // Gets the HBAR balance
   const hbarBalance = await getAccountHbarBalance(accountId)
 
   let hbarPrice: number | undefined = 0
@@ -98,7 +97,7 @@ const Portfolio = async ({ params }: { params: Params }) => {
   return (
     <div className='min-h-[calc(100vh-200px)] bg-neutral-900 text-neutral-200'>
      <header className='flex flex-col justify-start items-start text-left pb-8 md:text-left md:items-start md:justify-start'>
-        <h2 className='text-3xl font-bold pt-8 pb-2 px-4 md:px-4 lg:px-8 xl:px-16'>
+        <h2 className='text-3xl font-bold pt-8 pb-2 md:px-4 lg:px-8 xl:px-16'>
           {accountId}
         </h2>
         <label className= 'text-lg text-muted-foreground w-full max-w-[420px] md:max-w-[800px] px-4 md:px-4 lg:px-8 xl:px-16'>
@@ -108,8 +107,10 @@ const Portfolio = async ({ params }: { params: Params }) => {
           ${totalWorth.toFixed(2)}
         </p>
      </header>
-      <FungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended }/>
-      <NonFungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended }/>
+     <div className='pb-8'>
+       <FungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended }/>
+       <NonFungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended }/>
+     </div>
     </div>
   )
 }

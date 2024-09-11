@@ -1,4 +1,3 @@
-import React from 'react'
 // import ConnectWalletButton from './ConnectWalletButton'
 import HomeButton from './HomeButton'
 import WalletChecker from '../wallet-tracker/components/WalletChecker'
@@ -22,7 +21,7 @@ const NavBar = () => {
         <div className='mr-1 hidden sm:block'>
           <WalletChecker showButton={false}/>
         </div>
-        {/* <ConnectWalletButton /> */}
+        {/*  <ConnectWalletButton /> */}
       </div>
     </nav>
   )

@@ -1,5 +1,7 @@
+// import DAppLogo from './assets/dapp-logo.svg'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+// import { WalletProvider } from './context/WalletContext'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import './globals.css'
@@ -19,11 +21,32 @@ export default function RootLayout ({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* Wrap the layout in HashConnectProvider */}
+        {/* <WalletProvider> */}
           <NavBar />
           {children}
           <Footer />
+        {/* </WalletProvider> */}
       </body>
     </html>
   )
 }
+
+/*
+import SideNav from './components/SideNav'
+
+interface LayoutProps {
+  children: React.ReactNode
+  params: {
+    accountId: string
+  }
+}
+
+export default function Layout ({ children, params }: LayoutProps) {
+  return (
+    <div className="flex flex-col md:flex-row">
+      <SideNav accountId={params.accountId} />
+      <main className="flex-1">{children}</main>
+    </div>
+  )
+}
+*/

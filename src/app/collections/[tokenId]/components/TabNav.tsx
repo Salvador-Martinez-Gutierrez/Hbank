@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, Suspense } from 'react'
 import ListedItems from './ListedItems'
+import ListedItemsSkeleton from './ListedItemsSkeleton'
 import Holders from './Holders'
 import { Tabs, TabsList, TabsTrigger } from '@/app/collections/components/ui/tabs'
 import type { normalizedItem } from '../page'
@@ -46,7 +47,9 @@ const TabNav: React.FC<TabNavProps> = ({ updatedListedItems, ownersList, tokenId
       </div>
           )
         : (
-      <ListedItems updatedListedItems={updatedListedItems} tokenId={tokenId} />
+          <Suspense fallback={<ListedItemsSkeleton/>}>
+            <ListedItems updatedListedItems={updatedListedItems} tokenId={tokenId} />
+          </Suspense>
           )}
 </div>
   </>

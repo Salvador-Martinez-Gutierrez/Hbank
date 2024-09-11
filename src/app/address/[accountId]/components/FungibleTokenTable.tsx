@@ -47,21 +47,19 @@ const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsEx
     }, 0)
 
   return (
-    <section>
-      <div className='flex justify-start items-center mx-4 md:mx-4 lg:mx-8 xl:mx-16 pt-8 pb-2'>
+    <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">
+      <div className='flex justify-start items-center mx-4 pt-8 pb-2'>
         <h2 className='text-2xl font-bold'>
-          Coins
+          Fungible
         </h2>
         <span className='text-2xl semibold pl-2'>
-        </span>
-        <span className='text-xl semibold pl-2'>
           {`$${totalValue.toFixed(4)}`}
         </span>
       </div>
-      <div className='justify-center items-center text-center px-4 pb-8 lg:px-8 xl:px-16'>
+      <div className='justify-center items-center text-center px-4 pb-8'>
         <Table>
           <TableHeader>
-            <TableRow className='hover:bg-zinc-800 bg-neutral-900 sticky z-10'>
+            <TableRow className='hover:bg-zinc-950'>
               <TableHead className='flex-1 min-w-[150px] max-w-[150px] text-left whitespace-nowrap'>Name</TableHead>
               <TableHead className='flex-grow text-right whitespace-nowrap'>Balance</TableHead>
               <TableHead className='flex-grow text-right whitespace-nowrap'>Price</TableHead>
@@ -72,7 +70,7 @@ const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsEx
       {tokenHoldingsExtended
         .filter(token => token.price !== null && typeof token.price !== 'undefined' && token.price > 0 && token.type === 'FUNGIBLE_COMMON')
         .map((token) => (
-          <TableRow key={token.token_id}>
+          <TableRow key={token.token_id} className="hover:bg-zinc-800">
             <TableCell className='flex-1 min-w-[150px] max-w-[150px] text-left whitespace-nowrap'>
               <div className='flex'>
                 <CollectionAvatar url={icons[token.token_id] ?? '/NotFound.png'} />

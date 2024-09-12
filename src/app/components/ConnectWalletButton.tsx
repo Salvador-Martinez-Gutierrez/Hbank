@@ -1,27 +1,38 @@
-/*
 'use client'
 
-// components/ConnectWalletButton.tsx
 import { Button } from '@/app/collections/components/ui/button'
-import { useWallet } from '../context/WalletContext'
+import { useWallet } from '@buidlerlabs/hashgraph-react-wallets'
+import { HashpackConnector } from '@buidlerlabs/hashgraph-react-wallets/connectors'
+import ProfileDropDownMenu from './ProfileDropDownMenu'
 
 const ConnectWalletButton = () => {
-  const { isConnected, connectWallet, disconnectWallet, accountIds } = useWallet()
+  const { isConnected, connect, disconnect } = useWallet(HashpackConnector)
+
+  const handleConnect = () => {
+    connect()
+  }
+
+  const handleDisconnect = () => {
+    disconnect()
+  }
 
   return (
     <div>
       {isConnected
         ? (
         <div>
-          <Button onClick={disconnectWallet}>Disconnect</Button>
+          <ProfileDropDownMenu disconnect={handleDisconnect}/>
         </div>
           )
         : (
-        <Button onClick={connectWallet}>Connect Wallet</Button>
+        <div>
+          <Button 
+            className='bg-blue-500 hover:bg-blue-500'
+            onClick={handleConnect}>Login</Button>
+        </div>
           )}
     </div>
   )
 }
 
 export default ConnectWalletButton
-*/

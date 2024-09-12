@@ -1,7 +1,6 @@
-// import DAppLogo from './assets/dapp-logo.svg'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-// import { WalletProvider } from './context/WalletContext'
+import { WalletProvider } from './context/WalletContext'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import './globals.css'
@@ -21,11 +20,11 @@ export default function RootLayout ({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <WalletProvider> */}
+        <WalletProvider>
           <NavBar />
           {children}
           <Footer />
-        {/* </WalletProvider> */}
+        </WalletProvider>
       </body>
     </html>
   )

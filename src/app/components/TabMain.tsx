@@ -16,7 +16,7 @@ const TabMain: React.FC<TabMainProps> = ({ updatedCollections }) => {
     <section>
       <div className="min-h-10 w-full px-4 lg:px-8 xl:px-16 mb-4">
         <Tabs defaultValue="account" className="w-full flex justify-center">
-          <TabsList className="w-full md:w-[400px] bg-zinc-600 relative">
+          <TabsList className="w-full md:w-[400px] bg-neutral-950 relative">
             <TabsTrigger
               className="w-full bg-zinc-800 data-[state=active]:bg-zinc-800 !text-white data-[state=active]:!text-white"
               value="NFTs"
@@ -24,7 +24,7 @@ const TabMain: React.FC<TabMainProps> = ({ updatedCollections }) => {
               NFTs
             </TabsTrigger>
             <TabsTrigger
-              className="w-full bg-zinc-600 data-[state=active]:bg-zinc-600 text-gray-300 data-[state=active]:text-gray-300 relative"
+              className="w-full bg-neutral-950 data-[state=active]:bg-neutral-950 text-gray-300 data-[state=active]:text-gray-300 relative"
               value="Coins"
               onMouseOver={(e) => {
                 e.currentTarget.style.cursor = 'not-allowed'

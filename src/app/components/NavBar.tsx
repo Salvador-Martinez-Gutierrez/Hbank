@@ -1,4 +1,4 @@
-// import ConnectWalletButton from './ConnectWalletButton'
+import ConnectWalletButton from './ConnectWalletButton'
 import HomeButton from './HomeButton'
 import WalletChecker from '../wallet-tracker/components/WalletChecker'
 import AddressTrackerButton from './AddressTrackerButton'
@@ -21,7 +21,7 @@ const NavBar = () => {
         <div className='mr-1 hidden sm:block'>
           <WalletChecker showButton={false}/>
         </div>
-        {/*  <ConnectWalletButton /> */}
+      <ConnectWalletButton />
       </div>
     </nav>
   )

@@ -1,4 +1,3 @@
-/*
 'use client'
 
 import { Button } from '@/app/collections/components/ui/button'
@@ -8,17 +7,16 @@ import {
   DropdownMenuGroup,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import Link from 'next/link' // Import Link for client-side navigation
-// import type { SessionData } from 'hashconnect'
+import Link from 'next/link'
+import { useAccountId } from '@buidlerlabs/hashgraph-react-wallets'
 
 interface ProfileDropDownMenuProps {
-  // pairingData: SessionData | null
   disconnect: () => void // Function type for disconnect
 }
 
-export function ProfileDropDownMenu ({ pairingData, disconnect }: ProfileDropDownMenuProps) {
+export default function ProfileDropDownMenu ({ disconnect }: ProfileDropDownMenuProps) {
   // Redirects to my portfolio
-  const accountId = pairingData?.accountIds[0]
+  const { data: accountId } = useAccountId()
 
   return (
     <DropdownMenu>
@@ -89,4 +87,3 @@ export function ProfileDropDownMenu ({ pairingData, disconnect }: ProfileDropDow
     </DropdownMenu>
   )
 }
-*/

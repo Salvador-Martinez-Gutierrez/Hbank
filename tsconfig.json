@@ -10,8 +10,8 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node", // Changed to "node" for better compatibility
+    "module": "Node16",
+    "moduleResolution": "node16", // Changed to "node" for better compatibility
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve", // Changed from "preserve" to "react-jsx" for better integration with React 17+

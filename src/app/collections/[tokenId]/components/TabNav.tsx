@@ -27,13 +27,13 @@ const TabNav: React.FC<TabNavProps> = ({ updatedListedItems, ownersList, tokenId
     <>
     <div className="min-h-10 w-full py-4 px-4 lg:px-8 xl:px-16 mb-8 border-b-2 border-zinc-800">
       <Tabs defaultValue="account" className="w-full flex justify-center">
-        <TabsList className="w-full md:w-[400px] bg-zinc-600">
+        <TabsList className="w-full md:w-[400px] bg-neutral-950">
           <TabsTrigger
-            className={`w-full ${!showHolders ? 'bg-zinc-800' : 'bg-zinc-600'} data-[state=active]:bg-zinc-800 !text-white data-[state=active]:!text-white`}
+            className={`w-full ${!showHolders ? 'bg-zinc-800' : 'bg-neutral-950'} data-[state=active]:bg-zinc-800 !text-white data-[state=active]:!text-white`}
             value="listings"
             onClick={() => { setShowHolders(false) }}>Listings</TabsTrigger>
           <TabsTrigger
-            className={`w-full ${showHolders ? 'bg-zinc-800' : 'bg-zinc-600'} data-[state=active]:bg-zinc-800 !text-white data-[state=active]:!text-white`}
+            className={`w-full ${showHolders ? 'bg-zinc-800' : 'bg-neutral-950'} data-[state=active]:bg-zinc-800 !text-white data-[state=active]:!text-white`}
             value="holders"
             onClick={() => { setShowHolders(true) }}>Holders</TabsTrigger>
         </TabsList>

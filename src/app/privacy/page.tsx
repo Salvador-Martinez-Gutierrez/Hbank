@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Terms () {
   return (
-   <>
+   <main>
    <div className='bg-neutral-900 text-neutral-200 px-4 py-8 lg:px-8 xl:px-16'>
      <h1>Privacy Policy</h1>
      <p>Last updated: April 15th, 2024.</p>
@@ -68,6 +68,6 @@ export default function Terms () {
    <h2>Questions</h2>
    <p>Any questions about this Privacy Policy or about our use of your personal information should be addressed to <a href="mailto:hbankapp@proton.me">hbankapp@proton.me</a>.</p>
    </div>
-   </>
+   </main>
   )
 }

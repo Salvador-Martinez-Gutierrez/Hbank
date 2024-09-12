@@ -4,6 +4,7 @@ import WalletChecker from '../wallet-tracker/components/WalletChecker'
 import AddressTrackerButton from './AddressTrackerButton'
 import MarketAggregatorButton from './MarketAggregatorButton'
 import DexAggregatorButton from './DexAggregatorButton'
+import { WalletProvider } from '../context/WalletContext'
 
 const NavBar = () => {
   return (
@@ -21,7 +22,9 @@ const NavBar = () => {
         <div className='mr-1 hidden sm:block'>
           <WalletChecker showButton={false}/>
         </div>
-      <ConnectWalletButton />
+      <WalletProvider>
+        <ConnectWalletButton />
+      </WalletProvider>
       </div>
     </nav>
   )

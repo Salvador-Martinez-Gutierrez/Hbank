@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { WalletProvider } from './context/WalletContext'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import './globals.css'
@@ -20,11 +19,9 @@ export default function RootLayout ({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <WalletProvider>
           <NavBar />
           {children}
           <Footer />
-        </WalletProvider>
       </body>
     </html>
   )

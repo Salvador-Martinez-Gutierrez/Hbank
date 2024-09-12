@@ -26,7 +26,7 @@ const ConnectWalletButton = () => {
           )
         : (
         <div>
-          <Button 
+          <Button
             className='bg-blue-500 hover:bg-blue-500'
             onClick={handleConnect}>Login</Button>
         </div>

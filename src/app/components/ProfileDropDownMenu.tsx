@@ -36,7 +36,7 @@ export default function ProfileDropDownMenu ({ disconnect }: ProfileDropDownMenu
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="bg-black w-56 mx-4 lg:mx-8 xl:mx-16">
+      <DropdownMenuContent className="bg-black w-56 mx-4 lg:mx-8 xl:mx-16 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
         <DropdownMenuGroup>
           <Link href={`/address/${accountId}`} passHref>
             <Button className='bg-black hover:bg-zinc-800 p-4 mb-1 w-full inline-flex cursor-pointer justify-start'>

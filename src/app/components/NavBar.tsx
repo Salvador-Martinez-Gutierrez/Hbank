@@ -2,7 +2,7 @@ import HomeButton from './HomeButton'
 import WalletChecker from '../wallet-tracker/components/WalletChecker'
 import AddressTrackerButton from './AddressTrackerButton'
 import MarketAggregatorButton from './MarketAggregatorButton'
-import DexAggregatorButton from './DexAggregatorButton'
+import SurveyButton from './SurveyButton'
 import LoginButton from './LoginButton'
 import { WalletProvider } from '../context/WalletContext'
 
@@ -13,7 +13,7 @@ const NavBar = () => {
         <HomeButton/>
         <AddressTrackerButton/>
         <MarketAggregatorButton/>
-        <DexAggregatorButton/>
+        <SurveyButton/>
       </div>
       <div className='gap-1 items-center flex lg:hidden'>
         <HomeButton/>

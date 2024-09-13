@@ -22,7 +22,7 @@ interface FetchVolumeData {
 const fetchVolume = async (tokenId: string, startDay: string, today: string, page: number): Promise<number> => {
   const apiKeySentx = process.env.API_KEY_SENTX
   const url = `https://api.sentx.io/v1/public/market/userVolume/?apikey=${apiKeySentx}&token=${tokenId}&dateFrom=${startDay}&dateTo=${today}&page=${page}`
-
+  console.log(url)
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -52,17 +52,16 @@ const fetchVolume = async (tokenId: string, startDay: string, today: string, pag
 
     return totalVolume
   } catch (error) {
-    console.error(`Error fetching 30-day volume data: ${tokenId}, page: ${page}`, error)
+    console.error(`Error fetching 30-day Sntx volume data: ${tokenId}, page: ${page}`, error)
     return 0 // Return 0 on error to ensure the total is not affected negatively
   }
 }
 
 // Calculate the aggregated volume for the past 30 days
-const getVol30day = async (tokenId: string): Promise<number> => {
+export const getVolumeSentx = async (tokenId: string): Promise<number> => {
   const today = new Date().toISOString().split('T')[0] // Get today's date in 'YYYY-MM-DD' format
   const startDay = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // Get the date 30 days ago
 
-  return await fetchVolume(tokenId, startDay, today, 1) // Start fetching from page 1
+  const totalVolume = await fetchVolume(tokenId, startDay, today, 1) // Start fetching from page 1
+  return totalVolume / 2 // Divide the result by 2 before returning
 }
-
-export default getVol30day

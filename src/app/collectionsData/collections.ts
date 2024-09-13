@@ -7,6 +7,7 @@ export interface TokenData {
   maxSupply: number
   mintedSupply: number
   burntSupply: number
+  volume30d: number | null
 }
 
 const collections: Record<string, TokenData> = {
@@ -18,7 +19,8 @@ const collections: Record<string, TokenData> = {
     royalties: 7,
     maxSupply: 750,
     mintedSupply: 750,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
   },
   '0.0.1299305': {
     name: 'Kabila Legendary KES',
@@ -28,7 +30,8 @@ const collections: Record<string, TokenData> = {
     royalties: 8,
     maxSupply: 30,
     mintedSupply: 30,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
   },
   '0.0.1299294': {
     name: 'Kabila Supreme KES',
@@ -38,7 +41,9 @@ const collections: Record<string, TokenData> = {
     royalties: 8,
     maxSupply: 70,
     mintedSupply: 70,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.2179656': {
     name: 'Siwas',
@@ -48,7 +53,9 @@ const collections: Record<string, TokenData> = {
     royalties: 7,
     maxSupply: 9700,
     mintedSupply: 4000,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.5959486': {
     name: 'KEIA Card',
@@ -58,7 +65,9 @@ const collections: Record<string, TokenData> = {
     royalties: 7,
     maxSupply: 100000,
     mintedSupply: 4197,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.4608024': {
     name: 'Bonacci',
@@ -68,7 +77,9 @@ const collections: Record<string, TokenData> = {
     royalties: 6,
     maxSupply: 4444,
     mintedSupply: 1000,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.1350444': {
     name: 'Hangry Barboons',
@@ -78,7 +89,9 @@ const collections: Record<string, TokenData> = {
     royalties: 7,
     maxSupply: 4444,
     mintedSupply: 4444,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.3837554': {
     name: 'Hangry Rebels',
@@ -88,7 +101,9 @@ const collections: Record<string, TokenData> = {
     royalties: 7,
     maxSupply: 565,
     mintedSupply: 565,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.878200': {
     name: 'Dead Pixels Ghost Club',
@@ -98,7 +113,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 10000,
     mintedSupply: 3900,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.5330090': {
     name: 'Peculiar Peeps',
@@ -108,7 +125,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 10000,
     mintedSupply: 8501,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.3958582': {
     name: 'Shroomies',
@@ -118,7 +137,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 2500,
     mintedSupply: 2500,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.1384991': {
     name: 'SpartPunk Army',
@@ -128,7 +149,9 @@ const collections: Record<string, TokenData> = {
     royalties: 7,
     maxSupply: 300,
     mintedSupply: 150,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.1454449': {
     name: 'SpartPunk Badge',
@@ -138,7 +161,9 @@ const collections: Record<string, TokenData> = {
     royalties: 8,
     maxSupply: 1000,
     mintedSupply: 1000,
-    burntSupply: 613
+    burntSupply: 613,
+    volume30d: null
+
   },
   '0.0.2033394': {
     name: 'SpartLand DAO',
@@ -148,7 +173,9 @@ const collections: Record<string, TokenData> = {
     royalties: 0,
     maxSupply: 100,
     mintedSupply: 43,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.4862817': {
     name: 'UTU Renegades',
@@ -158,7 +185,9 @@ const collections: Record<string, TokenData> = {
     royalties: 8,
     maxSupply: 2222,
     mintedSupply: 2210,
-    burntSupply: 12
+    burntSupply: 12,
+    volume30d: null
+
   },
   '0.0.6178137': {
     name: 'Bonzo Desert',
@@ -168,7 +197,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 2500,
     mintedSupply: 1323,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.6178141': {
     name: 'Bonzo Ocean',
@@ -178,7 +209,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 1500,
     mintedSupply: 798,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.6178143': {
     name: 'Bonzo Space',
@@ -188,7 +221,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 400,
     mintedSupply: 400,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.6173820': {
     name: 'Bonzo Singularity',
@@ -198,7 +233,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 400,
     mintedSupply: 389,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.732556': {
     name: 'PEC Electromagnetic',
@@ -208,7 +245,9 @@ const collections: Record<string, TokenData> = {
     royalties: 0,
     maxSupply: 1000,
     mintedSupply: 1000,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.1881189': {
     name: 'Infinity Jar',
@@ -218,7 +257,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 500,
     mintedSupply: 400,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.3853857': {
     name: 'CLEO Cards',
@@ -228,7 +269,9 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 1000,
     mintedSupply: 1000,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
   },
   '0.0.1097737': {
     name: 'Earth FC',
@@ -238,7 +281,21 @@ const collections: Record<string, TokenData> = {
     royalties: 5,
     maxSupply: 620,
     mintedSupply: 620,
-    burntSupply: 0
+    burntSupply: 0,
+    volume30d: null
+
+  },
+  '0.0.7089383': {
+    name: 'Nebula Genesis - Sirio',
+    sentxName: 'nebula-genesis-sirio',
+    url: 'https://pbs.twimg.com/profile_images/1821480731371040768/Q_gezyxx_400x400.jpg',
+    floorPrice: null,
+    royalties: 5,
+    maxSupply: 100,
+    mintedSupply: 100,
+    burntSupply: 0,
+    volume30d: null
+
   }
 }
 

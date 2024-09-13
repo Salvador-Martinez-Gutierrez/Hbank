@@ -29,7 +29,7 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
         url: tokenData.url,
         name: tokenData.name,
         floorPrice: tokenData.floorPrice,
-        // vol30d: tokenData.vol30d,
+        volume30d: tokenData.volume30d,
         maxSupply: tokenData.maxSupply,
         mintedSupply: tokenData.mintedSupply,
         burntSupply: tokenData.burntSupply,
@@ -40,7 +40,7 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
         url: '',
         name: '',
         floorPrice: null,
-        // vol30d: null,
+        volume30d: null,
         maxSupply: undefined,
         mintedSupply: undefined,
         burntSupply: undefined,
@@ -77,7 +77,7 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
           <TableHead>#</TableHead>
           <TableHead>Collection</TableHead>
           <TableHead className='text-right whitespace-nowrap relative'>Floor Price</TableHead>
-          {/* <TableHead className='text-right whitespace-nowrap relative'>Vol 30d</TableHead> */}
+          <TableHead className='text-right whitespace-nowrap relative'>Vol 30d</TableHead>
           <TableHead className='text-right whitespace-nowrap relative'>MarketCap</TableHead>
           <TableHead className='text-right whitespace-nowrap relative'>FDV</TableHead>
           {/* Conditionally render FDV and Royalties columns */}
@@ -95,7 +95,7 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
         {displayedCollections.map(([tokenId, tokenData], index) => {
           const tokenInfo = getInfoByTokenId(tokenId)
           const floorPrice = tokenInfo.floorPrice ?? 0
-          // const vol30d = tokenInfo.vol30d ?? 0
+          const volume30d = tokenInfo.volume30d ?? 0
           const mintedSupply = collections[tokenId].mintedSupply
           const maxSupply = collections[tokenId].maxSupply
           const burntSupply = collections[tokenId].burntSupply
@@ -115,7 +115,7 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
                 </Link>
               </TableCell>
               <TableCell className='text-right whitespace-nowrap'>{`${formatNumber(floorPrice)} ℏ`}</TableCell>
-              {/* <TableCell className='text-right whitespace-nowrap'>{`${formatNumber(vol30d)} ℏ`}</TableCell> */}
+              <TableCell className='text-right whitespace-nowrap'>{`${formatNumber(volume30d)} ℏ`}</TableCell>
               <TableCell className='font-medium text-right whitespace-nowrap'>{`${formatNumber(marketCap)} ℏ`}</TableCell>
               <TableCell className='font-medium text-right whitespace-nowrap'>{`${formatNumber(FDV)} ℏ`}</TableCell>
               {/* Conditionally render FDV and other columns */}

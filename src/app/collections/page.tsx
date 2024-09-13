@@ -1,10 +1,12 @@
 import React, { Suspense } from 'react'
 import TopCollectionsTable from '../components/TopCollectionsTable'
 import updateFloorPrice from '../services/updateFloorPrice'
+import update30dVolume from '../services/update30dVolume'
 import TopCollectionsTableSkeleton from '../components/TopCollectionsTableSkeleton'
 
 const Collections = async () => {
-  const updatedCollections = await updateFloorPrice()
+  let updatedCollections = await updateFloorPrice()
+  updatedCollections = await update30dVolume()
   return (
     <main className="bg-neutral-900 text-neutral-200">
       <div className='flex flex-col justify-center items-center text-center pb-8 md:text-left md:items-start md:justify-start'>

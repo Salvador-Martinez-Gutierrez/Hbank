@@ -49,22 +49,15 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections
     }
   }
 
-  // Sort collections by MarketCap in descending order
+  // Sort collections by Volume30d in descending order
   const sortedCollections = Object.entries(updatedCollections).sort(([tokenIdA], [tokenIdB]) => {
     const tokenInfoA = getInfoByTokenId(tokenIdA)
     const tokenInfoB = getInfoByTokenId(tokenIdB)
 
-    const floorPriceA = tokenInfoA.floorPrice ?? 0
-    const mintedSupplyA = collections[tokenIdA]?.mintedSupply ?? 0
-    const burntSupplyA = collections[tokenIdA]?.burntSupply ?? 0
-    const marketCapA = floorPriceA * (mintedSupplyA - burntSupplyA)
+    const volumeA = tokenInfoA.volume30d ?? 0
+    const volumeB = tokenInfoB.volume30d ?? 0
 
-    const floorPriceB = tokenInfoB.floorPrice ?? 0
-    const mintedSupplyB = collections[tokenIdB]?.mintedSupply ?? 0
-    const burntSupplyB = collections[tokenIdB]?.burntSupply ?? 0
-    const marketCapB = floorPriceB * (mintedSupplyB - burntSupplyB)
-
-    return marketCapB - marketCapA // Sort descending
+    return volumeB - volumeA // Sort descending
   })
 
   // Limitar las filas a las primeras 5 si el modo es simple

@@ -1,9 +1,11 @@
 import React from 'react'
 import updateFloorPrice from './services/updateFloorPrice'
+import update30dVolume from './services/update30dVolume'
 import TabMain from './components/TabMain'
 
 const Home = async () => {
-  const updatedCollections = await updateFloorPrice()
+  let updatedCollections = await updateFloorPrice()
+  updatedCollections = await update30dVolume()
   return (
     <main className="bg-neutral-900 text-neutral-200 flex flex-col ">
       <div className='flex flex-col text-center pb-8'>

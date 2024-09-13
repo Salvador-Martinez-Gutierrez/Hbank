@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { HWBridgeProvider } from '@buidlerlabs/hashgraph-react-wallets'
 import { HashpackConnector, KabilaConnector } from '@buidlerlabs/hashgraph-react-wallets/connectors'
-import { HederaTestnet } from '@buidlerlabs/hashgraph-react-wallets/chains'
+import { HederaMainnet } from '@buidlerlabs/hashgraph-react-wallets/chains'
 
 const WalletContext = createContext(null)
 
@@ -40,7 +40,7 @@ export function WalletProvider ({
       metadata={metadata}
       projectId={'eb3e42580d8e325d52e2edd599b9c567'}
       connectors={[HashpackConnector, KabilaConnector]}
-      chains={[HederaTestnet]}
+      chains={[HederaMainnet]}
       strategies={[]}
     >
       <WalletContext.Provider value={null}>

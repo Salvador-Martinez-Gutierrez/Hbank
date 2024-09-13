@@ -22,7 +22,7 @@ const LoginButton = () => {
           )
         : (
         <Button
-          className='bg-blue-500 hover:bg-blue-500'
+          className='bg-blue-500 hover:bg-blue-600'
           onClick={() => { setIsModalOpen(true) }}
         >
           <span className='pr-1 pt-[2.5px]'>

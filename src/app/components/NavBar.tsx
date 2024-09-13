@@ -1,9 +1,9 @@
-import ConnectWalletButton from './ConnectWalletButton'
 import HomeButton from './HomeButton'
 import WalletChecker from '../wallet-tracker/components/WalletChecker'
 import AddressTrackerButton from './AddressTrackerButton'
 import MarketAggregatorButton from './MarketAggregatorButton'
 import DexAggregatorButton from './DexAggregatorButton'
+import LoginButton from './LoginButton'
 import { WalletProvider } from '../context/WalletContext'
 
 const NavBar = () => {
@@ -23,7 +23,7 @@ const NavBar = () => {
           <WalletChecker showButton={false}/>
         </div>
       <WalletProvider>
-        <ConnectWalletButton />
+        <LoginButton />
       </WalletProvider>
       </div>
     </nav>

@@ -47,7 +47,7 @@ const WalletChecker = ({ showButton }: WalletCheckerProps) => {
             variant='secondary'
             className="mt-2 border border-white w-full"
           >
-            Check Wallet
+            Search Wallet
           </Button>
           )}
       </form>

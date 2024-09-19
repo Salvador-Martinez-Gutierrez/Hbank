@@ -3,6 +3,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import KabilaLoginButton from './KabilaLoginButton'
 import HashpackLoginButton from './HashpackLoginButton'
+import WalletConnectLoginButton from './WalletConnectLoginButton'
 
 interface LoginModalProps {
   isOpen: boolean
@@ -32,6 +33,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
         <div className="grid gap-4 py-4">
           <HashpackLoginButton onSuccess={handleSuccess} />
           <KabilaLoginButton onSuccess={handleSuccess} />
+          <WalletConnectLoginButton onSuccess={handleSuccess} />
         </div>
       </DialogContent>
     </Dialog>

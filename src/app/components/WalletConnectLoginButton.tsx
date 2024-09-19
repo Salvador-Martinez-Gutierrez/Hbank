@@ -16,7 +16,7 @@ const WalletConnectLoginButton = ({ onSuccess }: WalletConnectLoginButtonProps) 
       await connect()
       onSuccess()
     } catch (error) {
-      console.error('Failed to connect with Wallet Connect:', error)
+      console.error('Failed to connect with WalletConnect:', error)
     }
   }
 
@@ -25,7 +25,7 @@ const WalletConnectLoginButton = ({ onSuccess }: WalletConnectLoginButtonProps) 
       onClick={handleConnect}
       className="bg-blue-500 hover:bg-blue-600 w-full"
     >
-      Connect with Wallet Connect
+      Connect with WalletConnect
     </Button>
   )
 }

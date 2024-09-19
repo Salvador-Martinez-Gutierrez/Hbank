@@ -36,8 +36,6 @@ const Portfolio = async ({ params }: { params: Params }) => {
     const fromTimestamp = toTimestamp - 60
     try {
       hbarPrice = await getHbarPrice(fromTimestamp, toTimestamp)
-      console.log('HBAR Price:', hbarPrice)
-      // Do something with hbarPrice
     } catch (error) {
       console.error('Failed to fetch HBAR price', error)
     }

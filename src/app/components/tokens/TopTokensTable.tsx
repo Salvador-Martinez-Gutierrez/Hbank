@@ -1,3 +1,4 @@
+/*
 'use client'
 import React, { useState, useEffect } from 'react'
 import updateFungiblePrice from '../../services/saucer/updateFungiblePrices'
@@ -118,3 +119,4 @@ const TopTokensTable: React.FC<TopTokensProps> = async ({ variant }) => {
 }
 
 export default TopTokensTable
+*/

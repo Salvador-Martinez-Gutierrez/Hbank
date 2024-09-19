@@ -1,3 +1,4 @@
+/*
 import {
   Avatar,
   AvatarFallback,
@@ -19,3 +20,4 @@ const TokenAvatar: React.FC<TokenAvatarProps> = ({ url, size }) => {
 }
 
 export default TokenAvatar
+*/

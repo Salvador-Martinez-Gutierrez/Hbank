@@ -2,7 +2,6 @@
 
 # Ignore the tokens folder
 src/app/tokens/
-src/app/components/tokens/s
 
 # dependencies
 /node_modules

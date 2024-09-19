@@ -1,3 +1,4 @@
+/*
 import getFungibleData from './getFungibleData'
 import { tokens } from '../../tokensData/tokens'
 import type { FungibleData } from '../../tokensData/tokens'
@@ -37,3 +38,4 @@ const updateFungibleData = async (): Promise<Record<string, FungibleData>> => {
 }
 
 export default updateFungibleData
+*/

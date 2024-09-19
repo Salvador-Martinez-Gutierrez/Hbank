@@ -1,3 +1,4 @@
+/*
 interface TokenPriceData {
   timestampSeconds: number
   avgUsd: number
@@ -35,3 +36,4 @@ export async function getPriceVolLiq (
     throw error
   }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 import { tokens } from '../../tokensData/tokens'
 import type { FungibleData } from '../../tokensData/tokens'
 import getFungiblePrices from './getFungiblePrices'
@@ -29,3 +30,4 @@ const updateFungiblePrices = async (): Promise<Record<string, FungibleData>> => 
 }
 
 export default updateFungiblePrices
+*/

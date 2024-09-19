@@ -97,7 +97,7 @@ const TabNav: React.FC<TabNavProps> = async ({ tokenId }) => {
   return (
     <section>
         <Tabs defaultValue="listings" className="w-full">
-          <div className="flex justify-center w-full py-4 border-b-2 border-zinc-800">
+          <div className="flex justify-center w-full py-4 border-b-2 border-zinc-800 px-4 lg:px-8 xl:px-16">
             <TabsList className="w-full md:w-[400px] bg-neutral-950">
               <TabsTrigger
                 className="w-full data-[state=active]:bg-zinc-800 !text-white data-[state=active]:!text-white"

@@ -84,8 +84,3 @@
       --chart-5: 340 75% 55%;
     }
   }  
-
-/* Hide scrollbar for WebKit (Chrome, Safari) */
-body::-webkit-scrollbar {
-  display: none;
-}

@@ -3,9 +3,9 @@
 # Ignore the tokens folder
 src/app/tokens/
 src/app/components/tokens/
-src/app/services/saucer/getFungibleData
-src/app/services/saucer/updateFungibleData
-src/app/services/saucer/getPriceVolLiq
+src/app/services/saucer/getFungibleData.ts
+src/app/services/saucer/updateFungibleData.ts
+src/app/services/saucer/getPriceVolLiq.ts
 
 # dependencies
 /node_modules

@@ -1,4 +1,4 @@
-import type { FungibleData } from '../../tokensData/tokens'
+/* import type { FungibleData } from '../../tokensData/tokens'
 
 const getFungibleData = async (tokenId: string): Promise<FungibleData | undefined> => {
   try {
@@ -42,4 +42,4 @@ const getFungibleData = async (tokenId: string): Promise<FungibleData | undefine
   }
 }
 
-export default getFungibleData
+export default getFungibleData */

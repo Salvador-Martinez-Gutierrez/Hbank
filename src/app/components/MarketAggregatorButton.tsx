@@ -7,7 +7,7 @@ export default function MarketAggregatorButton () {
       <Button
         className='bg-black hover:bg-zinc-800 inline-flex cursor-pointer justify-start'
       >
-        NFT Market
+        Marketplace
       </Button>
     </Link>
   )

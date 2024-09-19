@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import MarketData from './MarketData'
-import type { TokenData } from '../../../collectionsData/collections'
+import updateFloorPrice from '@/app/services/updateFloorPrice'
 
 interface CollectionInfoProps {
   tokenId: string
-  updatedCollections: Record<string, TokenData>
 }
 
 export interface TokenInfo {
@@ -17,7 +16,8 @@ export interface TokenInfo {
   royalties: number
 }
 
-const CollectionInfo: React.FC<CollectionInfoProps> = ({ tokenId, updatedCollections }) => {
+const CollectionInfo: React.FC<CollectionInfoProps> = async ({ tokenId }) => {
+  const updatedCollections = await updateFloorPrice()
   const getInfoByTokenId = (tokenId: string): TokenInfo => {
     // Check if the tokenId exists in collections
     const tokenData = updatedCollections[tokenId]

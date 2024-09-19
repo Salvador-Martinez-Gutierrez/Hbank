@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow
 } from '@/app/collections/components/ui/table'
-import CollectionAvatar from '@/app/components/Avatar'
+import CollectionAvatar from '@/app/components/collections/CollectionAvatar'
 import type { Token } from '../page'
 
 interface FungibleTokenTableProps {

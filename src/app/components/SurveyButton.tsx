@@ -16,7 +16,7 @@ export default function SurveyButton () {
       className='bg-black hover:bg-zinc-800 inline-flex cursor-pointer justify-start'
       aria-label="Open survey in a new tab"
     >
-      Survey
+      Community
     </Button>
   )
 }

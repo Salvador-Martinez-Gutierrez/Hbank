@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import SerialBadge from './Badge'
 import collections from '@/app/collectionsData/collections'
-import type { normalizedItem } from '../page'
+import type { normalizedItem } from './TabNav'
 
 interface NftCardProps {
   token: normalizedItem

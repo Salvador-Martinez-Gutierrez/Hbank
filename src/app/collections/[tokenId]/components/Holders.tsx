@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow
 } from '@/app/collections/components/ui/table'
+import { getOwnersData } from '@/app/services/getOwnersData'
 
 interface Owners {
   account: string
@@ -18,10 +19,12 @@ interface Owners {
 }
 
 interface HoldersProps {
-  ownersList: Owners[]
+  tokenId: string
 }
 
-const Holders: React.FC<HoldersProps> = ({ ownersList }) => {
+const Holders: React.FC<HoldersProps> = async ({ tokenId }) => {
+  const ownersList: Owners[] = await getOwnersData(tokenId)
+
   return (
     <Table>
       <TableHeader>

@@ -35,7 +35,7 @@
     "src/app/collectionsData/collections.js",
     "src/app/components/TopCollections.tsx",
     "src/app/collections/[tokenId]/page.tsx"
-  ],
+, "src/app/tokensData"  ],
   "exclude": [
     "node_modules"
   ]

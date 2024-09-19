@@ -1,7 +1,6 @@
-import collections from '../collectionsData/collections'
-import type { TokenData } from '../collectionsData/collections'
+import collections from '../../collectionsData/collections'
 import Link from 'next/link'
-import CollectionAvatar from './Avatar'
+import CollectionAvatar from './CollectionAvatar'
 import {
   Table,
   TableBody,
@@ -10,9 +9,10 @@ import {
   TableHeader,
   TableRow
 } from '@/app/collections/components/ui/table'
+import updateFloorPrice from '../../services/updateFloorPrice'
+import update30dVolume from '../../services/update30dVolume'
 
 interface TopCollectionsProps {
-  updatedCollections: Record<string, TokenData>
   variant?: 'simple' | 'advanced' // Prop para el modo de rendering
 }
 
@@ -21,7 +21,10 @@ const formatNumber = (number: number) => {
   return number.toLocaleString('en-US')
 }
 
-const TopCollectionsTable: React.FC<TopCollectionsProps> = ({ updatedCollections, variant }) => {
+const TopCollectionsTable: React.FC<TopCollectionsProps> = async ({ variant }) => {
+  let updatedCollections = await updateFloorPrice()
+  updatedCollections = await update30dVolume()
+
   const getInfoByTokenId = (tokenId: string) => {
     const tokenData = updatedCollections[tokenId]
     if (tokenData !== undefined) {

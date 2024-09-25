@@ -1,4 +1,4 @@
-const getTokenIcon = async (tokenId: string) => {
+const getTokenIcon = async (tokenId: string): Promise<string> => {
   try {
     // Construct the URL for the API request
     const url = `https://s2.pics.davincigraph.io/api/v2/tokens/hedera/${encodeURIComponent(tokenId)}`

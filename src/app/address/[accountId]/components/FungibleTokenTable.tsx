@@ -11,12 +11,15 @@ import {
 import CollectionAvatar from '@/app/components/collections/CollectionAvatar'
 import getTokenIcon from '@/app/services/getTokenIcon'
 import type { Token } from '../page'
+import SeeMoreFungibleAnalytics from './SeeMoreFungibleAnalytics'
 
 interface FungibleTokenTableProps {
   tokenHoldingsExtended: Token[]
+  showTopFour?: boolean // Add this prop
+  accountId: string
 }
 
-const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsExtended }) => {
+const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsExtended, showTopFour, accountId }) => {
   const [icons, setIcons] = useState<Record<string, string>>({})
 
   useEffect(() => {
@@ -38,23 +41,30 @@ const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsEx
     fetchIcons()
   }, [tokenHoldingsExtended])
 
-  const totalValue = tokenHoldingsExtended
-    .filter(token => token.type === 'FUNGIBLE_COMMON' && token.price != null && token.price > 0)
-    .reduce((acc, token) => {
-      // Ensure that token.price is a valid number
-      const price = token.price ?? 0 // Default to 0 if price is undefined or null
-      return acc + (token.balance * price)
-    }, 0)
+  const filteredTokens = tokenHoldingsExtended
+    .filter(token => token.price !== null && typeof token.price !== 'undefined' && token.price > 0 && token.type === 'FUNGIBLE_COMMON')
+    .sort((a, b) => (b.balance * (b.price ?? 0)) - (a.balance * (a.price ?? 0)))
+
+  const displayTokens = showTopFour === true ? filteredTokens.slice(0, 4) : filteredTokens
+
+  const totalValue = filteredTokens.reduce((acc, token) => acc + (token.balance * (token.price ?? 0)), 0)
 
   return (
     <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">
       <div className='flex justify-start items-center mx-4 pt-8 pb-2'>
-        <h2 className='text-2xl font-bold'>
-          Fungible
-        </h2>
-        <span className='text-2xl semibold pl-2'>
-          {`$${totalValue.toFixed(4)}`}
-        </span>
+        {showTopFour === true
+          ? (
+          <>
+          <h2 className='text-2xl font-bold'>Tokens</h2>
+          <span className='text-2xl semibold pl-2'>{`$${totalValue.toFixed(4)}`}</span>
+          </>
+            )
+          : (
+          <>
+            <h3 className='text-2xl text-muted-foreground'>Total Worth:</h3>
+            <span className='text-2xl semibold pl-2'>{`$${totalValue.toFixed(4)}`}</span>
+          </>
+            )}
       </div>
       <div className='justify-center items-center text-center px-4 pb-8'>
         <Table>
@@ -67,26 +77,29 @@ const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsEx
             </TableRow>
           </TableHeader>
           <TableBody>
-      {tokenHoldingsExtended
-        .filter(token => token.price !== null && typeof token.price !== 'undefined' && token.price > 0 && token.type === 'FUNGIBLE_COMMON')
-        .map((token) => (
-          <TableRow key={token.token_id} className="hover:bg-zinc-800">
-            <TableCell className='flex-1 min-w-[150px] max-w-[150px] text-left whitespace-nowrap'>
-              <div className='flex'>
-                <CollectionAvatar url={icons[token.token_id] ?? '/NotFound.png'} />
-                <div className='flex flex-col ml-2 overflow-hidden'>
-                  <span className='truncate'>{token.name}</span>
-                  <span className='text-muted-foreground text-sm truncate'>{token.token_id}</span>
-                </div>
-              </div>
-            </TableCell>
-            <TableCell className='flex-grow text-right whitespace-nowrap'>{(token.balance).toFixed(4)}</TableCell>
-            <TableCell className='flex-grow text-right whitespace-nowrap'>{`$${(token.price ?? 0).toFixed(4)}`}</TableCell>
-            <TableCell className='flex-grow text-right whitespace-nowrap'>{`$${(token.balance * (token.price ?? 0)).toFixed(4)}`}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
+            {displayTokens.map((token) => (
+              <TableRow key={token.token_id} className="hover:bg-zinc-800">
+                <TableCell className='flex-1 min-w-[150px] max-w-[150px] text-left whitespace-nowrap'>
+                  <div className='flex'>
+                    <CollectionAvatar url={icons[token.token_id] ?? '/NotFound.png'} />
+                    <div className='flex flex-col ml-2 overflow-hidden'>
+                      <span className='truncate'>{token.name}</span>
+                      <span className='text-muted-foreground text-sm truncate'>{token.token_id}</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className='flex-grow text-right whitespace-nowrap'>{(token.balance).toFixed(4)}</TableCell>
+                <TableCell className='flex-grow text-right whitespace-nowrap'>{`$${(token.price ?? 0).toFixed(4)}`}</TableCell>
+                <TableCell className='flex-grow text-right whitespace-nowrap'>{`$${(token.balance * (token.price ?? 0)).toFixed(4)}`}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
+        {showTopFour === true && displayTokens.length >= 4 && (
+          <div className="mt-4 text-center">
+           <SeeMoreFungibleAnalytics accountId={accountId}/>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -1,5 +1,6 @@
 import FungibleTokenTable from './components/FungibleTokenTable'
-import NonFungibleTokenTable from './components/NonFungibleTokenTable'
+import NonFungibleTokenTable from './components/NonFungibleTokenGallery'
+import DefiTable from './components/DefiTable'
 import getAccountHbarBalance from '../../services/getAccountHbarBalance'
 import getAccountTokenBalance from '../../services/getAccountTokenBalance'
 import getHbarPrice from '../../services/saucer/getHbarPrice'
@@ -7,6 +8,7 @@ import getTokenData from '../../services/getTokenData'
 import getTokenPrice from '../../services/getTokenPrice'
 import { getFloorPriceKabila } from '../../services/getFloorPriceKabila'
 import { getFloorPriceSentx } from '../../services/getFloorPriceSentx'
+import BurgerMenu from './components/BurgerButton'
 
 interface Params {
   accountId: string
@@ -59,6 +61,7 @@ const Portfolio = async ({ params }: { params: Params }) => {
   const tokenHoldingsExtended = await Promise.all(
     tokenHoldings.filter(token => token.balance > 0).map(async (token) => {
       const { name, type, decimals } = await getTokenData(token.token_id)
+      console.log(`Token ${token.token_id}: name=${name}, type=${type}, decimals=${decimals}`)
       let price = 0
       if (type === 'FUNGIBLE_COMMON') {
         price = await getTokenPrice(token.token_id)
@@ -95,10 +98,15 @@ const Portfolio = async ({ params }: { params: Params }) => {
   return (
     <div className='min-h-[calc(100vh-200px)] bg-neutral-900 text-neutral-200'>
      <header className='flex flex-col justify-start items-start text-left pb-8 md:text-left md:items-start md:justify-start'>
-        <h2 className='text-3xl font-bold pt-8 pb-2 px-4 md:px-4 lg:px-8 xl:px-16'>
-          {accountId}
-        </h2>
-        <label className= 'text-lg text-muted-foreground w-full max-w-[420px] md:max-w-[800px] px-4 md:px-4 lg:px-8 xl:px-16'>
+        <div className='flex items-center w-full px-4 md:px-4 lg:px-8 xl:px-16 pt-8 pb-2'>
+          <div className='md:hidden'>
+            <BurgerMenu accountId={accountId} />
+          </div>
+          <h2 className='text-3xl font-bold'>
+            Dashboard
+          </h2>
+        </div>
+        <label className='text-lg text-muted-foreground w-full max-w-[420px] md:max-w-[800px] px-4 md:px-4 lg:px-8 xl:px-16'>
           Total Worth:
         </label>
         <p className='text-2xl font-bold w-full max-w-[420px] md:max-w-[800px] px-4 md:px-4 lg:px-8 xl:px-16'>
@@ -106,8 +114,9 @@ const Portfolio = async ({ params }: { params: Params }) => {
         </p>
      </header>
      <div className='pb-8'>
-       <FungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended }/>
-       <NonFungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended }/>
+       <FungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended } accountId={accountId} showTopFour = {true}/>
+       <NonFungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended } accountId={accountId} showTopFour = {true} />
+       <DefiTable tokenHoldings={tokenHoldings} accountId={accountId} hbarPrice={hbarPrice}/>
      </div>
     </div>
   )

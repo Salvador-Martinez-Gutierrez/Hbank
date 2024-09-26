@@ -10,10 +10,9 @@ import getTokenIcon from '@/app/services/getTokenIcon'
 interface FungibleTokenTableProps {
   tokenHoldings: Token[]
   accountId: string
-  hbarPrice: number
 }
 
-const DefiTable: React.FC<FungibleTokenTableProps> = async ({ tokenHoldings, accountId, hbarPrice }) => {
+const DefiTable: React.FC<FungibleTokenTableProps> = async ({ tokenHoldings, accountId }) => {
   const saucerIcon = await getTokenIcon('0.0.731861')
   // const positionsV2 = await getV2LpPositions(accountId)
 

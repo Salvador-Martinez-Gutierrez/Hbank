@@ -116,7 +116,7 @@ const Portfolio = async ({ params }: { params: Params }) => {
      <div className='pb-8'>
        <FungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended } accountId={accountId} showTopFour = {true}/>
        <NonFungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended } accountId={accountId} showTopFour = {true} />
-       <DefiTable tokenHoldings={tokenHoldings} accountId={accountId} hbarPrice={hbarPrice}/>
+       <DefiTable tokenHoldings={tokenHoldings} accountId={accountId}/>
      </div>
     </div>
   )

@@ -13,7 +13,7 @@ export default function Layout ({ children, params }: LayoutProps) {
       <div className="hidden md:block md:fixed md:left-0 md:top-[75px] md:w-64 md:h-[calc(100vh-75px)]">
         <SideNav accountId={params.accountId} />
       </div>
-      <main className="flex-1 min-w-0 md:ml-64 pt-[75px] md:pt-0">{children}</main>
+      <main className="flex-1 min-w-0 md:ml-64">{children}</main>
     </div>
   )
 }

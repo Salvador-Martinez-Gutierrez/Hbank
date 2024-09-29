@@ -57,9 +57,10 @@ interface FungibleDefiTableProps {
   accountId: string
   poolTotalValue: number
   farmsTotalValue: number
+  showTopFour: boolean
 }
 
-const DefiTable: React.FC<FungibleDefiTableProps> = async ({ defi, accountId, poolTotalValue, farmsTotalValue }) => {
+const DefiTable: React.FC<FungibleDefiTableProps> = async ({ defi, accountId, poolTotalValue, farmsTotalValue, showTopFour }) => {
   const saucerIcon = await getTokenIcon('0.0.731861')
   // const positionsV2 = await getV2LpPositions(accountId)
   const totalValue = poolTotalValue + farmsTotalValue
@@ -67,12 +68,19 @@ const DefiTable: React.FC<FungibleDefiTableProps> = async ({ defi, accountId, po
   return (
     <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">
       <div className='flex justify-start items-center mx-4 pt-8 pb-2'>
-        <h2 className='text-2xl font-bold'>
-          DeFi
-        </h2>
-        <span className='text-2xl semibold pl-2'>
-          {`$${totalValue.toFixed(4)}`}
-        </span>
+        {showTopFour
+          ? (
+          <>
+            <h2 className='text-2xl font-bold'>DeFi</h2>
+            <span className='text-2xl font-semibold pl-2'>${totalValue.toFixed(2)}</span>
+          </>
+            )
+          : (
+          <>
+            <h3 className='text-2xl text-muted-foreground'>Total Worth:</h3>
+            <span className='text-2xl font-semibold pl-2'>${totalValue.toFixed(2)}</span>
+          </>
+            )}
       </div>
       <div className='flex justify-start items-center mx-4 pt-10 mb-6'>
         <CollectionAvatar url={saucerIcon ?? '/NotFound.png'} />
@@ -80,9 +88,9 @@ const DefiTable: React.FC<FungibleDefiTableProps> = async ({ defi, accountId, po
           SaucerSwap
         </h3>
       </div>
-        <LiquidityPoolV1 defi={defi} accountId={accountId}/>
-        <LiquidityFarmsV1 accountId={accountId} />
-        {/* <LiquidityPoolV2 positionsV2={positionsV2} hbarPrice={hbarPrice}/> */}
+      <LiquidityPoolV1 defi={defi} accountId={accountId}/>
+      <LiquidityFarmsV1 accountId={accountId} />
+      {/* <LiquidityPoolV2 positionsV2={positionsV2} hbarPrice={hbarPrice}/> */}
     </section>
   )
 }

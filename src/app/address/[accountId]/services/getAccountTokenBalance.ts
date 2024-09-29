@@ -5,7 +5,8 @@ async function getAccountTokenBalance (accountId: string) {
   try {
     const response = await fetch(url, {
       headers: {
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache'
       }
     })
 
@@ -15,14 +16,24 @@ async function getAccountTokenBalance (accountId: string) {
     }
 
     const data = await response.json()
-    const tokens = data.balance.tokens
+    const { balance } = data
 
     interface Token {
+      token_id: string
       balance: number
     }
 
+    // Create HBAR token object
+    const hbarToken: Token = {
+      token_id: 'HBAR',
+      balance: balance.balance
+    }
+
+    // Add HBAR token to the beginning of the tokens array
+    const allTokens: Token[] = [hbarToken, ...balance.tokens]
+
     // Filter tokens with balance greater than 0
-    return tokens.filter((token: Token) => token.balance > 0)
+    return allTokens.filter((token: Token) => token.balance > 0)
   } catch (error) {
     console.error('Error fetching account info:', error)
     throw error

@@ -1,99 +1,67 @@
 import FungibleTokenTable from './components/FungibleTokenTable'
 import NonFungibleTokenTable from './components/NonFungibleTokenGallery'
 import DefiTable from './components/DefiTable'
-import getAccountHbarBalance from '../../services/getAccountHbarBalance'
-import getAccountTokenBalance from '../../services/getAccountTokenBalance'
-import getHbarPrice from '../../services/saucer/getHbarPrice'
-import getTokenData from '../../services/getTokenData'
-import getTokenPrice from '../../services/getTokenPrice'
-import { getFloorPriceKabila } from '../../services/getFloorPriceKabila'
-import { getFloorPriceSentx } from '../../services/getFloorPriceSentx'
 import BurgerMenu from './components/BurgerButton'
+import getAccountTokenBalance from './services/getAccountTokenBalance'
+import { classifyAccountTokenBalance } from './services/classifyAccountTokenBalance'
+import getHbarPrice from '../../services/saucer/getHbarPrice'
+import { getPricedTokens, getPricedNFTs } from './services/getPricedTokens'
+import getLpTokensData from './services/getLpTokenData'
+import fetchFarms from '@/app/services/saucer/fetchFarms'
+import fetchPoolId from '@/app/services/saucer/fetchPoolId'
+import getLpTokenDataByPoolId from '@/app/services/saucer/getLpTokenDataByPoolId'
 
 interface Params {
   accountId: string
 }
 
-export interface Token {
-  balance: number
-  token_id: string
-  name?: string
-  type?: string
-  price?: number
-}
-
-interface TokenWithDecimals extends Token {
-  decimals: number
-}
-
 const Portfolio = async ({ params }: { params: Params }) => {
   const accountId: string = params.accountId
-  const hbarBalance = await getAccountHbarBalance(accountId)
+  const accountHoldings = await getAccountTokenBalance(accountId)
+  const { tokens, nfts, defi } = await classifyAccountTokenBalance(accountHoldings)
 
-  let hbarPrice: number | undefined = 0
+  // Get HBAR price
+  const currentTime = Math.floor(Date.now() / 1000)
+  const hbarPrice = await getHbarPrice(currentTime - 60, currentTime)
 
-  async function fetchHbarPrice () {
-    const getCurrentUnixTimestamp = () => Math.floor(Date.now() / 1000)
-    const toTimestamp = getCurrentUnixTimestamp()
-    const fromTimestamp = toTimestamp - 60
-    try {
-      hbarPrice = await getHbarPrice(fromTimestamp, toTimestamp)
-    } catch (error) {
-      console.error('Failed to fetch HBAR price', error)
-    }
-  }
+  // Get priced tokens and NFTs
+  const tokensWithPrice = await getPricedTokens(tokens, hbarPrice)
+  const nftsWithPrice = await getPricedNFTs(nfts, hbarPrice)
 
-  await fetchHbarPrice()
-
-  // HBAR details
-  const hbarDetails = {
-    balance: hbarBalance,
-    token_id: 'HBAR',
-    name: 'HBAR',
-    type: 'FUNGIBLE_COMMON',
-    price: hbarPrice
-  }
-
-  // Gets HTS and NFT holdings and extracts the data
-  const tokenHoldings: TokenWithDecimals[] = await getAccountTokenBalance(accountId)
-
-  // Extend the object tokenHoldings by adding the name, type, and price properties
-  const tokenHoldingsExtended = await Promise.all(
-    tokenHoldings.filter(token => token.balance > 0).map(async (token) => {
-      const { name, type, decimals } = await getTokenData(token.token_id)
-      console.log(`Token ${token.token_id}: name=${name}, type=${type}, decimals=${decimals}`)
-      let price = 0
-      if (type === 'FUNGIBLE_COMMON') {
-        price = await getTokenPrice(token.token_id)
-      } else if (type === 'NON_FUNGIBLE_UNIQUE' && typeof hbarPrice !== 'undefined') {
-        const priceKabila: number | null = await getFloorPriceKabila(token.token_id)
-        const priceSentx: number | null = await getFloorPriceSentx(token.token_id)
-        if (priceSentx === null && priceKabila !== null) {
-          price = priceKabila * hbarPrice
-        } else if (priceKabila === null && priceSentx !== null) {
-          price = priceSentx * hbarPrice
-        } else if (typeof priceKabila === 'number' && typeof priceSentx === 'number') {
-          price = Math.min(priceSentx, priceKabila) * hbarPrice
-        }
-      }
-
-      return {
-        token_id: token.token_id,
-        name,
-        type,
-        balance: (token.balance) * Math.pow(10, -decimals),
-        price
-      }
+  // DEFI
+  const defiWithPrice = await Promise.all(
+    defi.map(async (defiItem) => {
+      const lpTokensData = await getLpTokensData(defiItem.token_id)
+      const poolValue = Number(defiItem.balance) * Number(lpTokensData?.lpToken.priceUsd) * Math.pow(10, -Number(defiItem.decimals))
+      return { ...defiItem, lpTokensData, poolValue }
     })
   )
 
-  // Add HBAR details to the tokenHoldingsExtended array
-  tokenHoldingsExtended.unshift(hbarDetails)
+  const farms = await fetchFarms(accountId)
 
-  // Calculate the total worth
-  const totalWorth = tokenHoldingsExtended.reduce((total, token) => {
-    return total + (token.balance * token.price)
-  }, 0)
+  // Calculate farms total value
+  const farmsTotalValue = await farms.reduce(async (accPromise, farm) => {
+    const acc = await accPromise
+    const poolId = await fetchPoolId(farm.id)
+    const lpData = await getLpTokenDataByPoolId(poolId)
+    const farmValue = Number(farm.total) * Number(lpData.lpToken.priceUsd) * 1e-8
+    return acc + farmValue
+  }, Promise.resolve(0))
+
+  // Calculate separate totals
+  const tokensTotalValue = tokensWithPrice.reduce((total, token) =>
+    total + (token.balance * Math.pow(10, -(token.decimals ?? 0)) * (token.priceUsd ?? 0)), 0
+  )
+
+  const nftsTotalValue = nftsWithPrice.reduce((total, nft) =>
+    total + (nft.balance * Math.pow(10, -(nft.decimals ?? 0)) * (nft.priceUsd ?? 0)), 0
+  )
+
+  const poolTotalValue = defiWithPrice.reduce((total, defi) =>
+    total + (defi.poolValue), 0
+  )
+
+  const totalWorth = tokensTotalValue + nftsTotalValue + poolTotalValue + farmsTotalValue
 
   return (
     <div className='min-h-[calc(100vh-200px)] bg-neutral-900 text-neutral-200'>
@@ -114,9 +82,9 @@ const Portfolio = async ({ params }: { params: Params }) => {
         </p>
      </header>
      <div className='pb-8'>
-       <FungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended } accountId={accountId} showTopFour = {true}/>
-       <NonFungibleTokenTable tokenHoldingsExtended = { tokenHoldingsExtended } accountId={accountId} showTopFour = {true} />
-       <DefiTable tokenHoldings={tokenHoldings} accountId={accountId}/>
+      <FungibleTokenTable tokens={tokensWithPrice} accountId={accountId} showTopFour={true}/>
+      <NonFungibleTokenTable nfts={nftsWithPrice} accountId={accountId} showTopFour={true} />
+      <DefiTable defi={defiWithPrice} poolTotalValue={poolTotalValue} farmsTotalValue={farmsTotalValue} accountId={accountId}/>
      </div>
     </div>
   )

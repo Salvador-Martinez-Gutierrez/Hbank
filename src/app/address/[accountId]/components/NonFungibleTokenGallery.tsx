@@ -1,25 +1,33 @@
 import React from 'react'
 import Image from 'next/image'
-import type { Token } from '../page'
 import SeeMoreNftAnalytics from './SeeMoreNftAnalytics'
 import getNftMetadata from '../../../services/mirror-node/getNftMetadata'
 import getNftImageCid from '@/app/services/mirror-node/getNftImageCid'
 
+interface Token {
+  token_id: string
+  name: string
+  symbol: string
+  type: string
+  balance: number
+  decimals?: number
+  price?: number
+  priceUsd?: number
+}
+
 interface NonFungibleTokenGalleryProps {
-  tokenHoldingsExtended: Token[]
+  nfts: Token[]
   showTopFour?: boolean
   accountId: string // Add this prop
 }
 
-const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({ tokenHoldingsExtended, showTopFour, accountId }) => {
-  const filteredTokens = tokenHoldingsExtended
-    .filter(token => typeof token.price !== 'undefined' && token.price > 0 && token.type === 'NON_FUNGIBLE_UNIQUE')
+const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({ nfts, showTopFour, accountId }) => {
+  const filteredTokens = nfts
     .sort((a, b) => (b.balance * (b.price ?? 0)) - (a.balance * (a.price ?? 0)))
 
   const displayTokens = showTopFour === true ? filteredTokens.slice(0, 4) : filteredTokens
-  console.log('TOKENS', displayTokens)
 
-  const totalValue = filteredTokens.reduce((acc, token) => acc + (token.balance * (token.price ?? 0)), 0)
+  const totalValue = filteredTokens.reduce((acc, token) => acc + (token.balance * (token.priceUsd ?? 0)), 0)
 
   return (
     <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">
@@ -83,8 +91,9 @@ const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({
                 <h3 className="text-lg font-semibold truncate">{token.name}</h3>
                 <p className="text-sm text-muted-foreground truncate">{token.token_id}</p>
                 <p className="text-sm">Balance: {token.balance.toFixed(0)}</p>
-                <p className="text-sm">Price: ${(token.price ?? 0).toFixed(4)}</p>
-                <p className="text-sm font-semibold">Value: ${(token.balance * (token.price ?? 0)).toFixed(4)}</p>
+                <p className="text-sm">Price: {(token.price ?? 0).toFixed(4)} hbar</p>
+                <p className="text-sm">Price: ${(token.priceUsd ?? 0).toFixed(4)}</p>
+                <p className="text-sm font-semibold">Value: ${(token.balance * (token.priceUsd ?? 0)).toFixed(4)}</p>
               </div>
             </div>
           )

@@ -1,5 +1,4 @@
-'use client'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   Table,
   TableBody,
@@ -10,44 +9,41 @@ import {
 } from '@/app/collections/components/ui/table'
 import CollectionAvatar from '@/app/components/collections/CollectionAvatar'
 import getTokenIcon from '@/app/services/getTokenIcon'
-import type { Token } from '../page'
 import SeeMoreFungibleAnalytics from './SeeMoreFungibleAnalytics'
 
+interface Token {
+  token_id: string
+  name: string
+  symbol: string
+  type: string
+  balance: number
+  decimals?: number
+  price?: number
+  priceUsd?: number
+}
+
 interface FungibleTokenTableProps {
-  tokenHoldingsExtended: Token[]
+  tokens: Token[]
   showTopFour?: boolean // Add this prop
   accountId: string
 }
 
-const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsExtended, showTopFour, accountId }) => {
-  const [icons, setIcons] = useState<Record<string, string>>({})
+async function FungibleTokenTable ({ tokens, showTopFour, accountId }: FungibleTokenTableProps) {
+  const tokenDataPromises = tokens.map(async (token) => {
+    const iconUrl = await getTokenIcon(token.token_id).catch(() => '/NotFound.png')
+    // Add a fallback value of 0 for decimals if it's undefined
+    const value = (token.balance * Math.pow(10, -(token.decimals ?? 0)) * (token.priceUsd ?? 0))
+    return { ...token, iconUrl, value }
+  })
 
-  useEffect(() => {
-    const fetchIcons = async () => {
-      const newIcons: Record<string, string> = {}
-      for (const token of tokenHoldingsExtended) {
-        if (token.type === 'FUNGIBLE_COMMON') {
-          try {
-            const iconUrl = await getTokenIcon(token.token_id)
-            newIcons[token.token_id] = iconUrl
-          } catch (error) {
-            console.error(`Failed to fetch icon for token ${token.token_id}`, error)
-          }
-        }
-      }
-      setIcons(newIcons)
-    }
+  const tokensWithData = await Promise.all(tokenDataPromises)
 
-    fetchIcons()
-  }, [tokenHoldingsExtended])
-
-  const filteredTokens = tokenHoldingsExtended
-    .filter(token => token.price !== null && typeof token.price !== 'undefined' && token.price > 0 && token.type === 'FUNGIBLE_COMMON')
-    .sort((a, b) => (b.balance * (b.price ?? 0)) - (a.balance * (a.price ?? 0)))
+  const filteredTokens = tokensWithData
+    .sort((a, b) => b.value - a.value)
 
   const displayTokens = showTopFour === true ? filteredTokens.slice(0, 4) : filteredTokens
 
-  const totalValue = filteredTokens.reduce((acc, token) => acc + (token.balance * (token.price ?? 0)), 0)
+  const totalValue = filteredTokens.reduce((acc, token) => acc + token.value, 0)
 
   return (
     <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">
@@ -81,16 +77,22 @@ const FungibleTokenTable: React.FC<FungibleTokenTableProps> = ({ tokenHoldingsEx
               <TableRow key={token.token_id} className="hover:bg-zinc-800">
                 <TableCell className='flex-1 min-w-[150px] max-w-[150px] text-left whitespace-nowrap'>
                   <div className='flex'>
-                    <CollectionAvatar url={icons[token.token_id] ?? '/NotFound.png'} />
+                    <CollectionAvatar url={token.iconUrl ?? '/NotFound.png'} />
                     <div className='flex flex-col ml-2 overflow-hidden'>
                       <span className='truncate'>{token.name}</span>
                       <span className='text-muted-foreground text-sm truncate'>{token.token_id}</span>
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className='flex-grow text-right whitespace-nowrap'>{(token.balance).toFixed(4)}</TableCell>
-                <TableCell className='flex-grow text-right whitespace-nowrap'>{`$${(token.price ?? 0).toFixed(4)}`}</TableCell>
-                <TableCell className='flex-grow text-right whitespace-nowrap'>{`$${(token.balance * (token.price ?? 0)).toFixed(4)}`}</TableCell>
+                <TableCell className='flex-grow text-right whitespace-nowrap'>
+                  {(token.balance * Math.pow(10, -(token.decimals ?? 0))).toFixed(4)}
+                </TableCell>
+                <TableCell className='flex-grow text-right whitespace-nowrap'>
+                  {`$${(token.priceUsd ?? 0).toFixed(4)}`}
+                </TableCell>
+                <TableCell className='flex-grow text-right whitespace-nowrap'>
+                  {`$${token.value.toFixed(4)}`}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

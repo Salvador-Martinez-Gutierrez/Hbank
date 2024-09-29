@@ -32,14 +32,15 @@ export interface LpTokenData {
   tokenReserveB: string
 }
 
-export default async function getLpTokenData (tokenId: string): Promise<LpTokenData | null> {
+export default async function getLpTokenData (tokenId: string): Promise<LpTokenData | undefined> {
   const url = 'https://api.saucerswap.finance/pools/known'
   try {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      cache: 'no-store'
     })
 
     if (!response.ok) {
@@ -50,14 +51,16 @@ export default async function getLpTokenData (tokenId: string): Promise<LpTokenD
 
     const matchingPool = pools.find(pool => pool.lpToken.id === tokenId)
 
+    console.log('Pool:', matchingPool)
+
     if (typeof matchingPool !== 'undefined') {
       return matchingPool
     }
 
     // If no matching pool is found, return null instead of throwing an error
-    return null
+    return undefined
   } catch (error) {
     console.error('Error fetching LP token data:', error)
-    return null
+    return undefined
   }
 }

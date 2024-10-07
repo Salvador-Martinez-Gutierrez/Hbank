@@ -22,12 +22,12 @@ const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({
   const { nfts } = await classifyAccountTokenBalance(accountHoldings)
   const nftsWithPrice = await getPricedNFTs(nfts, hbarPrice)
 
+  const totalValue = nftsWithPrice.reduce((acc, token) => acc + (token.balance * (token.priceUsd ?? 0)), 0)
+
   const filteredTokens = nftsWithPrice
     .sort((a, b) => (b.balance * (b.price ?? 0)) - (a.balance * (a.price ?? 0)))
 
   const displayTokens = showTopFour === true ? filteredTokens.slice(0, 4) : filteredTokens
-
-  const totalValue = filteredTokens.reduce((acc, token) => acc + (token.balance * (token.priceUsd ?? 0)), 0)
 
   return (
     <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">

@@ -26,7 +26,7 @@ export async function getPricedTokens (tokens: Token[], hbarPrice: number): Prom
 }
 
 export async function getPricedNFTs (nfts: Token[], hbarPrice: number): Promise<Token[]> {
-  return await Promise.all(nfts.map(async (nft) => {
+  const pricedNFTs = await Promise.all(nfts.map(async (nft) => {
     let price = null
     let priceUsd = 0
     const priceKabila = await getFloorPriceKabila(nft.token_id)
@@ -45,4 +45,7 @@ export async function getPricedNFTs (nfts: Token[], hbarPrice: number): Promise<
 
     return { ...nft, price, priceUsd }
   }))
+
+  // Filter out NFTs with a price of 0
+  return pricedNFTs.filter(nft => nft.price !== 0 && nft.priceUsd !== 0)
 }

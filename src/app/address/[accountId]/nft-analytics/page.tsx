@@ -1,8 +1,8 @@
+import { cache } from 'react'
 import NonFungibleTokenGallery from '../components/NonFungibleTokenGallery'
 import getAccountTokenBalance from '../services/getAccountTokenBalance'
 import getHbarPrice from '../../../services/saucer/getHbarPrice'
 import { classifyAccountTokenBalance } from '../services/classifyAccountTokenBalance'
-import { getPricedNFTs } from '../services/getPricedTokens'
 import BurgerMenu from '../components/BurgerButton'
 
 interface NftAnalyticsProps {
@@ -19,18 +19,19 @@ export interface Token {
   price?: number
 }
 
+// Cached versions of the functions
+const cachedGetAccountTokenBalance = cache(getAccountTokenBalance)
+const cachedClassifyAccountTokenBalance = cache(classifyAccountTokenBalance)
+
 const NftAnalytics = async ({ params }: NftAnalyticsProps) => {
   const { accountId } = params
 
-  const accountHoldings = await getAccountTokenBalance(accountId)
-  const { nfts } = await classifyAccountTokenBalance(accountHoldings)
+  const accountHoldings = await cachedGetAccountTokenBalance(accountId)
+  const { nfts } = await cachedClassifyAccountTokenBalance(accountHoldings)
 
   // Get HBAR price
   const currentTime = Math.floor(Date.now() / 1000)
   const hbarPrice = await getHbarPrice(currentTime - 60, currentTime)
-
-  // Get priced NFTs
-  const nftsWithPrice = await getPricedNFTs(nfts, hbarPrice)
 
   return (
     <div className='min-h-[calc(100vh-200px)] bg-neutral-900 text-neutral-200'>
@@ -42,7 +43,7 @@ const NftAnalytics = async ({ params }: NftAnalyticsProps) => {
           NFTs
         </h2>
       </div>
-      <NonFungibleTokenGallery nfts = { nftsWithPrice } accountId={accountId} showTopFour={false} />
+      <NonFungibleTokenGallery nfts={nfts} hbarPrice={hbarPrice} accountId={accountId} showTopFour={false} />
     </div>
   )
 }

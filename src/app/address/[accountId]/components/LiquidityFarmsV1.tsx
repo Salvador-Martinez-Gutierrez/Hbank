@@ -7,19 +7,22 @@ import {
   TableHeader,
   TableRow
 } from '@/app/collections/components/ui/table'
-import fetchFarms from '@/app/services/saucer/fetchFarms'
 import fetchPoolId from '@/app/services/saucer/fetchPoolId'
 import getLpTokenDataByPoolId from '@/app/services/saucer/getLpTokenDataByPoolId'
 import CollectionAvatar from '@/app/components/collections/CollectionAvatar'
 import getTokenIcon from '@/app/services/getTokenIcon'
 
-interface LiquidityFarmsV1Props {
-  accountId: string
+interface farmToken {
+  id: number
+  timestamp: string
+  total: string
 }
 
-const LiquidityFarmsV1: React.FC<LiquidityFarmsV1Props> = async ({ accountId }) => {
-  const farms = await fetchFarms(accountId)
+interface LiquidityFarmsV1Props {
+  farms: farmToken[]
+}
 
+const LiquidityFarmsV1: React.FC<LiquidityFarmsV1Props> = async ({ farms }) => {
   return (
     <div className="bg-neutral-950 mx-4 mb-8">
       <h3 className='text-lg ml-4 mb-2'>

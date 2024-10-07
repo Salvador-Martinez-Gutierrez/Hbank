@@ -32,15 +32,15 @@ export async function getPricedNFTs (nfts: Token[], hbarPrice: number): Promise<
     const priceKabila = await getFloorPriceKabila(nft.token_id)
     const priceSentx = await getFloorPriceSentx(nft.token_id)
 
-    if (priceSentx === null && priceKabila !== null) {
-      price = priceKabila
-      priceUsd = priceKabila * hbarPrice
+    if (typeof priceKabila === 'number' && typeof priceSentx === 'number') {
+      price = Math.min(priceSentx, priceKabila)
+      priceUsd = price * hbarPrice
     } else if (priceKabila === null && priceSentx !== null) {
       price = priceSentx
       priceUsd = priceSentx * hbarPrice
-    } else if (typeof priceKabila === 'number' && typeof priceSentx === 'number') {
-      price = Math.min(priceSentx, priceKabila)
-      priceUsd = price * hbarPrice
+    } else if (priceSentx === null && priceKabila !== null) {
+      price = priceKabila
+      priceUsd = priceKabila * hbarPrice
     }
 
     return { ...nft, price, priceUsd }

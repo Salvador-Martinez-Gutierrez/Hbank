@@ -58,7 +58,6 @@ interface DefiToken {
 
 interface LiquidityPoolV1Props {
   defi: DefiToken[]
-  accountId: string
 }
 
 const LiquidityPoolV1: React.FC<LiquidityPoolV1Props> = async ({ defi }) => {

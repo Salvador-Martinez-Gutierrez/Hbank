@@ -10,6 +10,7 @@ import {
 import CollectionAvatar from '@/app/components/collections/CollectionAvatar'
 import getTokenIcon from '@/app/services/getTokenIcon'
 import SeeMoreFungibleAnalytics from './SeeMoreFungibleAnalytics'
+import { getPricedTokens } from '../services/getPricedTokens'
 
 interface Token {
   token_id: string
@@ -26,10 +27,13 @@ interface FungibleTokenTableProps {
   tokens: Token[]
   showTopFour?: boolean // Add this prop
   accountId: string
+  hbarPrice: number
 }
 
-async function FungibleTokenTable ({ tokens, showTopFour, accountId }: FungibleTokenTableProps) {
-  const tokenDataPromises = tokens.map(async (token) => {
+async function FungibleTokenTable ({ tokens, showTopFour, accountId, hbarPrice }: FungibleTokenTableProps) {
+  const tokensWithPrice = await getPricedTokens(tokens, hbarPrice)
+
+  const tokenDataPromises = tokensWithPrice.map(async (token) => {
     const iconUrl = await getTokenIcon(token.token_id).catch(() => '/NotFound.png')
     // Add a fallback value of 0 for decimals if it's undefined
     const value = (token.balance * Math.pow(10, -(token.decimals ?? 0)) * (token.priceUsd ?? 0))

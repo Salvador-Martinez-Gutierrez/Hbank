@@ -4,7 +4,6 @@ import NonFungibleTokenGallery from './components/NonFungibleTokenGallery'
 import DefiTable from './components/DefiTable'
 import BurgerMenu from './components/BurgerButton'
 import getAccountTokenBalance from './services/getAccountTokenBalance'
-import { classifyAccountTokenBalance } from './services/classifyAccountTokenBalance'
 import getHbarPrice from '../../services/saucer/getHbarPrice'
 
 interface Params {
@@ -14,7 +13,6 @@ interface Params {
 const Portfolio = async ({ params }: { params: Params }) => {
   const accountId: string = params.accountId
   const accountHoldings = await getAccountTokenBalance(accountId)
-  const { tokens, nfts, defi } = await classifyAccountTokenBalance(accountHoldings)
 
   // Get HBAR price
   const currentTime = Math.floor(Date.now() / 1000)
@@ -34,13 +32,13 @@ const Portfolio = async ({ params }: { params: Params }) => {
      </header>
      <div className='pb-8'>
       <Suspense fallback={<div>Loading fungible tokens...</div>}>
-        <FungibleTokenTable tokens={tokens} hbarPrice={hbarPrice} accountId={accountId} showTopFour={true}/>
+        <FungibleTokenTable accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={true}/>
       </Suspense>
       <Suspense fallback={<div>Loading non-fungible tokens...</div>}>
-        <NonFungibleTokenGallery nfts={nfts} hbarPrice={hbarPrice} accountId={accountId} showTopFour={true} />
+        <NonFungibleTokenGallery accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={true} />
       </Suspense>
       <Suspense fallback={<div>Loading DeFi tokens...</div>}>
-        <DefiTable defi={defi} accountId={accountId} showTopFour={true}/>
+        <DefiTable accountHoldings={accountHoldings} accountId={accountId} showTopFour={true}/>
       </Suspense>
      </div>
     </div>

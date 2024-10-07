@@ -9,25 +9,21 @@ import getLpTokensData from '../services/getLpTokenData'
 import fetchFarms from '@/app/services/saucer/fetchFarms'
 import fetchPoolId from '@/app/services/saucer/fetchPoolId'
 import getLpTokenDataByPoolId from '@/app/services/saucer/getLpTokenDataByPoolId'
+import { classifyAccountTokenBalance } from '../services/classifyAccountTokenBalance'
 
 interface DefiToken {
   token_id: string
-  name: string
-  symbol: string
-  type: string
   balance: number
-  decimals: number
-  price?: number
-  priceUsd?: number
 }
 
 interface FungibleDefiTableProps {
-  defi: DefiToken[]
+  accountHoldings: DefiToken[]
   accountId: string
   showTopFour: boolean
 }
 
-const DefiTable: React.FC<FungibleDefiTableProps> = async ({ defi, accountId, showTopFour }) => {
+const DefiTable: React.FC<FungibleDefiTableProps> = async ({ accountHoldings, accountId, showTopFour }) => {
+  const { defi } = await classifyAccountTokenBalance(accountHoldings)
   const saucerIcon = await getTokenIcon('0.0.731861')
   // const positionsV2 = await getV2LpPositions(accountId)
 

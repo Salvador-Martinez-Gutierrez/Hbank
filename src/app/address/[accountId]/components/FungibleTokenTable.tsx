@@ -10,27 +10,23 @@ import {
 import CollectionAvatar from '@/app/components/collections/CollectionAvatar'
 import getTokenIcon from '@/app/services/getTokenIcon'
 import SeeMoreFungibleAnalytics from './SeeMoreFungibleAnalytics'
+import { classifyAccountTokenBalance } from '../services/classifyAccountTokenBalance'
 import { getPricedTokens } from '../services/getPricedTokens'
 
 interface Token {
   token_id: string
-  name: string
-  symbol: string
-  type: string
   balance: number
-  decimals?: number
-  price?: number
-  priceUsd?: number
 }
 
 interface FungibleTokenTableProps {
-  tokens: Token[]
+  accountHoldings: Token[]
   showTopFour?: boolean // Add this prop
   accountId: string
   hbarPrice: number
 }
 
-async function FungibleTokenTable ({ tokens, showTopFour, accountId, hbarPrice }: FungibleTokenTableProps) {
+async function FungibleTokenTable ({ accountHoldings, showTopFour, accountId, hbarPrice }: FungibleTokenTableProps) {
+  const { tokens } = await classifyAccountTokenBalance(accountHoldings)
   const tokensWithPrice = await getPricedTokens(tokens, hbarPrice)
 
   const tokenDataPromises = tokensWithPrice.map(async (token) => {

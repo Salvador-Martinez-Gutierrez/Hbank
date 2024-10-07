@@ -1,6 +1,5 @@
 import FungibleTokenTable from '../components/FungibleTokenTable'
 import getAccountTokenBalance from '../services/getAccountTokenBalance'
-import { classifyAccountTokenBalance } from '../services/classifyAccountTokenBalance'
 import getHbarPrice from '../../../services/saucer/getHbarPrice'
 import BurgerMenu from '../components/BurgerButton'
 
@@ -22,7 +21,6 @@ const FungibleAnalytics = async ({ params }: FungibleAnalyticsProps) => {
   const { accountId } = params
 
   const accountHoldings = await getAccountTokenBalance(accountId)
-  const { tokens } = await classifyAccountTokenBalance(accountHoldings)
 
   // Get HBAR price
   const currentTime = Math.floor(Date.now() / 1000)
@@ -38,7 +36,7 @@ const FungibleAnalytics = async ({ params }: FungibleAnalyticsProps) => {
           Tokens
         </h2>
       </div>
-      <FungibleTokenTable tokens={tokens} hbarPrice={hbarPrice} accountId={accountId} showTopFour={false}/>
+      <FungibleTokenTable accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={false}/>
     </div>
   )
 }

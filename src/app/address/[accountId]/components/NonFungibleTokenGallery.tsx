@@ -4,26 +4,22 @@ import SeeMoreNftAnalytics from './SeeMoreNftAnalytics'
 import getNftMetadata from '../../../services/mirror-node/getNftMetadata'
 import getNftImageCid from '@/app/services/mirror-node/getNftImageCid'
 import { getPricedNFTs } from '../services/getPricedTokens'
+import { classifyAccountTokenBalance } from '../services/classifyAccountTokenBalance'
 
 interface Token {
   token_id: string
-  name: string
-  symbol: string
-  type: string
   balance: number
-  decimals?: number
-  price?: number
-  priceUsd?: number
 }
 
 interface NonFungibleTokenGalleryProps {
-  nfts: Token[]
+  accountHoldings: Token[]
   showTopFour?: boolean
   accountId: string
   hbarPrice: number
 }
 
-const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({ nfts, showTopFour, accountId, hbarPrice }) => {
+const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({ accountHoldings, showTopFour, accountId, hbarPrice }) => {
+  const { nfts } = await classifyAccountTokenBalance(accountHoldings)
   const nftsWithPrice = await getPricedNFTs(nfts, hbarPrice)
 
   const filteredTokens = nftsWithPrice

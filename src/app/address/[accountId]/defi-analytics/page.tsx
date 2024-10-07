@@ -1,6 +1,5 @@
 import DefiTable from '../components/DefiTable'
 import BurgerMenu from '../components/BurgerButton'
-import { classifyAccountTokenBalance } from '../services/classifyAccountTokenBalance'
 import getAccountTokenBalance from '@/app/address/[accountId]/services/getAccountTokenBalance'
 
 interface DefiAnalyticsProps {
@@ -13,7 +12,6 @@ const DefiAnalytics = async ({ params }: DefiAnalyticsProps) => {
   const accountId = params.accountId
 
   const accountHoldings = await getAccountTokenBalance(accountId)
-  const { defi } = await classifyAccountTokenBalance(accountHoldings)
 
   return (
     <div className='min-h-[calc(100vh-200px)] bg-neutral-900 text-neutral-200'>
@@ -25,7 +23,7 @@ const DefiAnalytics = async ({ params }: DefiAnalyticsProps) => {
           DeFi
         </h2>
       </div>
-      <DefiTable defi={defi} accountId={accountId} showTopFour={false} />
+      <DefiTable accountHoldings={accountHoldings} accountId={accountId} showTopFour={false} />
     </div>
   )
 }

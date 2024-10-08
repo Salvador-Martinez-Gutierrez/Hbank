@@ -10,8 +10,8 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "Node16",
-    "moduleResolution": "node16", // Changed to "node" for better compatibility
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve", // Changed from "preserve" to "react-jsx" for better integration with React 17+
@@ -25,7 +25,8 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",

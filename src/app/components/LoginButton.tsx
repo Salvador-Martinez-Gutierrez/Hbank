@@ -12,6 +12,8 @@ const LoginButton = () => {
 
   const handleDisconnect = () => {
     disconnect()
+    // ⚠️ SOLUCION MOMENTANEA PARA SINCRONIZAR CONTEXTO
+    window.location.reload()
   }
 
   return (

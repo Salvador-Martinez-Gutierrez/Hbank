@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import FungibleTokenTable from './components/FungibleTokenTable'
 import NonFungibleTokenGallery from './components/NonFungibleTokenGallery'
 import DefiTable from './components/DefiTable'
@@ -18,6 +17,11 @@ const Portfolio = async ({ params }: { params: Params }) => {
   const currentTime = Math.floor(Date.now() / 1000)
   const hbarPrice = await getHbarPrice(currentTime - 60, currentTime)
 
+  // Load components sequentially
+  const fungibleTokens = await FungibleTokenTable({ accountHoldings, showTopFour: true, accountId, hbarPrice })
+  const nonFungibleTokens = await NonFungibleTokenGallery({ accountHoldings, showTopFour: true, accountId, hbarPrice })
+  const defiTokens = await DefiTable({ accountHoldings, accountId, showTopFour: true })
+
   return (
     <div className='min-h-[calc(100vh-200px)] bg-neutral-900 text-neutral-200'>
      <header className='flex flex-col justify-start items-start text-left pb-8 md:text-left md:items-start md:justify-start'>
@@ -31,15 +35,9 @@ const Portfolio = async ({ params }: { params: Params }) => {
         </div>
      </header>
      <div className='pb-8'>
-      <Suspense fallback={<div>Loading fungible tokens...</div>}>
-        <FungibleTokenTable accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={true}/>
-      </Suspense>
-      <Suspense fallback={<div>Loading non-fungible tokens...</div>}>
-        <NonFungibleTokenGallery accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={true} />
-      </Suspense>
-      <Suspense fallback={<div>Loading DeFi tokens...</div>}>
-        <DefiTable accountHoldings={accountHoldings} accountId={accountId} showTopFour={true}/>
-      </Suspense>
+       {fungibleTokens}
+       {nonFungibleTokens}
+       {defiTokens}
      </div>
     </div>
   )

@@ -15,7 +15,6 @@ interface ProfileDropDownMenuProps {
 }
 
 export default function ProfileDropDownMenu ({ disconnect }: ProfileDropDownMenuProps) {
-  // Redirects to my portfolio
   const { data: accountId } = useAccountId()
 
   return (

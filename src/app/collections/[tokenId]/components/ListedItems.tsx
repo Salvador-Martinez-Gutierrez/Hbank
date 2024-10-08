@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react'
 import NftCard from './NftCard'
 import { Button } from '@/app/collections/components/ui/button'
 import type { normalizedItem } from './TabNav'
+import checkTokenAssociation from '@/app/collections/services/checkTokenAssociation'
+// import { WalletContext } from '@/app/context/WalletContext'
+import { useAccountId } from '@buidlerlabs/hashgraph-react-wallets'
 
 const ITEMS_PER_PAGE = 20
 
@@ -14,6 +17,19 @@ interface ListedItemsProps {
 
 const ListedItems: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId }) => {
   const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE)
+  const { data: accountId }: { data: string | null } = useAccountId()
+  const [isTokenAssociated, setIsTokenAssociated] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    const checkAssociation = async () => {
+      if (typeof accountId === 'string') {
+        const result: boolean = await checkTokenAssociation(accountId, tokenId)
+        setIsTokenAssociated(result)
+      }
+    }
+
+    checkAssociation()
+  }, [accountId, checkTokenAssociation])
 
   // Client-side auto-refresh every 15 minutes
   useEffect(() => {
@@ -32,7 +48,7 @@ const ListedItems: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId }
     <main className='pb-8 pt-6'>
           <div className="grid h-fit w-full max-w-full grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
             {updatedListedItems.slice(0, visibleItems).map(token => (
-              <NftCard key={token.listingId} token={token} tokenId={tokenId} />
+                <NftCard key={token.listingId} token={token} tokenId={tokenId} isTokenAssociated={isTokenAssociated}/>
             ))}
           </div>
           {visibleItems < updatedListedItems.length && (

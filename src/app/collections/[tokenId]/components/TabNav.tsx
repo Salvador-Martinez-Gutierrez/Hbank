@@ -5,6 +5,7 @@ import Holders from './Holders'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/app/collections/components/ui/tabs'
 import { getListedTokensSentx } from '@/app/services/getListedTokensSentx'
 import { getListedTokensKabila } from '@/app/services/getListedTokensKabila'
+import { WalletProvider } from '../../../context/WalletContext'
 
 export interface normalizedItem {
   listingId: string
@@ -94,6 +95,7 @@ const updateListedItems = async (tokenId: string) => {
 
 const TabNav: React.FC<TabNavProps> = async ({ tokenId }) => {
   const updatedListedItems = await updateListedItems(tokenId)
+
   return (
     <section>
         <Tabs defaultValue="listings" className="w-full">
@@ -116,7 +118,9 @@ const TabNav: React.FC<TabNavProps> = async ({ tokenId }) => {
           <TabsContent value="listings">
             <div className="px-4 lg:px-8 xl:px-16">
               <Suspense fallback={<ListedItemsSkeleton />}>
-                <ListedItems updatedListedItems={updatedListedItems} tokenId={tokenId} />
+                <WalletProvider>
+                  <ListedItems updatedListedItems={updatedListedItems} tokenId={tokenId} />
+                </WalletProvider>
               </Suspense>
             </div>
           </TabsContent>

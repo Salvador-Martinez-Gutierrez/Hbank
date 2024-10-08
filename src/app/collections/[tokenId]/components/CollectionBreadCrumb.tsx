@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/tooltip'
 import { Slash } from 'lucide-react'
 import { useState } from 'react'
+import Link from 'next/link'
 
 interface CollectionBreadCrumbProps {
   tokenId: string
@@ -32,7 +33,7 @@ const CollectionBreadCrumb: React.FC<CollectionBreadCrumbProps> = ({ tokenId }) 
     <Breadcrumb className='pt-8 px-4 lg:px-8 xl:px-16'>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/collections" className="text-base text-white hover:text-white hover:underline">Collections</BreadcrumbLink>
+          <Link href="/collections" className="text-base text-white hover:text-white hover:underline">Collections</Link>
         </BreadcrumbItem>
         <BreadcrumbSeparator>
           <Slash />

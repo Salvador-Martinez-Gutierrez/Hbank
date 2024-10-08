@@ -1,10 +1,10 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { HWBridgeProvider } from '@buidlerlabs/hashgraph-react-wallets'
 import { HWCConnector, HashpackConnector, KabilaConnector } from '@buidlerlabs/hashgraph-react-wallets/connectors'
 import { HederaMainnet } from '@buidlerlabs/hashgraph-react-wallets/chains'
 
-const WalletContext = createContext(null)
+export const WalletContext = createContext(null)
 
 interface Metadata {
   name: string
@@ -32,7 +32,7 @@ export function WalletProvider ({
   }, [])
 
   if (metadata === null) {
-    return null // or a loading indicator
+    return null
   }
 
   return (
@@ -49,5 +49,3 @@ export function WalletProvider ({
     </HWBridgeProvider>
   )
 }
-
-export const useWalletContext = () => useContext(WalletContext)

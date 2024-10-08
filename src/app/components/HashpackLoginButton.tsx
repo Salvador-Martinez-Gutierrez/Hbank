@@ -15,6 +15,8 @@ const HashpackLoginButton = ({ onSuccess }: HashpackLoginButtonProps) => {
     try {
       await connect()
       onSuccess()
+      // ⚠️ SOLUCION MOMENTANEA PARA SINCRONIZAR CONTEXTO
+      window.location.reload()
     } catch (error) {
       console.error('Failed to connect with Hashpack:', error)
     }

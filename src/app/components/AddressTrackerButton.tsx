@@ -3,13 +3,14 @@ import { Button } from '@/app/collections/components/ui/button'
 
 interface AddressTrackerButtonProps {
   isWalletCheckerHidden: boolean
+  active?: boolean
 }
 
-export default function AddressTrackerButton ({ isWalletCheckerHidden }: AddressTrackerButtonProps) {
+export default function AddressTrackerButton ({ isWalletCheckerHidden, active }: AddressTrackerButtonProps) {
   return (
     <Link href="/wallet-tracker" passHref>
       <Button
-        className={`bg-black hover:bg-zinc-800 ${isWalletCheckerHidden ? 'p-2' : 'ml-4 inline-flex justify-start'}`}
+        className={`${active === true ? 'bg-zinc-800' : 'bg-black'} hover:bg-zinc-800 ${isWalletCheckerHidden ? 'p-2' : 'ml-4 inline-flex justify-start'}`}
         aria-label="Portfolio Tracker"
       >
         {isWalletCheckerHidden

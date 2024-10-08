@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
-import { useWallet, useAccountId, useWatchTransactionReceipt } from '@buidlerlabs/hashgraph-react-wallets'
+import { useWallet, useAccountId, useWatchTransactionReceipt, useBalance } from '@buidlerlabs/hashgraph-react-wallets'
 import { TokenAssociateTransaction } from '@hashgraph/sdk'
 import type { Signer } from '@hashgraph/sdk'
 
@@ -10,14 +10,17 @@ interface AssociateTokenModalProps {
   isOpen: boolean
   onClose: () => void
   tokenId: string
+  onSuccess: (isBalanceSufficient: boolean) => void
+  price: number
 }
 
-const AssociateTokenModal = ({ isOpen, onClose, tokenId }: AssociateTokenModalProps) => {
+const AssociateTokenModal = ({ isOpen, onClose, tokenId, onSuccess, price }: AssociateTokenModalProps) => {
   const wallet = useWallet()
   const signer = wallet.signer as Signer
   const { data: accountId }: { data: string } = useAccountId()
   const [isAssociating, setIsAssociating] = useState(false)
   const { watch } = useWatchTransactionReceipt()
+  const { data: balance } = useBalance()
 
   const handleAssociate = async () => {
     setIsAssociating(true)
@@ -28,18 +31,16 @@ const AssociateTokenModal = ({ isOpen, onClose, tokenId }: AssociateTokenModalPr
 
       const signTx = await transaction.freezeWithSigner(signer)
       const txResponse = await signTx.executeWithSigner(signer)
-      console.log('Tx Response:', txResponse)
 
       watch(txResponse.transactionId.toString(), {
         onSuccess: (transaction) => {
-          // do stuff
-          console.log('SUCCESS YEAS FUCK')
           onClose()
+          const isBalanceSufficient = balance.value > price
+          onSuccess(isBalanceSufficient)
           return transaction
         },
         onError: (transaction, error) => {
-          // do stuff
-          console.log('FAAAAAAIL')
+          console.log('Association failed')
           onClose()
           return transaction
         }

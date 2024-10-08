@@ -35,11 +35,11 @@ interface PurchaseResult {
 interface ExecutePurchaseModalProps {
   isOpen: boolean
   onClose: () => void
-  result: PurchaseResult
+  result: PurchaseResult | null
+  onSuccess: () => void
 }
 
-const ExecutePurchaseModal = ({ isOpen, onClose, result }: ExecutePurchaseModalProps) => {
-  const [status, setStatus] = useState<string>('Ready to execute purchase')
+const ExecutePurchaseModal = ({ isOpen, onClose, result, onSuccess }: ExecutePurchaseModalProps) => {
   const [isExecuting, setIsExecuting] = useState(false)
   const wallet = useWallet()
   const signer = wallet.signer as Signer
@@ -47,8 +47,7 @@ const ExecutePurchaseModal = ({ isOpen, onClose, result }: ExecutePurchaseModalP
 
   const handleExecutePurchase = async () => {
     setIsExecuting(true)
-    if (result.success && result.transBase64 !== null && result.transBase64 !== undefined) {
-      setStatus('Transaction prepared. Executing...')
+    if (result !== null && result.success && result?.transBase64 !== null && result?.transBase64 !== undefined) {
       try {
         const transactionString = Buffer.from(result.transBase64.data).toString('base64')
         console.log('Transaction string:', transactionString)
@@ -64,38 +63,28 @@ const ExecutePurchaseModal = ({ isOpen, onClose, result }: ExecutePurchaseModalP
             console.log('Transaction confirmed successful')
             console.log('Sale verification code:', result.saleVerificationCode)
 
-            setStatus('Purchase complete. Confirming with market provider...')
-
             if (result.saleVerificationCode !== undefined) {
               console.log('Attempting to confirm purchase with code:', result.saleVerificationCode)
               const confirmationResult = confirmPurchaseToMarketProvider(result.saleVerificationCode)
               console.log('Purchase confirmation result OG:', confirmationResult)
-              setStatus('Purchase confirmed with market provider.')
             } else {
               console.log('No saleVerificationCode provided, skipping confirmation')
-              setStatus('Purchase completed, but no verification code for confirmation.')
             }
             onClose()
+            onSuccess()
             return transaction
           },
           onError: (transaction, error) => {
             // do stuff
             console.error('Transaction failed.')
-            setStatus('Purchase failed:')
             return transaction
           }
         })
       } catch (error) {
         console.error('Error during NFT purchase transaction:', error)
-        if (error instanceof Error) {
-          setStatus(`Error: ${error.message}`)
-        } else {
-          setStatus('An unexpected error occurred during the purchase transaction. Please try again.')
-        }
       }
     } else {
       console.error('Transaction preparation failed:', result)
-      setStatus('Error preparing the transaction. Please try again.')
     }
   }
 
@@ -112,17 +101,11 @@ const ExecutePurchaseModal = ({ isOpen, onClose, result }: ExecutePurchaseModalP
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <button
-            className='h-10 px-4 bg-blue-600 text-white rounded-lg disabled:bg-gray-400'
+            className='h-10 px-4 bg-green-600 text-white rounded-lg disabled:bg-gray-400'
             onClick={handleExecutePurchase}
             disabled={isExecuting}
           >
             {isExecuting ? 'Executing Purchase...' : 'Execute Purchase'}
-          </button>
-          <button
-            className='h-10 px-4 bg-gray-600 text-white rounded-lg'
-            onClick={onClose}
-          >
-            Close
           </button>
         </div>
       </DialogContent>

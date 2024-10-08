@@ -3,11 +3,13 @@ import Image from 'next/image'
 import SerialBadge from './Badge'
 import type { normalizedItem } from './TabNav'
 import buyNFT from '@/app/collections/services/buyNft'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import LoginModal from '@/app/components/LoginModal'
 import AssociateTokenModal from './AssociateTokenModal'
 import { useAccountId, useWallet, useBalance } from '@buidlerlabs/hashgraph-react-wallets'
 import ExecutePurchaseModal from './ExecutePurchaseModal'
+import InsufficientFundsModal from './InsufficientFundsModal'
+import SuccessfulPurchaseModal from './SuccessfulPurchaseModal'
 
 interface NftCardProps {
   token: normalizedItem
@@ -15,20 +17,24 @@ interface NftCardProps {
   isTokenAssociated: boolean | null
 }
 
+interface PurchaseResult {
+  success: boolean
+  transBase64?: {
+    data: Uint8Array
+  }
+  saleVerificationCode?: string
+}
+
 const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) => {
-  const [status, setStatus] = useState<string | null>(null)
   const { data: accountId }: { data: string } = useAccountId()
   const { isConnected } = useWallet()
   const { data: balance } = useBalance()
-  const [purchaseResult, setPurchaseResult] = useState()
-
-  useEffect(() => {
-    setStatus(`Account: ${accountId}`)
-  }, [accountId])
-
+  const [isInsufficientFundsModalOpen, setIsInsufficientFundsModalOpen] = useState(false)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isAssociateModalOpen, setIsAssociateModalOpen] = useState(false)
   const [isExecutePurchaseModalOpen, setIsExecutePurchaseModalOpen] = useState(false)
+  const [isSuccessfulPurchaseModal, setIsSuccessfulPurchaseModal] = useState(false)
+  const [purchaseResult, setPurchaseResult] = useState<PurchaseResult | null>(null)
 
   const handleBuyClick = async () => {
     if (token.marketplace === 'Sentx') {
@@ -37,25 +43,39 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
       } else if (isTokenAssociated === false) {
         setIsAssociateModalOpen(true)
       } else {
-        if (balance.value > token.price) {
-          setStatus('Token is associated and balance is sufficient. Initiating purchase...')
-          try {
-            const result = await buyNFT(tokenId, token.serialNumber, accountId, token.price)
-            setPurchaseResult(result)
-            setIsExecutePurchaseModalOpen(true)
-          } catch (error) {
-            console.error('Error buying NFT:', error)
-            setStatus('Error occurred while preparing purchase. Please try again.')
-          }
-        } else {
-          setStatus(`Insufficient balance: ${balance.value}. You need ${token.price} ℏ to make this purchase.`)
-        }
+        await executePurchase()
       }
     } else if (token.marketplace === 'Kabila') {
       // Existing Kabila logic
       const modifiedTokenId = tokenId.slice(4)
       window.open(`https://market.kabila.app/en/collections/${modifiedTokenId}`, '_blank')
     }
+  }
+
+  const executePurchase = async () => {
+    if (balance.value > token.price) {
+      try {
+        const result: PurchaseResult = await buyNFT(tokenId, token.serialNumber, accountId, token.price)
+        setPurchaseResult(result)
+        setIsExecutePurchaseModalOpen(true)
+      } catch (error) {
+        console.error('Error buying NFT:', error)
+      }
+    } else {
+      setIsInsufficientFundsModalOpen(true)
+    }
+  }
+
+  const handleAssociateSuccess = (isBalanceSufficient: boolean) => {
+    if (isBalanceSufficient) {
+      executePurchase()
+    } else {
+      setIsInsufficientFundsModalOpen(true)
+    }
+  }
+
+  const handlePurchaseSuccess = () => {
+    setIsSuccessfulPurchaseModal(true)
   }
 
   // Determine the URL for the NFT Image based on the imageCid format
@@ -105,9 +125,6 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
         >
           Buy
         </button>
-          <div className='p-2 mt-2 bg-gray-100 rounded'>
-            <p>{status}</p>
-          </div>
       </div>
       <LoginModal
         isOpen={isLoginModalOpen}
@@ -117,11 +134,23 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
         isOpen={isAssociateModalOpen}
         onClose={() => { setIsAssociateModalOpen(false) }}
         tokenId={tokenId}
+        onSuccess={handleAssociateSuccess}
+        price={token.price}
       />
       <ExecutePurchaseModal
         isOpen={isExecutePurchaseModalOpen}
         onClose={() => { setIsExecutePurchaseModalOpen(false) }}
         result={purchaseResult}
+        onSuccess={handlePurchaseSuccess}
+      />
+      <InsufficientFundsModal
+        isOpen={isInsufficientFundsModalOpen}
+        onClose={() => { setIsInsufficientFundsModalOpen(false) }}
+        requiredAmount={token.price}
+      />
+      <SuccessfulPurchaseModal
+        isOpen={isSuccessfulPurchaseModal}
+        onClose={() => { setIsSuccessfulPurchaseModal(false) }}
       />
     </>
   )

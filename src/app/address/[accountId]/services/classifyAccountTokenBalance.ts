@@ -19,13 +19,11 @@ interface Token {
 
 interface ClassifiedHoldings {
   tokens: Token[]
-  nfts: Token[]
   defi: Token[]
 }
 
 export const classifyAccountTokenBalance = cache(async (accountHoldings: TokenHolding[]): Promise<ClassifiedHoldings> => {
   const tokens: Token[] = []
-  const nfts: Token[] = []
   const defi: Token[] = []
 
   // Handle HBAR separately
@@ -46,20 +44,16 @@ export const classifyAccountTokenBalance = cache(async (accountHoldings: TokenHo
   await Promise.all(otherHoldings.map(async (holding) => {
     try {
       const tokenData = await getTokenData(holding.token_id)
-      const tokenInfo: Token = {
-        token_id: holding.token_id,
-        name: tokenData.name,
-        symbol: tokenData.symbol,
-        type: tokenData.type,
-        balance: holding.balance,
-        decimals: tokenData.decimals
-      }
 
-      if (tokenData.type === 'NON_FUNGIBLE_UNIQUE') {
-        if (tokenData.name !== 'SaucerSwap v2 Liquidity Position') {
-          nfts.push(tokenInfo)
+      if (tokenData.type === 'FUNGIBLE_COMMON') {
+        const tokenInfo: Token = {
+          token_id: holding.token_id,
+          name: tokenData.name,
+          symbol: tokenData.symbol,
+          type: tokenData.type,
+          balance: holding.balance,
+          decimals: tokenData.decimals
         }
-      } else {
         if (tokenData.name.startsWith('ssLP') === true) {
           defi.push(tokenInfo)
         } else {
@@ -71,5 +65,5 @@ export const classifyAccountTokenBalance = cache(async (accountHoldings: TokenHo
     }
   }))
 
-  return { tokens, nfts, defi }
+  return { tokens, defi }
 })

@@ -1,8 +1,7 @@
-import { cache } from 'react'
 import NonFungibleTokenGallery from '../components/NonFungibleTokenGallery'
-import getAccountTokenBalance from '../services/getAccountTokenBalance'
 import getHbarPrice from '../../../services/saucer/getHbarPrice'
 import BurgerMenu from '../components/BurgerButton'
+import getAccountTokenBalance from '../services/getAccountTokenBalance'
 
 interface NftAnalyticsProps {
   params: {
@@ -18,13 +17,9 @@ export interface Token {
   price?: number
 }
 
-// Cached versions of the functions
-const cachedGetAccountTokenBalance = cache(getAccountTokenBalance)
-
 const NftAnalytics = async ({ params }: NftAnalyticsProps) => {
   const { accountId } = params
-
-  const accountHoldings = await cachedGetAccountTokenBalance(accountId)
+  const accountHoldings = await getAccountTokenBalance(accountId)
 
   // Get HBAR price
   const currentTime = Math.floor(Date.now() / 1000)

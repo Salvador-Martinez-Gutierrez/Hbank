@@ -20,7 +20,7 @@ interface Token {
 
 interface FungibleTokenTableProps {
   accountHoldings: Token[]
-  showTopFour?: boolean // Add this prop
+  showTopFour?: boolean
   accountId: string
   hbarPrice: number
 }
@@ -30,18 +30,26 @@ async function FungibleTokenTable ({ accountHoldings, showTopFour, accountId, hb
   const tokensWithPrice = await getPricedTokens(tokens, hbarPrice)
 
   const tokenDataPromises = tokensWithPrice.map(async (token) => {
-    const iconUrl = await getTokenIcon(token.token_id).catch(() => '/NotFound.png')
-    // Add a fallback value of 0 for decimals if it's undefined
     const value = (token.balance * Math.pow(10, -(token.decimals ?? 0)) * (token.priceUsd ?? 0))
-    return { ...token, iconUrl, value }
+    return { ...token, value }
   })
 
   const tokensWithData = await Promise.all(tokenDataPromises)
 
+  // Filter tokens with value greater than 0
   const filteredTokens = tokensWithData
+    .filter(token => token.value > 0.001)
     .sort((a, b) => b.value - a.value)
 
   const displayTokens = showTopFour === true ? filteredTokens.slice(0, 4) : filteredTokens
+
+  // Fetch icon URLs only for tokens that will be displayed
+  const displayTokensWithIcons = await Promise.all(
+    displayTokens.map(async (token) => ({
+      ...token,
+      iconUrl: await getTokenIcon(token.token_id).catch(() => '/NotFound.png')
+    }))
+  )
 
   const totalValue = filteredTokens.reduce((acc, token) => acc + token.value, 0)
 
@@ -73,7 +81,7 @@ async function FungibleTokenTable ({ accountHoldings, showTopFour, accountId, hb
             </TableRow>
           </TableHeader>
           <TableBody>
-            {displayTokens.map((token) => (
+            {displayTokensWithIcons.map((token) => (
               <TableRow key={token.token_id} className="hover:bg-zinc-800">
                 <TableCell className='flex-1 min-w-[150px] max-w-[150px] text-left whitespace-nowrap'>
                   <div className='flex'>

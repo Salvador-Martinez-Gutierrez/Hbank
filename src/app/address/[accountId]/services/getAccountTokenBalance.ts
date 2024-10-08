@@ -1,6 +1,6 @@
 async function getAccountTokenBalance (accountId: string) {
   const apiKeyHedera = process.env.VALIDATION_CLOUD_KEY
-  const url = `https://mainnet.hedera.validationcloud.io/v1/${apiKeyHedera}/api/v1/accounts/${accountId}`
+  const url = `https://mainnet.hedera.validationcloud.io/v1/${apiKeyHedera}/api/v1/accounts/${accountId}?transactions=false`
 
   try {
     const response = await fetch(url, {

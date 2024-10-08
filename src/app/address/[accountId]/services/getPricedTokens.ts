@@ -25,7 +25,23 @@ export async function getPricedTokens (tokens: Token[], hbarPrice: number): Prom
   }))
 }
 
-export async function getPricedNFTs (nfts: Token[], hbarPrice: number): Promise<Token[]> {
+interface Token {
+  token_id: string
+  name: string
+  symbol: string
+  type: string
+  balance: number
+  price?: number
+  priceUsd?: number
+}
+/*
+interface AggregatedNft {
+  token_id: string
+  balance: number
+  nfts: Nft[]
+}
+*/
+export async function getPricedNFTs (nfts: Token[], hbarPrice: number) {
   const pricedNFTs = await Promise.all(nfts.map(async (nft) => {
     let price = null
     let priceUsd = 0

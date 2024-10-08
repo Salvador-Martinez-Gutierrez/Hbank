@@ -42,8 +42,6 @@ const DefiTable: React.FC<FungibleDefiTableProps> = async ({ accountHoldings, ac
 
   const farms = await fetchFarms(accountId)
 
-  console.log('FARMS', farms)
-
   // Calculate farms total value
   const farmsTotalValue = await farms.reduce(async (accPromise, farm) => {
     const acc = await accPromise

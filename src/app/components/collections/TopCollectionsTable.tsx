@@ -99,28 +99,69 @@ const TopCollectionsTable: React.FC<TopCollectionsProps> = async ({ variant }) =
           const FDV = floorPrice * (maxSupply - burntSupply)
 
           return (
-            <TableRow key={tokenId} className='hover:bg-neutral-800'>
-              <TableCell className='font-medium text-left whitespace-nowrap'>{index + 1}</TableCell>
-              <TableCell className='whitespace-nowrap truncate text-left'>
-                <Link className='flex' href={`/collections/${tokenId}`} prefetch>
-                  <CollectionAvatar url={collections[tokenId].url} />
-                  <div className='flex flex-col ml-2 overflow-hidden'>
-                    <span className='truncate'>{tokenData.name}</span>
-                    <span className='text-muted-foreground text-sm truncate'>{tokenId}</span>
+            <TableRow
+              key={tokenId}
+              className='hover:bg-neutral-800 cursor-pointer group'
+            >
+              <TableCell className='font-medium text-left whitespace-nowrap p-0'>
+                <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                  {index + 1}
+                </Link>
+              </TableCell>
+              <TableCell className='whitespace-nowrap truncate text-left p-0'>
+                <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                  <div className='flex'>
+                    <CollectionAvatar url={collections[tokenId].url} />
+                    <div className='flex flex-col ml-2 overflow-hidden'>
+                      <span className='truncate'>{tokenData.name}</span>
+                      <span className='text-muted-foreground text-sm truncate'>{tokenId}</span>
+                    </div>
                   </div>
                 </Link>
               </TableCell>
-              <TableCell className='text-right whitespace-nowrap'>{`${formatNumber(floorPrice)} ℏ`}</TableCell>
-              <TableCell className='text-right whitespace-nowrap'>{`${formatNumber(volume30d)} ℏ`}</TableCell>
-              <TableCell className='font-medium text-right whitespace-nowrap'>{`${formatNumber(marketCap)} ℏ`}</TableCell>
-              <TableCell className='font-medium text-right whitespace-nowrap'>{`${formatNumber(FDV)} ℏ`}</TableCell>
+              <TableCell className='text-right whitespace-nowrap p-0'>
+                <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                  {`${formatNumber(floorPrice)} ℏ`}
+                </Link>
+              </TableCell>
+              <TableCell className='text-right whitespace-nowrap p-0'>
+                <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                  {`${formatNumber(volume30d)} ℏ`}
+                </Link>
+              </TableCell>
+              <TableCell className='font-medium text-right whitespace-nowrap p-0'>
+                <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                  {`${formatNumber(marketCap)} ℏ`}
+                </Link>
+              </TableCell>
+              <TableCell className='font-medium text-right whitespace-nowrap p-0'>
+                <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                  {`${formatNumber(FDV)} ℏ`}
+                </Link>
+              </TableCell>
               {/* Conditionally render FDV and other columns */}
               {variant !== 'simple' && (
                 <>
-                  <TableCell className='font-medium text-right whitespace-nowrap'>{formatNumber(mintedSupply)}</TableCell>
-                  <TableCell className='font-medium text-right whitespace-nowrap'>{formatNumber(maxSupply)}</TableCell>
-                  <TableCell className='font-medium text-right whitespace-nowrap'>{formatNumber(burntSupply)}</TableCell>
-                  <TableCell className='font-medium text-right whitespace-nowrap'>{`${formatNumber(collections[tokenId].royalties)}%`}</TableCell>
+                  <TableCell className='font-medium text-right whitespace-nowrap p-0'>
+                    <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                      {formatNumber(mintedSupply)}
+                    </Link>
+                  </TableCell>
+                  <TableCell className='font-medium text-right whitespace-nowrap p-0'>
+                    <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                      {formatNumber(maxSupply)}
+                    </Link>
+                  </TableCell>
+                  <TableCell className='font-medium text-right whitespace-nowrap p-0'>
+                    <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                      {formatNumber(burntSupply)}
+                    </Link>
+                  </TableCell>
+                  <TableCell className='font-medium text-right whitespace-nowrap p-0'>
+                    <Link href={`/collections/${tokenId}`} className="block w-full h-full p-4">
+                      {`${formatNumber(collections[tokenId].royalties)}%`}
+                    </Link>
+                  </TableCell>
                 </>
               )}
             </TableRow>

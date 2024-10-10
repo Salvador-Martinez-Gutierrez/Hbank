@@ -10,8 +10,8 @@ const LoginButton = () => {
   const { isConnected, disconnect } = useWallet()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const handleDisconnect = () => {
-    disconnect()
+  const handleDisconnect = async () => {
+    await disconnect()
     // ⚠️ SOLUCION MOMENTANEA PARA SINCRONIZAR CONTEXTO
     window.location.reload()
   }

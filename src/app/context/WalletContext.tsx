@@ -23,8 +23,8 @@ export function WalletProvider ({
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setMetadata({
-        name: 'Hbank dApp',
-        description: 'The All-In-One Hubb for Hedera Investors',
+        name: 'Hbank Dapp',
+        description: 'The All-In-One Hub for Hedera Investors',
         icons: ['https://pbs.twimg.com/media/GWtnpkjWkAAGrMv?format=png&name=small'],
         url: window.location.href
       })

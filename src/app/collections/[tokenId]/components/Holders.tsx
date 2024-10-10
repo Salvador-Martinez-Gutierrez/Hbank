@@ -37,21 +37,30 @@ const Holders: React.FC<HoldersProps> = async ({ tokenId }) => {
       </TableHeader>
       <TableBody>
         {ownersList.map((owner) => {
-          const rank = owner.rank
-          const account = owner.account
-          const balance = owner.balance
-          const pct = owner.pct
+          const { rank, account, balance, pct } = owner
 
           return (
-            <TableRow key={account}>
-              <TableCell className="font-medium text-left whitespace-nowrap">{rank}</TableCell>
-              <TableCell className='whitespace-nowrap truncate text-left'>
-                <Link className='flex hover:text-black hover:underline' target='_blank' href={`/address/${account}`}>
+            <TableRow key={account} className='hover:bg-neutral-800 cursor-pointer'>
+              <TableCell className="font-medium text-left whitespace-nowrap p-0">
+                <Link href={`/address/${account}`} className="block w-full h-full p-4">
+                  {rank}
+                </Link>
+              </TableCell>
+              <TableCell className='whitespace-nowrap truncate text-left p-0'>
+                <Link href={`/address/${account}`} className="block w-full h-full p-4">
                   {account}
                 </Link>
               </TableCell>
-              <TableCell className="text-right whitespace-nowrap">{balance}</TableCell>
-              <TableCell className="font-medium text-right whitespace-nowrap">{(pct * 100).toFixed(2)}%</TableCell>
+              <TableCell className="text-right whitespace-nowrap p-0">
+                <Link href={`/address/${account}`} className="block w-full h-full p-4">
+                  {balance}
+                </Link>
+              </TableCell>
+              <TableCell className="font-medium text-right whitespace-nowrap p-0">
+                <Link href={`/address/${account}`} className="block w-full h-full p-4">
+                  {(pct * 100).toFixed(2)}%
+                </Link>
+              </TableCell>
             </TableRow>
           )
         })}

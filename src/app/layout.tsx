@@ -2,12 +2,13 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
+import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Hbank Dapp',
+  title: 'HBANK',
   description: 'The All-in-One Hub for Hedera Investors',
   icons: {
     icon: '/favicon.png'
@@ -25,6 +26,7 @@ export default function RootLayout ({
           <NavBar />
           {children}
           <Footer />
+          <Analytics />
       </body>
     </html>
   )

@@ -4,7 +4,7 @@ export default function NFTCardSkeleton () {
   const ITEMS_PER_PAGE = 14 // Adjust this number as needed
 
   return (
-    <div className="bg-neutral-900 p-4 md:p-6 lg:p-8">
+    <div className="bg-neutral-900">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
         {Array(ITEMS_PER_PAGE).fill(0).map((_, index) => (
           <div key={index} className="bg-neutral-800 rounded-lg overflow-hidden shadow-lg">

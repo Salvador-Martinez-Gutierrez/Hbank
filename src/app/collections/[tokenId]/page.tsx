@@ -17,7 +17,7 @@ const Collection = async ({ params }: { params: Params }) => {
       <Suspense fallback={<CollectionInfoSkeleton/>}>
         <CollectionInfo tokenId={tokenId} />
       </Suspense>
-        <TabNav tokenId={tokenId} />
+      <TabNav tokenId={tokenId} />
     </main>
   )
 }

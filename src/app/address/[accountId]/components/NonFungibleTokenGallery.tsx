@@ -17,9 +17,7 @@ interface NonFungibleTokenGalleryProps {
 
 const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({ accountHoldings, showTopFour, accountId, hbarPrice }) => {
   const nfts = await getAccountNftBalance(accountHoldings)
-  console.log('NFTSSS', { nfts })
   const nftsWithPrice = await getPricedNFTs(nfts, hbarPrice)
-  console.log('NFTSSS', { nftsWithPrice })
 
   const filteredTokens = nftsWithPrice
     .filter(token => token.balance * (token.priceUsd ?? 0) > 0)

@@ -1,7 +1,9 @@
 import FungibleTokenTable from '../components/FungibleTokenTable'
+import FungibleTokenTableSkeleton from '../components/FungibleTokenTableSkeleton'
 import getAccountTokenBalance from '../services/getAccountTokenBalance'
 import getHbarPrice from '../../../services/saucer/getHbarPrice'
 import BurgerMenu from '../components/BurgerButton'
+import { Suspense } from 'react'
 
 interface FungibleAnalyticsProps {
   params: {
@@ -36,7 +38,9 @@ const FungibleAnalytics = async ({ params }: FungibleAnalyticsProps) => {
           Tokens
         </h2>
       </div>
-      <FungibleTokenTable accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={false}/>
+      <Suspense fallback={<FungibleTokenTableSkeleton showTopFour = {false}/>}>
+        <FungibleTokenTable accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={false}/>
+      </Suspense>
     </div>
   )
 }

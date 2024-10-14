@@ -1,4 +1,6 @@
+import { Suspense } from 'react'
 import DefiTable from '../components/DefiTable'
+import DefiTableSkeleton from '../components/DefiTableSkeleton'
 import BurgerMenu from '../components/BurgerButton'
 import getAccountTokenBalance from '@/app/address/[accountId]/services/getAccountTokenBalance'
 
@@ -23,7 +25,9 @@ const DefiAnalytics = async ({ params }: DefiAnalyticsProps) => {
           DeFi
         </h2>
       </div>
-      <DefiTable accountHoldings={accountHoldings} accountId={accountId} showTopFour={false} />
+      <Suspense fallback={<DefiTableSkeleton/>}>
+        <DefiTable accountHoldings={accountHoldings} accountId={accountId} showTopFour={false} />
+      </Suspense>
     </div>
   )
 }

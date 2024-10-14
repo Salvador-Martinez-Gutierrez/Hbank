@@ -1,67 +1,89 @@
-'use client'
-
-import React, { useEffect, useState } from 'react'
-import NftCard from './NftCard'
-import { Button } from '@/app/collections/components/ui/button'
 import type { normalizedItem } from './TabNav'
-import checkTokenAssociation from '@/app/collections/services/checkTokenAssociation'
+import { getListedTokensSentx } from '@/app/services/getListedTokensSentx'
+import { getListedTokensKabila } from '@/app/services/getListedTokensKabila'
+import ListedItemsClient from './ListedItemsClient'
 // import { WalletContext } from '@/app/context/WalletContext'
-import { useAccountId } from '@buidlerlabs/hashgraph-react-wallets'
 
-const ITEMS_PER_PAGE = 20
+const updateListedItems = async (tokenId: string) => {
+  const listedItemsSentx = await getListedTokensSentx(tokenId)
+  const listedItemsKabila = await getListedTokensKabila(tokenId)
+  // Normalize data from the first API (Sentx)
+  const normalizedSentx = await listedItemsSentx.map((item: SentxItem) => ({
+    listingId: item.marketplaceListingId,
+    serialNumber: item.serialId,
+    price: item.salePrice,
+    metadataCid: item.nftMetadata,
+    imageCid: item.nftImage,
+    name: item.nftName,
+    createdAt: item.listingDate,
+    marketplace: 'Sentx'
+  }))
+
+  // Normalize data from the second API (Kabila)
+  const normalizedKabila = await listedItemsKabila.map((item: KabilaItem) => ({
+    listingId: item._id,
+    serialNumber: item.serialNumber,
+    price: item.price,
+    metadataCid: item.metadataCid,
+    imageCid: item.imageCid,
+    name: item.name,
+    createdAt: item.createdAt,
+    marketplace: 'Kabila'
+  }))
+
+  // Combine normalized data from both APIs
+  const combinedListedItems = [...normalizedSentx, ...normalizedKabila]
+
+  // Sort combined items by price from lower to higher
+  const sortedListedItems: normalizedItem [] = combinedListedItems.sort((a, b) => a.price - b.price)
+
+  return sortedListedItems
+}
+
+interface SentxItem {
+  marketplaceListingId: number
+  nftexid: number
+  serialId: number
+  sellerAccount: string
+  isAvailableForPurchase: number
+  salePrice: number
+  listingDate: string
+  affiliateid: null
+  nftName: string
+  nftTokenAddress: string
+  nftSerialId: number
+  nftImage: string
+  nftImageType: string
+  nftMetadata: string
+  nftexplorerCollectionId: number
+}
+
+interface KabilaItem {
+  _id: string
+  tokenId: string
+  serialNumber: number
+  price: number
+  currency: string
+  sellerId: string
+  metadataCid: string
+  imageCid: string
+  imageType: string
+  name: string
+  description: string
+  createdAt: string
+  status: string
+  statusDate: string
+}
 
 interface ListedItemsProps {
-  updatedListedItems: normalizedItem[]
   tokenId: string
 }
 
-const ListedItems: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId }) => {
-  const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE)
-  const { data: accountId }: { data: string | null } = useAccountId()
-  const [isTokenAssociated, setIsTokenAssociated] = useState<boolean | null>(null)
-
-  useEffect(() => {
-    const checkAssociation = async () => {
-      if (typeof accountId === 'string') {
-        const result: boolean = await checkTokenAssociation(accountId, tokenId)
-        setIsTokenAssociated(result)
-      }
-    }
-
-    checkAssociation()
-  }, [accountId, checkTokenAssociation])
-
-  // Client-side auto-refresh every 15 minutes
-  useEffect(() => {
-    const interval = setInterval(() => {
-      window.location.reload()
-    }, 900000)
-
-    return () => { clearInterval(interval) }
-  }, [])
-
-  const loadMoreItems = () => {
-    setVisibleItems(prevVisibleItems => prevVisibleItems + ITEMS_PER_PAGE)
-  }
+const ListedItems: React.FC<ListedItemsProps> = async ({ tokenId }) => {
+  const updatedListedItems = await updateListedItems(tokenId)
 
   return (
-    <main className='pb-8 pt-6'>
-          <div className="grid h-fit w-full max-w-full grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
-            {updatedListedItems.slice(0, visibleItems).map(token => (
-                <NftCard key={token.listingId} token={token} tokenId={tokenId} isTokenAssociated={isTokenAssociated}/>
-            ))}
-          </div>
-          {visibleItems < updatedListedItems.length && (
-            <div className="flex justify-center mt-4">
-              <Button
-                onClick={loadMoreItems}
-                className='bg-neutral-900 hover:bg-neutral-800 inline-flex cursor-pointer justify-start mt-4 px-16 py-2 text-gray-300 text-sm border border-gray-300'
-                >
-                  Load More
-              </Button>
-            </div>
-          )}
-    </main>
+    <ListedItemsClient updatedListedItems={updatedListedItems} tokenId={tokenId}/>
   )
 }
 

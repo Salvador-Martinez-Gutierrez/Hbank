@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 export default function CollectionInfoSkeleton () {
   return (
-    <div className="bg-neutral-900 text-neutral-200 p-4 md:p-6 2xl:p-8">
+    <div className="bg-neutral-900 text-neutral-200 px-4 pt-6 pb-4 lg:px-8 xl:px-16">
       <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-6 2xl:gap-8">
         <div className="flex items-center gap-4 lg:gap-6">
           <Skeleton className="w-16 h-16 rounded-lg flex-shrink-0" />

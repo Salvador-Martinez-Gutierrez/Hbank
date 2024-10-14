@@ -1,7 +1,10 @@
 import { Suspense } from 'react'
 import FungibleTokenTable from './components/FungibleTokenTable'
+import FungibleTokenTableSkeleton from './components/FungibleTokenTableSkeleton'
 import NonFungibleTokenGallery from './components/NonFungibleTokenGallery'
+import NonFungibleTokenGallerySkeleton from './components/NonFungibleTokenGallerySkeleton'
 import DefiTable from './components/DefiTable'
+import DefiTableSkeleton from './components/DefiTableSkeleton'
 import BurgerMenu from './components/BurgerButton'
 import getAccountTokenBalance from './services/getAccountTokenBalance'
 import getHbarPrice from '../../services/saucer/getHbarPrice'
@@ -31,13 +34,13 @@ const Portfolio = async ({ params }: { params: Params }) => {
         </div>
      </header>
      <div className='pb-8'>
-      <Suspense fallback={<div>Loading fungible tokens...</div>}>
+      <Suspense fallback={<FungibleTokenTableSkeleton showTopFour = {true}/>}>
         <FungibleTokenTable accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={true}/>
       </Suspense>
-      <Suspense fallback={<div>Loading non-fungible tokens...</div>}>
+      <Suspense fallback={<NonFungibleTokenGallerySkeleton showTopFour={true}/>}>
         <NonFungibleTokenGallery accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={true} />
       </Suspense>
-      <Suspense fallback={<div>Loading DeFi tokens...</div>}>
+      <Suspense fallback={<DefiTableSkeleton/>}>
         <DefiTable accountHoldings={accountHoldings} accountId={accountId} showTopFour={true}/>
       </Suspense>
      </div>

@@ -1,4 +1,6 @@
+import { Suspense } from 'react'
 import NonFungibleTokenGallery from '../components/NonFungibleTokenGallery'
+import NonFungibleTokenGallerySkeleton from '../components/NonFungibleTokenGallerySkeleton'
 import getHbarPrice from '../../../services/saucer/getHbarPrice'
 import BurgerMenu from '../components/BurgerButton'
 import getAccountTokenBalance from '../services/getAccountTokenBalance'
@@ -35,7 +37,9 @@ const NftAnalytics = async ({ params }: NftAnalyticsProps) => {
           NFTs
         </h2>
       </div>
-      <NonFungibleTokenGallery accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={false} />
+      <Suspense fallback={<NonFungibleTokenGallerySkeleton showTopFour={false}/>}>
+        <NonFungibleTokenGallery accountHoldings={accountHoldings} hbarPrice={hbarPrice} accountId={accountId} showTopFour={false} />
+      </Suspense>
     </div>
   )
 }

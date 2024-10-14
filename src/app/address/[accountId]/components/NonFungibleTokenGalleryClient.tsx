@@ -1,12 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import SeeMoreNftAnalytics from './SeeMoreNftAnalytics'
 import useNftMetadata from '../hooks/useNftMetadata'
-import { Button } from '@/app/collections/components/ui/button'
-
-const ITEMS_PER_PAGE = 20
 
 interface Tokens {
   token_id: string
@@ -24,13 +21,7 @@ interface NonFungibleTokenGalleryClientProps {
 }
 
 const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps> = ({ filteredTokens, totalValue, showTopFour, accountId }) => {
-  const [visibleItems, setVisibleItems] = useState(showTopFour ? 4 : ITEMS_PER_PAGE)
-
-  const loadMoreItems = () => {
-    setVisibleItems(prevVisibleItems => prevVisibleItems + ITEMS_PER_PAGE)
-  }
-
-  const displayTokens = filteredTokens.slice(0, visibleItems)
+  const displayTokens = showTopFour ? filteredTokens.slice(0, 4) : filteredTokens
 
   return (
     <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">
@@ -44,15 +35,13 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
             )
           : (
           <>
-            <h3 className='text-2xl text-muted-foreground'>Total Worth:</h3>
-            <span className='text-2xl semibold pl-2'>{`$${totalValue.toFixed(4)}`}</span>
+            <span className='text-2xl text-muted-foreground pl-2'>Total Worth: {`$${totalValue.toFixed(4)}`}</span>
           </>
             )}
       </div>
-      <div className={`${showTopFour ? 'flex overflow-x-auto' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7'} gap-4 p-4`}>
+      <div className={`p-4 ${showTopFour ? 'flex overflow-x-auto gap-4' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4'}`}>
         {displayTokens.map((token) => {
           const { imageCid, isLoading, error } = useNftMetadata(accountId, token.token_id)
-          if (isLoading) return <div key={token.token_id}>Loading...</div>
           if (error !== null && error !== undefined) return <div key={token.token_id}>Error loading metadata</div>
 
           let imageUrl = '/path/to/default/image.jpg'
@@ -68,39 +57,40 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
           }
 
           return (
-            <div key={token.token_id} className={`bg-zinc-800 rounded-lg p-4 flex flex-col ${showTopFour ? 'min-w-[270px] mr-4' : ''}`}>
+            <div key={token.token_id} className={`bg-zinc-800 rounded-lg p-2 flex flex-col ${showTopFour ? 'min-w-[270px]' : ''}`}>
               <div className="relative w-full aspect-square mb-2">
-                <Image
-                  src={imageUrl}
-                  alt={token.name !== null && token.name !== undefined && token.name.trim() !== '' ? token.name : `NFT ${token.token_id}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="rounded-lg object-cover"
-                />
+                {isLoading
+                  ? (
+                  <div className="w-full h-full bg-neutral-700 rounded-lg animate-pulse" />
+                    )
+                  : (
+                  <Image
+                    src={imageUrl}
+                    alt={token.name !== null && token.name !== undefined && token.name.trim() !== '' ? token.name : `NFT ${token.token_id}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="rounded-lg object-cover"
+                  />
+                    )}
+                <div className="absolute top-1 right-1 z-10 w-8 h-8 rounded-full bg-black bg-opacity-50 flex items-center justify-center">
+                  <span className="text-xs font-bold text-white">x{token.balance.toFixed(0)}</span>
+                </div>
               </div>
               <div className="mt-auto">
-                <h3 className="text-lg font-semibold truncate">{token.name}</h3>
-                <p className="text-sm text-muted-foreground truncate">{token.token_id}</p>
-                <p className="text-sm">Balance: {token.balance.toFixed(0)}</p>
-                <p className="text-sm">Price: {(token.price ?? 0).toFixed(4)} ℏ</p>
-                <p className="text-sm">Price: ${(token.priceUsd ?? 0).toFixed(4)}</p>
-                <p className="text-sm font-semibold">Value: ${(token.balance * (token.priceUsd ?? 0)).toFixed(4)}</p>
+                <h3 className={`font-semibold truncate ${showTopFour ? 'text-sm' : 'text-xs'}`}>{token.name}</h3>
+                <p className={`text-muted-foreground truncate mb-2 ${showTopFour ? 'text-xs' : 'text-[0.75rem]'}`}>{token.token_id}</p>
+                <div className='flex'>
+                  <p className={`text-sm ${showTopFour ? 'text-sm' : 'text-xs'}`}>
+                    Floor Price: ${(token.priceUsd ?? 0).toFixed(1)}
+                  </p>
+                </div>
+                <p className={`text-sm font-semibold ${showTopFour ? 'text-sm' : 'text-xs'}`}>Value: ${(token.balance * (token.priceUsd ?? 0)).toFixed(2)}</p>
               </div>
             </div>
           )
         })}
       </div>
-      {!showTopFour && visibleItems < filteredTokens.length && (
-        <div className="flex justify-center mt-4 pb-8">
-          <Button
-            onClick={loadMoreItems}
-            className='bg-neutral-900 hover:bg-neutral-800 inline-flex cursor-pointer justify-start mt-4 px-16 py-2 text-gray-300 text-sm border border-gray-300'
-          >
-            Load More
-          </Button>
-        </div>
-      )}
-      {showTopFour && displayTokens.length >= 4 && (
+      {showTopFour && filteredTokens.length > 4 && (
         <div className="mt-4 text-center pb-8">
           <SeeMoreNftAnalytics accountId={accountId} />
         </div>

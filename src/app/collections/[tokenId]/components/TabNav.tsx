@@ -7,8 +7,9 @@ import { WalletProvider } from '../../../context/WalletContext'
 
 export interface normalizedItem {
   listingId: string
-  serialNumber: number
+  serialNumber: string
   price: number
+  sellerId: string
   metadataCid: string
   imageCid: string
   name: string
@@ -40,20 +41,20 @@ const TabNav: React.FC<TabNavProps> = async ({ tokenId }) => {
               </TabsTrigger>
             </TabsList>
           </div>
-          <TabsContent value="listings">
-            <div className="px-4 lg:px-8 xl:px-16">
-              <Suspense fallback={<ListedItemsSkeleton />}>
-                <WalletProvider>
-                  <ListedItems tokenId={tokenId} />
-                </WalletProvider>
-              </Suspense>
-            </div>
-          </TabsContent>
-          <TabsContent value="holders">
-            <div className="justify-center items-center text-center pt-6 pb-8 px-4 lg:px-8 xl:px-16">
-              <Holders tokenId={tokenId} />
-            </div>
-          </TabsContent>
+          <WalletProvider>
+            <TabsContent value="listings">
+              <div className="px-4 lg:px-8 xl:px-16">
+                <Suspense fallback={<ListedItemsSkeleton />}>
+                    <ListedItems tokenId={tokenId} />
+                </Suspense>
+              </div>
+            </TabsContent>
+            <TabsContent value="holders">
+              <div className="justify-center items-center text-center pt-6 pb-8 px-4 lg:px-8 xl:px-16">
+                <Holders tokenId={tokenId} />
+              </div>
+            </TabsContent>
+          </WalletProvider>
         </Tabs>
     </section>
   )

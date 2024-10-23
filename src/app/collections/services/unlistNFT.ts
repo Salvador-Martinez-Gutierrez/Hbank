@@ -1,6 +1,6 @@
-export default async function buyNFT (tokenAddress: string, serialNumber: string, userAddress: string, price: string | number) {
+export default async function unlistNFT (tokenAddress: string, serialNumber: string, userAddress: string) {
   try {
-    const response = await fetch('/api/buyNft', {
+    const response = await fetch('/api/unlistNft', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -8,13 +8,12 @@ export default async function buyNFT (tokenAddress: string, serialNumber: string
       body: JSON.stringify({
         tokenAddress,
         serialNumber,
-        userAddress,
-        price
+        userAddress
       })
     })
 
     if (!response.ok) {
-      throw new Error('Error buying NFT')
+      throw new Error('Error unlisting NFT')
     }
 
     const data = await response.json()

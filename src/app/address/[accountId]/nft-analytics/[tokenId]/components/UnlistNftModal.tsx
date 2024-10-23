@@ -6,8 +6,8 @@ import { useWallet, useWatchTransactionReceipt } from '@buidlerlabs/hashgraph-re
 import { Transaction } from '@hashgraph/sdk'
 import type { Signer } from '@hashgraph/sdk'
 
-async function confirmPurchaseToMarketProvider (saleVerificationCode: string) {
-  const response = await fetch('/api/buyNftSuccess', {
+async function confirmUnlistingToMarketProvider (saleVerificationCode: string) {
+  const response = await fetch('/api/unlistNftSuccess', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -24,32 +24,42 @@ async function confirmPurchaseToMarketProvider (saleVerificationCode: string) {
   return await response.json()
 }
 
-interface PurchaseResult {
-  success: boolean
-  transBase64?: {
-    data: Uint8Array
+interface UnlistResult {
+  signingAcct: null
+  transBytes: {
+    type: string
+    data: number[]
   }
-  saleVerificationCode?: string
+  receipt: null
+  success: boolean
+  apimessage: string
+  transid: null
+  isOwner: boolean
+  isGranted: boolean
+  requiresAllowanceApprove: boolean
+  saleVerificationCode: string
+  spender: string
+  requiresPingBack: boolean
 }
 
-interface ExecutePurchaseModalProps {
+interface UnlistNftModalProps {
   isOpen: boolean
   onClose: () => void
-  result: PurchaseResult | null
+  result: UnlistResult | null
   onSuccess: () => void
 }
 
-const ExecutePurchaseModal = ({ isOpen, onClose, result, onSuccess }: ExecutePurchaseModalProps) => {
+const UnlistNftModal = ({ isOpen, onClose, result, onSuccess }: UnlistNftModalProps) => {
   const [isExecuting, setIsExecuting] = useState(false)
   const wallet = useWallet()
   const signer = wallet.signer as Signer
   const { watch } = useWatchTransactionReceipt()
 
-  const handleExecutePurchase = async () => {
+  const handleExecuteUnlist = async () => {
     setIsExecuting(true)
-    if (result !== null && result.success && result?.transBase64 !== null && result?.transBase64 !== undefined) {
+    if (result !== null && result.success) {
       try {
-        const transactionString = Buffer.from(result.transBase64.data).toString('base64')
+        const transactionString = Buffer.from(result.transBytes.data).toString('base64')
         console.log('Transaction string:', transactionString)
 
         // Decode the transaction
@@ -64,9 +74,9 @@ const ExecutePurchaseModal = ({ isOpen, onClose, result, onSuccess }: ExecutePur
             console.log('Sale verification code:', result.saleVerificationCode)
 
             if (result.saleVerificationCode !== undefined) {
-              console.log('Attempting to confirm purchase with code:', result.saleVerificationCode)
-              const confirmationResult = confirmPurchaseToMarketProvider(result.saleVerificationCode)
-              console.log('Purchase confirmation result OG:', confirmationResult)
+              console.log('Attempting to confirm unlisting with code:', result.saleVerificationCode)
+              const confirmationResult = confirmUnlistingToMarketProvider(result.saleVerificationCode)
+              console.log('Unlist confirmation result OG:', confirmationResult)
             } else {
               console.log('No saleVerificationCode provided, skipping confirmation')
             }
@@ -81,12 +91,10 @@ const ExecutePurchaseModal = ({ isOpen, onClose, result, onSuccess }: ExecutePur
           }
         })
       } catch (error) {
-        console.error('Error during NFT purchase transaction:', error)
-        setIsExecuting(false)
+        console.error('Error during NFT unlisting transaction:', error)
       }
     } else {
       console.error('Transaction preparation failed:', result)
-      setIsExecuting(false)
     }
   }
 
@@ -95,7 +103,7 @@ const ExecutePurchaseModal = ({ isOpen, onClose, result, onSuccess }: ExecutePur
       <DialogContent className="rounded-xl bg-neutral-950 items-center w-[90%] sm:max-w-xl border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
         <DialogHeader>
           <DialogTitle className='text-white text-center text-2xl'>
-            Execute Purchase
+            Execute Unlisting
           </DialogTitle>
           <DialogDescription className='text-center text-lg'>
             {status}
@@ -103,11 +111,11 @@ const ExecutePurchaseModal = ({ isOpen, onClose, result, onSuccess }: ExecutePur
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <button
-            className='h-10 px-4 bg-green-600 text-white rounded-lg disabled:bg-gray-400'
-            onClick={handleExecutePurchase}
+            className='h-10 px-4 bg-red-600 text-white rounded-lg disabled:bg-gray-400'
+            onClick={handleExecuteUnlist}
             disabled={isExecuting}
           >
-            {isExecuting ? 'Executing Purchase...' : 'Execute Purchase'}
+            {isExecuting ? 'Unlisting NFT...' : 'Unlist NFT'}
           </button>
         </div>
       </DialogContent>
@@ -115,4 +123,4 @@ const ExecutePurchaseModal = ({ isOpen, onClose, result, onSuccess }: ExecutePur
   )
 }
 
-export default ExecutePurchaseModal
+export default UnlistNftModal

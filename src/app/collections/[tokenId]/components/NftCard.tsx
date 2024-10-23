@@ -3,18 +3,22 @@ import Image from 'next/image'
 import SerialBadge from './Badge'
 import type { normalizedItem } from './TabNav'
 import buyNFT from '@/app/collections/services/buyNft'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import LoginModal from '@/app/components/LoginModal'
 import AssociateTokenModal from './AssociateTokenModal'
-import { useAccountId, useWallet, useBalance } from '@buidlerlabs/hashgraph-react-wallets'
+import { useWallet, useBalance } from '@buidlerlabs/hashgraph-react-wallets'
 import ExecutePurchaseModal from './ExecutePurchaseModal'
 import InsufficientFundsModal from './InsufficientFundsModal'
 import SuccessfulPurchaseModal from './SuccessfulPurchaseModal'
+import ManageNftModal from '@/app/address/[accountId]/nft-analytics/[tokenId]/components/ManageNftModal'
 
 interface NftCardProps {
   token: normalizedItem
   tokenId: string
   isTokenAssociated: boolean | null
+  accountId: string | null
+  isOwner: boolean
+  royalty: number
 }
 
 interface PurchaseResult {
@@ -25,8 +29,7 @@ interface PurchaseResult {
   saleVerificationCode?: string
 }
 
-const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) => {
-  const { data: accountId }: { data: string } = useAccountId()
+const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated, accountId, isOwner, royalty }) => {
   const { isConnected } = useWallet()
   const { data: balance } = useBalance()
   const [isInsufficientFundsModalOpen, setIsInsufficientFundsModalOpen] = useState(false)
@@ -35,6 +38,8 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
   const [isExecutePurchaseModalOpen, setIsExecutePurchaseModalOpen] = useState(false)
   const [isSuccessfulPurchaseModal, setIsSuccessfulPurchaseModal] = useState(false)
   const [purchaseResult, setPurchaseResult] = useState<PurchaseResult | null>(null)
+  const [isPurchased, setIsPurchased] = useState(false)
+  const [isManageModalOpen, setIsManageModalOpen] = useState(false)
 
   const handleBuyClick = async () => {
     if (token.marketplace === 'Sentx') {
@@ -53,7 +58,7 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
   }
 
   const executePurchase = async () => {
-    if (balance.value > token.price) {
+    if (balance.value > token.price && accountId !== null) {
       try {
         const result: PurchaseResult = await buyNFT(tokenId, token.serialNumber, accountId, token.price)
         setPurchaseResult(result)
@@ -74,9 +79,18 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
     }
   }
 
-  const handlePurchaseSuccess = () => {
+  const handlePurchaseSuccess = useCallback(() => {
+    setIsPurchased(true)
     setIsSuccessfulPurchaseModal(true)
-  }
+  }, [])
+
+  const handleUnlistSuccess = useCallback(() => {
+    setIsPurchased(true)
+  }, [])
+
+  const handleUpdateSuccess = useCallback((price: number) => {
+    token.price = price
+  }, [])
 
   // Determine the URL for the NFT Image based on the imageCid format
   let imageUrl = '/path/to/default/image.jpg' // Default image
@@ -92,26 +106,35 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
 
   const marketUrl = token.marketplace === 'Kabila' ? '/KabilaLogo.jpg' : '/SentxLogo.png'
 
+  const handleButtonClick = () => {
+    if (isOwner) {
+      setIsManageModalOpen(true)
+    } else {
+      handleBuyClick()
+    }
+  }
+
   return (
     <>
+    {!isPurchased && (
       <div className='overflow-hidden rounded-xl bg-card text-card-foreground shadow-md group relative flex cursor-pointer flex-col shadow-custom'>
-        <div className='relative'>
-          <div className='absolute top-1 right-1 z-1 w-8 h-8 rounded-full overflow-hidden'>
-            <Image
-              src={marketUrl}
-              alt={token.marketplace}
-              width={100}
-              height={100}
-              className='w-full h-auto overflow-hidden'
-            />
-          </div>
+        <div className='relative w-full pb-[100%]'>
           <Image
             src={imageUrl}
             alt={token.name}
             width={100}
             height={100}
-            className='w-full h-auto overflow-hidden'
+            className='absolute top-0 left-0 w-full h-full object-cover'
           />
+          <div className='absolute top-1 right-1 z-20 w-8 h-8 rounded-full overflow-hidden shadow-md'>
+            <Image
+              src={marketUrl}
+              alt={token.marketplace}
+              width={32}
+              height={32}
+              className='w-full h-full object-cover'
+            />
+          </div>
         </div>
         <div className='p-2'>
           <div className='flex justify-between text-sm'>
@@ -120,12 +143,20 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
           </div>
         </div>
         <button
-          className='h-8 mx-1 mb-1 bg-green-500 text-white rounded-lg'
-          onClick={handleBuyClick}
+          onClick={handleButtonClick}
+          className={`h-8 mx-1 mb-1 text-white rounded-lg ${
+            isOwner
+              ? ('bg-blue-500')
+              : ('bg-green-500')
+          }`}
         >
-          Buy
+          {isOwner
+            ? ('Manage Listing')
+            : ('Buy')
+          }
         </button>
       </div>
+    )}
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={() => { setIsLoginModalOpen(false) }}
@@ -151,6 +182,21 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated }) 
       <SuccessfulPurchaseModal
         isOpen={isSuccessfulPurchaseModal}
         onClose={() => { setIsSuccessfulPurchaseModal(false) }}
+      />
+      <ManageNftModal
+        isOpen={isManageModalOpen}
+        onClose={() => { setIsManageModalOpen(false) }}
+        onUnlistSucces={handleUnlistSuccess}
+        onUpdateSuccess={handleUpdateSuccess}
+        token={{
+          ...token,
+          imageUrl,
+          serial_number: token.serialNumber,
+          isListed: true
+        }}
+        tokenId={tokenId}
+        connectedAccountId={accountId}
+        royalty={royalty}
       />
     </>
   )

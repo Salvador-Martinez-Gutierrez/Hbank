@@ -4,6 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import SeeMoreNftAnalytics from './SeeMoreNftAnalytics'
 import useNftMetadata from '../hooks/useNftMetadata'
+import Link from 'next/link'
 
 interface Tokens {
   token_id: string
@@ -57,7 +58,11 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
           }
 
           return (
-            <div key={token.token_id} className={`bg-zinc-800 rounded-lg p-2 flex flex-col ${showTopFour ? 'min-w-[270px]' : ''}`}>
+            <Link
+              href={`/address/${accountId}/nft-analytics/${token.token_id}`}
+              key={token.token_id}
+              className={`bg-zinc-800 rounded-lg p-2 flex flex-col ${showTopFour ? 'min-w-[270px]' : ''} hover:bg-zinc-700 transition-colors duration-200`}
+            >
               <div className="relative w-full aspect-square mb-2">
                 {isLoading
                   ? (
@@ -86,7 +91,7 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
                 </div>
                 <p className={`text-sm font-semibold ${showTopFour ? 'text-sm' : 'text-xs'}`}>Value: ${(token.balance * (token.priceUsd ?? 0)).toFixed(2)}</p>
               </div>
-            </div>
+            </Link>
           )
         })}
       </div>

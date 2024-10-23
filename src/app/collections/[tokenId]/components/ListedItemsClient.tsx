@@ -13,9 +13,10 @@ const ITEMS_PER_PAGE = 20
 interface ListedItemsProps {
   updatedListedItems: normalizedItem[]
   tokenId: string
+  royalty: number
 }
 
-const ListedItemsClient: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId }) => {
+const ListedItemsClient: React.FC<ListedItemsProps> = ({ updatedListedItems, tokenId, royalty }) => {
   const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE)
   const { data: accountId }: { data: string | null } = useAccountId()
   const [isTokenAssociated, setIsTokenAssociated] = useState<boolean | null>(null)
@@ -47,9 +48,20 @@ const ListedItemsClient: React.FC<ListedItemsProps> = ({ updatedListedItems, tok
   return (
     <main className='pb-8 pt-6'>
           <div className="grid h-fit w-full max-w-full grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
-            {updatedListedItems.slice(0, visibleItems).map(token => (
-                <NftCard key={token.listingId} token={token} tokenId={tokenId} isTokenAssociated={isTokenAssociated}/>
-            ))}
+            {updatedListedItems.slice(0, visibleItems).map(token => {
+              const isOwner = accountId === token.sellerId
+              return (
+                <NftCard
+                  key={token.listingId}
+                  token={token}
+                  isOwner={isOwner}
+                  tokenId={tokenId}
+                  accountId={accountId}
+                  isTokenAssociated={isTokenAssociated}
+                  royalty={royalty}
+                />
+              )
+            })}
           </div>
           {visibleItems < updatedListedItems.length && (
             <div className="flex justify-center mt-4">

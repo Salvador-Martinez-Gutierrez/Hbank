@@ -5,7 +5,7 @@ import { useBalance } from '@buidlerlabs/hashgraph-react-wallets'
 interface InsufficientFundsModalProps {
   isOpen: boolean
   onClose: () => void
-  requiredAmount: number
+  requiredAmount?: string | number
 }
 
 const InsufficientFundsModal: React.FC<InsufficientFundsModalProps> = ({ isOpen, onClose, requiredAmount }) => {

@@ -11,7 +11,7 @@ interface AssociateTokenModalProps {
   onClose: () => void
   tokenId: string
   onSuccess: (isBalanceSufficient: boolean) => void
-  price: number
+  price?: string | number
 }
 
 const AssociateTokenModal = ({ isOpen, onClose, tokenId, onSuccess, price }: AssociateTokenModalProps) => {
@@ -35,8 +35,10 @@ const AssociateTokenModal = ({ isOpen, onClose, tokenId, onSuccess, price }: Ass
       watch(txResponse.transactionId.toString(), {
         onSuccess: (transaction) => {
           onClose()
-          const isBalanceSufficient = balance.value > price
-          onSuccess(isBalanceSufficient)
+          if (price !== undefined) {
+            const isBalanceSufficient = balance.value > price
+            onSuccess(isBalanceSufficient)
+          }
           return transaction
         },
         onError: (transaction, error) => {

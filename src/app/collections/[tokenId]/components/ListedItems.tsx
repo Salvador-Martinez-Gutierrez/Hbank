@@ -2,16 +2,17 @@ import type { normalizedItem } from './TabNav'
 import { getListedTokensSentx } from '@/app/services/getListedTokensSentx'
 import { getListedTokensKabila } from '@/app/services/getListedTokensKabila'
 import ListedItemsClient from './ListedItemsClient'
-// import { WalletContext } from '@/app/context/WalletContext'
+import { getNftRoyalties } from '@/app/address/[accountId]/nft-analytics/[tokenId]/services/getNftRoyalties'
 
 const updateListedItems = async (tokenId: string) => {
   const listedItemsSentx = await getListedTokensSentx(tokenId)
   const listedItemsKabila = await getListedTokensKabila(tokenId)
   // Normalize data from the first API (Sentx)
-  const normalizedSentx = await listedItemsSentx.map((item: SentxItem) => ({
+  const normalizedSentx = listedItemsSentx.map((item: SentxItem) => ({
     listingId: item.marketplaceListingId,
     serialNumber: item.serialId,
     price: item.salePrice,
+    sellerId: item.sellerAccount,
     metadataCid: item.nftMetadata,
     imageCid: item.nftImage,
     name: item.nftName,
@@ -20,10 +21,11 @@ const updateListedItems = async (tokenId: string) => {
   }))
 
   // Normalize data from the second API (Kabila)
-  const normalizedKabila = await listedItemsKabila.map((item: KabilaItem) => ({
+  const normalizedKabila = listedItemsKabila.map((item: KabilaItem) => ({
     listingId: item._id,
     serialNumber: item.serialNumber,
     price: item.price,
+    sellerId: item.sellerId,
     metadataCid: item.metadataCid,
     imageCid: item.imageCid,
     name: item.name,
@@ -81,9 +83,10 @@ interface ListedItemsProps {
 
 const ListedItems: React.FC<ListedItemsProps> = async ({ tokenId }) => {
   const updatedListedItems = await updateListedItems(tokenId)
+  const royalty: number = await getNftRoyalties(tokenId)
 
   return (
-    <ListedItemsClient updatedListedItems={updatedListedItems} tokenId={tokenId}/>
+    <ListedItemsClient updatedListedItems={updatedListedItems} tokenId={tokenId} royalty={royalty}/>
   )
 }
 

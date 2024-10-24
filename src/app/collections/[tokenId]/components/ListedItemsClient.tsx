@@ -46,6 +46,9 @@ const ListedItemsClient: React.FC<ListedItemsProps> = ({ updatedListedItems, tok
 
   return (
     <main className='pb-8 pt-6'>
+      { updatedListedItems.length > 0
+        ? (
+        <>
           <div className="grid h-fit w-full max-w-full grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
             {updatedListedItems.slice(0, visibleItems).map(token => {
               const isOwner = accountId === token.sellerId
@@ -67,10 +70,15 @@ const ListedItemsClient: React.FC<ListedItemsProps> = ({ updatedListedItems, tok
               <Button
                 onClick={loadMoreItems}
                 className='bg-neutral-900 hover:bg-neutral-800 inline-flex cursor-pointer justify-start mt-4 px-16 py-2 text-gray-300 text-sm border border-gray-300'
-                >
-                  Load More
+              >
+                Load More
               </Button>
             </div>
+          )}
+        </>
+          )
+        : (
+        <p>No items listed.</p>
           )}
     </main>
   )

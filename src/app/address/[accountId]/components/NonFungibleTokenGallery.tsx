@@ -23,11 +23,13 @@ const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({
     .filter(token => token.balance * (token.priceUsd ?? 0) > 0)
     .sort((a, b) => (b.balance * (b.priceUsd ?? 0)) - (a.balance * (a.priceUsd ?? 0)))
 
-  const totalValue = filteredTokens.reduce((acc, token) => acc + (token.balance * (token.priceUsd ?? 0)), 0)
+  const totalValueUsd = filteredTokens.reduce((acc, token) => acc + (token.balance * (token.priceUsd ?? 0)), 0)
+  const totalValue = filteredTokens.reduce((acc, token) => acc + (token.balance * (token.price ?? 0)), 0)
 
   return (
     <NonFungibleTokenGalleryClient
       filteredTokens={filteredTokens}
+      totalValueUsd={totalValueUsd}
       totalValue={totalValue}
       showTopFour={showTopFour}
       accountId={accountId}

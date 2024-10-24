@@ -1,10 +1,11 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import SeeMoreNftAnalytics from './SeeMoreNftAnalytics'
 import useNftMetadata from '../hooks/useNftMetadata'
 import Link from 'next/link'
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@radix-ui/react-tooltip'
 
 interface Tokens {
   token_id: string
@@ -17,12 +18,17 @@ interface Tokens {
 interface NonFungibleTokenGalleryClientProps {
   filteredTokens: Tokens[] // Replace 'any' with the actual token type
   totalValue: number
+  totalValueUsd: number
   showTopFour: boolean
   accountId: string
 }
 
-const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps> = ({ filteredTokens, totalValue, showTopFour, accountId }) => {
+const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps> = ({ filteredTokens, totalValue, totalValueUsd, showTopFour, accountId }) => {
+  const [showUsd, setShowUsd] = useState(true)
+  const [showTooltip, setShowTooltip] = useState(false)
   const displayTokens = showTopFour ? filteredTokens.slice(0, 4) : filteredTokens
+
+  const toggleCurrency = () => { setShowUsd(!showUsd) }
 
   return (
     <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">
@@ -31,12 +37,50 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
           ? (
           <>
             <h2 className='text-2xl font-bold'>NFTs</h2>
-            <span className='text-2xl semibold pl-2'>{`$${totalValue.toFixed(4)}`}</span>
+            <TooltipProvider>
+              <Tooltip open={showTooltip}>
+                <TooltipTrigger asChild>
+                  <span
+                    className='text-2xl semibold pl-2 cursor-pointer transition-colors'
+                    onClick={toggleCurrency}
+                    onMouseEnter={() => { setShowTooltip(true) }}
+                    onMouseLeave={() => { setShowTooltip(false) }}
+                  >
+                    {showUsd
+                      ? `$${totalValueUsd.toFixed(2)}`
+                      : `${totalValue.toFixed(2)} ℏ`
+                    }
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent className='bg-black text-white p-1 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]'>
+                  <p>{showUsd ? 'View in ℏ' : 'View in $'}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </>
             )
           : (
           <>
-            <span className='text-2xl text-muted-foreground pl-2'>Total Worth: {`$${totalValue.toFixed(4)}`}</span>
+            <TooltipProvider>
+              <Tooltip open={showTooltip}>
+                <TooltipTrigger asChild>
+                  <span
+                    className='text-2xl text-muted-foreground pl-2 cursor-pointer transition-colors'
+                    onClick={toggleCurrency}
+                    onMouseEnter={() => { setShowTooltip(true) }}
+                    onMouseLeave={() => { setShowTooltip(false) }}
+                  >
+                    Total Worth: {showUsd
+                    ? `$${totalValueUsd.toFixed(2)}`
+                    : `${totalValue.toFixed(2)} ℏ`
+                    }
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent className='bg-black text-white p-1 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]'>
+                  <p>{showUsd ? 'View in ℏ' : 'View in $'}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </>
             )}
       </div>
@@ -84,12 +128,26 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
               <div className="mt-auto">
                 <h3 className={`font-semibold truncate ${showTopFour ? 'text-sm' : 'text-xs'}`}>{token.name}</h3>
                 <p className={`text-muted-foreground truncate mb-2 ${showTopFour ? 'text-xs' : 'text-[0.75rem]'}`}>{token.token_id}</p>
-                <div className='flex'>
-                  <p className={`text-sm ${showTopFour ? 'text-sm' : 'text-xs'}`}>
-                    Floor Price: ${(token.priceUsd ?? 0).toFixed(1)}
-                  </p>
+                <div className="bg-zinc-700 rounded-md p-2">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs text-zinc-400">Floor:</span>
+                    <span className="text-xs font-semibold">
+                      {showUsd
+                        ? `$${(token.priceUsd ?? 0).toFixed(2)}`
+                        : `${(token.price ?? 0).toFixed(2)} ℏ`
+                      }
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-zinc-400">Value:</span>
+                    <span className="text-xs font-semibold">
+                      {showUsd
+                        ? `$${(token.balance * (token.priceUsd ?? 0)).toFixed(2)}`
+                        : `${(token.balance * (token.price ?? 0)).toFixed(2)} ℏ`
+                      }
+                    </span>
+                  </div>
                 </div>
-                <p className={`text-sm font-semibold ${showTopFour ? 'text-sm' : 'text-xs'}`}>Value: ${(token.balance * (token.priceUsd ?? 0)).toFixed(2)}</p>
               </div>
             </Link>
           )

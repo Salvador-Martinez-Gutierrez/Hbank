@@ -29,6 +29,8 @@ async function FungibleTokenTable ({ accountHoldings, showTopFour, accountId, hb
   const { tokens } = await classifyAccountTokenBalance(accountHoldings)
   const tokensWithPrice = await getPricedTokens(tokens, hbarPrice)
 
+  console.log('tokensWithPrice:::', tokensWithPrice)
+
   const tokenDataPromises = tokensWithPrice.map(async (token) => {
     const value = (token.balance * Math.pow(10, -(token.decimals ?? 0)) * (token.priceUsd ?? 0))
     return { ...token, value }

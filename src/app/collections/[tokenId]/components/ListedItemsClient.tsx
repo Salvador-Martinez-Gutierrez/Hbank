@@ -5,7 +5,6 @@ import NftCard from './NftCard'
 import { Button } from '@/app/collections/components/ui/button'
 import type { normalizedItem } from './TabNav'
 import checkTokenAssociation from '@/app/collections/services/checkTokenAssociation'
-// import { WalletContext } from '@/app/context/WalletContext'
 import { useAccountId } from '@buidlerlabs/hashgraph-react-wallets'
 
 const ITEMS_PER_PAGE = 20

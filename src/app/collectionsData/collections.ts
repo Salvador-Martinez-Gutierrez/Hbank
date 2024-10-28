@@ -112,7 +112,7 @@ const collections: Record<string, TokenData> = {
     floorPrice: null,
     royalties: 5,
     maxSupply: 10000,
-    mintedSupply: 3900,
+    mintedSupply: 9700,
     burntSupply: 0,
     volume30d: null
 

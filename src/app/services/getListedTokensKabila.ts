@@ -1,22 +1,23 @@
 export const getListedTokensKabila = async (tokenId: string) => {
   try {
-    const cacheBuster = new Date().getTime() // Unique cache-busting timestamp
+    const cacheBuster = new Date().getTime()
     const url = `https://labs.kabila.app/api/marketplace/manager/nft-items?tokenIds=${tokenId}&orderBy=price&orderDir=ASC&_=${cacheBuster}`
 
     const response = await fetch(url, {
       headers: {
-        'Cache-Control': 'no-cache' // Ensure no caching
+        'Cache-Control': 'no-cache'
       }
     })
 
     if (!response.ok) {
-      throw new Error('Network response was not ok')
+      console.error(`API error: ${response.status} ${response.statusText}`)
+      return []
     }
 
     const data = await response.json()
     return data
   } catch (error) {
-    console.error('Error fetching data:', error)
-    return null // Returning null in case of an error
+    console.error('Error fetching token listings:', error instanceof Error ? error.message : 'Unknown error')
+    return []
   }
 }

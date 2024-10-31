@@ -8,7 +8,7 @@ interface AddressTrackerButtonProps {
 
 export default function AddressTrackerButton ({ isWalletCheckerHidden, active }: AddressTrackerButtonProps) {
   return (
-    <Link href="/wallet-tracker" passHref>
+    <Link href="/portfolio" passHref>
       <Button
         className={`${active === true ? 'bg-zinc-800' : 'bg-black'} hover:bg-zinc-800 ${isWalletCheckerHidden ? 'p-2' : 'ml-4 inline-flex justify-start'}`}
         aria-label="Portfolio Tracker"

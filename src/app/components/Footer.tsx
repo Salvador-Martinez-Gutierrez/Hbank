@@ -5,24 +5,25 @@ import Link from 'next/link'
 const Footer = () => {
   return (
     <footer className='bg-black h-[125px]'>
-      <div className='flex justify-center p-4 gap-4'>
-        <Link href="https://twitter.com/300SMG" target="_blank">
-            <Image
-              src='/twitter.png'
-              alt="Twitter"
-              width={50}
-              height={50}
-              priority
-            />
+      <div className='flex justify-center items-center p-4 pt-8 gap-4'>
+        <Link href="https://twitter.com/300SMG" target="_blank" className="flex items-center">
+          <svg
+            viewBox="0 0 24 24"
+            width="30"
+            height="30"
+            fill="white"
+          >
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
         </Link>
-        <Link href="https://discord.gg/ETAsvAvT3R" target="_blank">
-            <Image
-              src='/discord.png'
-              alt="Discord"
-              width={50}
-              height={50}
-              priority
-            />
+        <Link href="https://www.plazas.social/es/plaza/0.0.1233480" target="_blank">
+          <Image
+            src='/plaza.png'
+            alt="Discord"
+            width={30}
+            height={30}
+            priority
+          />
         </Link>
       </div>
 

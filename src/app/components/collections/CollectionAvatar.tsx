@@ -11,7 +11,7 @@ interface AvatarProps {
 const CollectionAvatar: React.FC<AvatarProps> = ({ url }) => {
   return (
       <Avatar>
-        <AvatarImage src={url} alt='@shadcn' />
+        <AvatarImage src={url} alt={url} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
   )

@@ -1,21 +1,22 @@
 const getTokenIcon = async (tokenId: string): Promise<string> => {
   try {
-    // Construct the URL for the API request
+    // First try the Davinci API
     const url = `https://s2.pics.davincigraph.io/api/v2/tokens/hedera/${encodeURIComponent(tokenId)}`
-    // Fetch data from the API
     const response = await fetch(url)
-    // Check if the response is successful
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.statusText}`)
-    }
-    // Parse the JSON response
-    const data = await response.json()
 
-    // Return the 'pic' field from the response
-    return data.pic
+    if (!response.ok) {
+      return '/NotFound.png'
+    }
+
+    const data = await response.json()
+    const imgUrl: string = data.pic
+
+    // Try to access the Arweave URL through a proxy
+    const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(imgUrl)}`
+    return proxyUrl
   } catch (error) {
     console.error('Error fetching token icon:', error)
-    throw error // Re-throw the error after logging it
+    return '/NotFound.png'
   }
 }
 

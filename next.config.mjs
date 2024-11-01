@@ -1,18 +1,30 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      'pbs.twimg.com',
-      'ipfs.io','arweave.sentx.io', 
-      'arweave.net', 
-      'arweave.sentx.io',
-      'cyan-certain-partridge-419.mypinata.cloud',
-      'market.kabila.app',
-    ],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'pbs.twimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ipfs.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'arweave.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'arweave.sentx.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cyan-certain-partridge-419.mypinata.cloud',
+      },
+      {
+        protocol: 'https',
+        hostname: 'market.kabila.app',
       },
     ],
   },

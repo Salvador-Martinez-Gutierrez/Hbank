@@ -1,11 +1,10 @@
 export const getVolumeKabila = async (tokenId: string) => {
   try {
-    const cacheBuster = new Date().getTime()
-    const url = `https://labs.kabila.app/api/marketplace/analytics/activity?tokenId=${tokenId}&timeRange=30d&activityType=SALE&skip=0&limit=500&format=JSONEachRow&fields=tokenId,serialNumber,name,imageCid,imageType,activityType,subactivityType,price,currency,buyerId,sellerId,createdAt,rank&_=${cacheBuster}`
+    const url = `https://labs.kabila.app/api/marketplace/analytics/activity?tokenId=${tokenId}&timeRange=30d&activityType=SALE&skip=0&limit=500&format=JSONEachRow&fields=tokenId,serialNumber,name,imageCid,imageType,activityType,subactivityType,price,currency,buyerId,sellerId,createdAt,rank`
 
     const response = await fetch(url, {
-      headers: {
-        'Cache-Control': 'no-cache'
+      next: {
+        revalidate: 300 // 5 minutes cache
       }
     })
 

@@ -1,12 +1,11 @@
-export const getFloorPriceSentx = async (tokenId: string) => {
+export async function getFloorPriceSentx (tokenId: string): Promise<number | null> {
   try {
     const apiKeySentx = process.env.API_KEY_SENTX
-    const cacheBuster = new Date().getTime() // Unique cache-busting timestamp
-    const url = `https://api.sentx.io/v1/public/market/floor?apikey=${apiKeySentx}&token=${tokenId}&_=${cacheBuster}`
+    const url = `https://api.sentx.io/v1/public/market/floor?apikey=${apiKeySentx}&token=${tokenId}`
 
     const response = await fetch(url, {
-      headers: {
-        'Cache-Control': 'no-cache' // Ensure no caching
+      next: {
+        revalidate: 300 // 5 minutes cache
       }
     })
 

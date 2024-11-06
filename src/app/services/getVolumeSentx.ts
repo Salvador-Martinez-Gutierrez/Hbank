@@ -26,8 +26,8 @@ const fetchVolume = async (tokenId: string, startDay: string, today: string, pag
   try {
     const response = await fetch(url, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
+      next: {
+        revalidate: 300 // 5 minutes cache
       }
     })
 

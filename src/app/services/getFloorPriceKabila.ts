@@ -1,12 +1,10 @@
-export const getFloorPriceKabila = async (tokenId: string) => {
+export async function getFloorPriceKabila (tokenId: string): Promise<number | null> {
   try {
-    // Adding a cache-busting query parameter to avoid cached responses
-    const cacheBuster = new Date().getTime()
-    const url = `https://labs.kabila.app/api/marketplace/manager/nft-collections?tokenIds=${tokenId}&fields=tokenId,minPrice&_=${cacheBuster}`
+    const url = `https://labs.kabila.app/api/marketplace/manager/nft-collections?tokenIds=${tokenId}&fields=tokenId,minPrice`
 
     const response = await fetch(url, {
-      headers: {
-        'Cache-Control': 'no-cache'
+      next: {
+        revalidate: 300 // 5 minutes cache
       }
     })
 

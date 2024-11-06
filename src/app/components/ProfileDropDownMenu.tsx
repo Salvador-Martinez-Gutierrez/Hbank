@@ -58,7 +58,7 @@ export default function ProfileDropDownMenu ({ disconnect }: ProfileDropDownMenu
             </Button>
           </Link>
 
-          <Link href='/wallet-tracker' passHref>
+          <Link href='/portfolio' passHref>
             <Button
               className='bg-black hover:bg-zinc-800 p-4 mb-1 w-full inline-flex cursor-pointer justify-start'
               onClick={() => { setIsOpen(false) }}

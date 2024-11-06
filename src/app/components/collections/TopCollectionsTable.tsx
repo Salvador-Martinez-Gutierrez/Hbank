@@ -12,6 +12,8 @@ import {
 import updateFloorPrice from '../../services/updateFloorPrice'
 import update30dVolume from '../../services/update30dVolume'
 
+export const revalidate = 300
+
 interface TopCollectionsProps {
   variant?: 'simple' | 'advanced' // Prop para el modo de rendering
 }

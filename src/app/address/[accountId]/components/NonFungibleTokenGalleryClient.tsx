@@ -11,7 +11,7 @@ interface Tokens {
   token_id: string
   balance: number
   name?: string
-  price?: number
+  price?: number | null
   priceUsd?: number
 }
 

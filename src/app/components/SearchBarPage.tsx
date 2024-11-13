@@ -13,7 +13,7 @@ import {
   CommandItem,
   CommandList
 } from '@/components/ui/command'
-import { useDebounce } from '../hooks/useDebounce'
+import useDebounce from '../hooks/useDebounce'
 import collections from '../collectionsData/collections'
 
 const apps = [

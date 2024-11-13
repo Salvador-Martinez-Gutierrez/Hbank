@@ -3,6 +3,7 @@
 import { Button } from '@/app/collections/components/ui/button'
 import { useWallet } from '@buidlerlabs/hashgraph-react-wallets'
 import { KabilaConnector } from '@buidlerlabs/hashgraph-react-wallets/connectors'
+import Image from 'next/image'
 
 interface KabilaLoginButtonProps {
   onSuccess: () => void
@@ -25,9 +26,15 @@ const KabilaLoginButton = ({ onSuccess }: KabilaLoginButtonProps) => {
   return (
     <Button
       onClick={handleConnect}
-      className="bg-blue-500 hover:bg-blue-600 w-full"
+      className="bg-blue-500 hover:bg-blue-600 w-full flex items-center justify-center gap-2"
     >
-      Connect with Kabila
+      <Image
+        src="/kabila-wallet.png"
+        alt="Kabila Wallet"
+        width={22}
+        height={22}
+      />
+      Kabila
     </Button>
   )
 }

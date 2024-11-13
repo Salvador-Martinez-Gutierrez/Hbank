@@ -1,12 +1,12 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import HomeButton from './HomeButton'
-import WalletChecker from '../portfolio/components/WalletChecker'
 import AddressTrackerButton from './AddressTrackerButton'
 import MarketAggregatorButton from './MarketAggregatorButton'
 import SurveyButton from './SurveyButton'
 import LoginButton from './LoginButton'
 import { WalletProvider } from '../context/WalletContext'
+import { SearchBarPage } from './SearchBarPage'
 
 const NavBar = () => {
   const pathname = usePathname()
@@ -23,14 +23,11 @@ const NavBar = () => {
         <HomeButton/>
       </div>
       <div className='flex items-center'>
-        <div className='mr-1 hidden sm:block'>
-          <WalletChecker showButton={false}/>
-        </div>
-        <div className='sm:hidden mr-1'>
-          <AddressTrackerButton isWalletCheckerHidden={true} />
+        <div className='sm:mr-4 block'>
+          <SearchBarPage />
         </div>
         <WalletProvider>
-          <LoginButton />
+          <LoginButton tittle='Login' />
         </WalletProvider>
       </div>
     </nav>

@@ -46,7 +46,7 @@ const collections: Record<string, TokenData> = {
 
   },
   '0.0.2179656': {
-    name: 'Siwas',
+    name: 'Siwas by Kabila',
     sentxName: 'siwas-by-kabila',
     url: 'https://pbs.twimg.com/media/GUSMdDXXEAEQyzl?format=jpg&name=large',
     floorPrice: null,
@@ -274,9 +274,9 @@ const collections: Record<string, TokenData> = {
 
   },
   '0.0.1097737': {
-    name: 'Earth FC',
+    name: 'Earth Founders Card',
     sentxName: 'earth-fc',
-    url: 'https://pbs.twimg.com/media/FgmM2ufXEAAXLbe?format=jpg&name=medium',
+    url: 'https://pbs.twimg.com/media/GcQwIaGWQAActF5?format=jpg&name=small',
     floorPrice: null,
     royalties: 5,
     maxSupply: 620,
@@ -289,6 +289,42 @@ const collections: Record<string, TokenData> = {
     name: 'Nebula Genesis - Sirio',
     sentxName: 'nebula-genesis-sirio',
     url: 'https://pbs.twimg.com/profile_images/1821480731371040768/Q_gezyxx_400x400.jpg',
+    floorPrice: null,
+    royalties: 5,
+    maxSupply: 100,
+    mintedSupply: 100,
+    burntSupply: 0,
+    volume30d: null
+
+  },
+  '0.0.4970613': {
+    name: 'Hashpack Concierge Collectibles',
+    sentxName: 'hashpack-concierge-collectibles',
+    url: 'https://pbs.twimg.com/media/GIZhGcwXUAAL0jc?format=jpg&name=medium',
+    floorPrice: null,
+    royalties: 5,
+    maxSupply: 9684,
+    mintedSupply: 9435,
+    burntSupply: 0,
+    volume30d: null
+
+  },
+  '0.0.1064050': {
+    name: 'Hedera Sentient Monkeys',
+    sentxName: 'hedera-sentient-monkeys',
+    url: 'https://pbs.twimg.com/media/FcdVv5xXwAEXOVa?format=jpg&name=medium',
+    floorPrice: null,
+    royalties: 5,
+    maxSupply: 100,
+    mintedSupply: 100,
+    burntSupply: 0,
+    volume30d: null
+
+  },
+  '0.0.1064955': {
+    name: 'Hashgraph Phantoms',
+    sentxName: 'hashgraph-phantoms',
+    url: 'https://pbs.twimg.com/media/FzUhe_bWwAAwgpD?format=jpg&name=large',
     floorPrice: null,
     royalties: 5,
     maxSupply: 100,

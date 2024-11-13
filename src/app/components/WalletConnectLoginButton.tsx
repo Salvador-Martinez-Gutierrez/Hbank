@@ -3,6 +3,7 @@
 import { Button } from '@/app/collections/components/ui/button'
 import { useWallet } from '@buidlerlabs/hashgraph-react-wallets'
 import { HWCConnector } from '@buidlerlabs/hashgraph-react-wallets/connectors'
+import Image from 'next/image'
 
 interface WalletConnectLoginButtonProps {
   onSuccess: () => void
@@ -25,9 +26,15 @@ const WalletConnectLoginButton = ({ onSuccess }: WalletConnectLoginButtonProps) 
   return (
     <Button
       onClick={handleConnect}
-      className="bg-blue-500 hover:bg-blue-600 w-full"
+      className="bg-blue-500 hover:bg-blue-600 w-full flex items-center justify-center gap-2"
     >
-      Connect with WalletConnect
+      <Image
+        src="/wallet-connect-logo.png"
+        alt="WalletConnect"
+        width={24}
+        height={24}
+      />
+      WalletConnect
     </Button>
   )
 }

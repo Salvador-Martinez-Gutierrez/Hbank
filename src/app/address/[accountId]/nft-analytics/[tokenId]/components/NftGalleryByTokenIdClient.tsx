@@ -5,6 +5,7 @@ import Link from 'next/link'
 import NftCardPortfolio from './NftCardPortfolio'
 import { useAccountId } from '@buidlerlabs/hashgraph-react-wallets'
 import checkTokenAssociation from '@/app/collections/services/checkTokenAssociation'
+import CopyableTokenId from '@/app/components/CopyableTokenId'
 
 interface ExtendedNFT {
   name: string
@@ -54,7 +55,7 @@ const NftGalleryByTokenIdClient: React.FC<NftGalleryByTokenIdClientProps> = ({ n
         </Link>
         <div>
           <h2 className='text-xl font-bold'>{nfts[0].name}</h2>
-          <p className='text-sm text-gray-400'>{tokenId}</p>
+          <CopyableTokenId tokenId={tokenId} className='text-sm text-gray-400' />
         </div>
       </div>
       <div className={'p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4'}>

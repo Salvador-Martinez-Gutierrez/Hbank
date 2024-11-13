@@ -130,7 +130,7 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
                 <p className={`text-muted-foreground truncate mb-2 ${showTopFour ? 'text-xs' : 'text-[0.75rem]'}`}>{token.token_id}</p>
                 <div className="bg-zinc-700 rounded-md p-2">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-zinc-400">Floor:</span>
+                    <span className="text-xs text-zinc-400">Floor Price:</span>
                     <span className="text-xs font-semibold">
                       {showUsd
                         ? `$${(token.priceUsd ?? 0).toFixed(2)}`
@@ -139,7 +139,7 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs text-zinc-400">Value:</span>
+                    <span className="text-xs text-zinc-400">Total Value:</span>
                     <span className="text-xs font-semibold">
                       {showUsd
                         ? `$${(token.balance * (token.priceUsd ?? 0)).toFixed(2)}`

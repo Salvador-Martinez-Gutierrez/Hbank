@@ -3,6 +3,7 @@
 import { Button } from '@/app/collections/components/ui/button'
 import { useWallet } from '@buidlerlabs/hashgraph-react-wallets'
 import { HashpackConnector } from '@buidlerlabs/hashgraph-react-wallets/connectors'
+import Image from 'next/image'
 
 interface HashpackLoginButtonProps {
   onSuccess: () => void
@@ -25,9 +26,15 @@ const HashpackLoginButton = ({ onSuccess }: HashpackLoginButtonProps) => {
   return (
     <Button
       onClick={handleConnect}
-      className="bg-blue-500 hover:bg-blue-600 w-full"
+      className="bg-blue-500 hover:bg-blue-600 w-full flex items-center justify-center gap-0"
     >
-      Connect with Hashpack
+      <Image
+        src="/hashpack-wallet.png"
+        alt="Hashpack Wallet"
+        width={32}
+        height={32}
+      />
+      Hashpack
     </Button>
   )
 }

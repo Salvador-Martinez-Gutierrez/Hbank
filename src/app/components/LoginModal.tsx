@@ -31,8 +31,12 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <HashpackLoginButton onSuccess={handleSuccess} />
-          <KabilaLoginButton onSuccess={handleSuccess} />
+          <div className="hidden sm:block">
+            <HashpackLoginButton onSuccess={handleSuccess} />
+          </div>
+          <div className="hidden sm:block">
+            <KabilaLoginButton onSuccess={handleSuccess} />
+          </div>
           <WalletConnectLoginButton onSuccess={handleSuccess} />
         </div>
       </DialogContent>

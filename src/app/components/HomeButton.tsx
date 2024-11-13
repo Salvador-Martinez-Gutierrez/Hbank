@@ -5,7 +5,7 @@ export default function HomeButton () {
   return (
     <Link href="/" passHref>
         <Image
-          src="/logo.png"
+          src="/Logo.png"
           alt="logo"
           width={137}
           height={50}

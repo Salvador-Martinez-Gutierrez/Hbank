@@ -13,6 +13,8 @@ interface Params {
   accountId: string
 }
 
+export const revalidate = 300
+
 const Portfolio = async ({ params }: { params: Params }) => {
   const accountId: string = params.accountId
   const accountHoldings = await getAccountTokenBalance(accountId)

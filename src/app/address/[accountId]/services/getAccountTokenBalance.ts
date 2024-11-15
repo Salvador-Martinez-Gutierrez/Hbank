@@ -4,9 +4,8 @@ async function getAccountTokenBalance (accountId: string) {
 
   try {
     const response = await fetch(url, {
-      headers: {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache'
+      next: {
+        revalidate: 500 // 5 minutes cache
       }
     })
 

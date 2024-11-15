@@ -331,7 +331,17 @@ const collections: Record<string, TokenData> = {
     mintedSupply: 100,
     burntSupply: 0,
     volume30d: null
-
+  },
+  '0.0.7324928': {
+    name: 'Mark Rise Pass Card',
+    sentxName: 'mark-rise-pass-card',
+    url: 'https://pbs.twimg.com/media/GawozbHaAAMcqOI?format=jpg&name=large',
+    floorPrice: null,
+    royalties: 7,
+    maxSupply: 77,
+    mintedSupply: 777,
+    burntSupply: 0,
+    volume30d: null
   }
 }
 

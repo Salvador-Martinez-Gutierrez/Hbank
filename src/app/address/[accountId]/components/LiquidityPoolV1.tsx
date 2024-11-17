@@ -62,7 +62,7 @@ interface LiquidityPoolV1Props {
 
 const LiquidityPoolV1: React.FC<LiquidityPoolV1Props> = async ({ defi }) => {
   return (
-    <div className="bg-neutral-950 mx-4 mb-8">
+    <div className="bg-neutral-950 mx-4">
       <h3 className='text-lg mb-2 ml-4'>
           V1 Pools
       </h3>

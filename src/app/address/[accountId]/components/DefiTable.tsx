@@ -3,12 +3,14 @@ import React from 'react'
 // import LiquidityPoolV2 from './LiquidityPoolV2'
 import LiquidityPoolV1 from './LiquidityPoolV1'
 import LiquidityFarmsV1 from './LiquidityFarmsV1'
+import BonzoLending from './BonzoLending'
 import CollectionAvatar from '@/app/components/collections/CollectionAvatar'
 import getTokenIcon from '@/app/services/getTokenIcon'
 import getLpTokensData from '../services/getLpTokenData'
 import fetchFarms from '@/app/services/saucer/fetchFarms'
 import fetchPoolId from '@/app/services/saucer/fetchPoolId'
 import getLpTokenDataByPoolId from '@/app/services/saucer/getLpTokenDataByPoolId'
+import getBonzoLendingData from '../services/getBonzoLendingData'
 import { classifyAccountTokenBalance } from '../services/classifyAccountTokenBalance'
 
 interface DefiToken {
@@ -27,7 +29,11 @@ const DefiTable: React.FC<FungibleDefiTableProps> = async ({ accountHoldings, ac
   const saucerIcon = await getTokenIcon('0.0.731861')
   // const positionsV2 = await getV2LpPositions(accountId)
 
-  // DEFI
+  // BONZO
+  const bonzoIcon = 'https://pbs.twimg.com/profile_images/1780741645945700352/b2QCI6F9_400x400.jpg'
+  const bonzoLendingData = await getBonzoLendingData(accountId)
+
+  // DEFI VALUE
   const defiWithPrice = await Promise.all(
     defi.map(async (defiItem) => {
       const lpTokensData = await getLpTokensData(defiItem.token_id)
@@ -51,7 +57,7 @@ const DefiTable: React.FC<FungibleDefiTableProps> = async ({ accountHoldings, ac
     return acc + farmValue
   }, Promise.resolve(0))
 
-  const totalValue = farmsTotalValue + poolTotalValue
+  const totalValue = farmsTotalValue + poolTotalValue + (bonzoLendingData?.totalValueUsd ?? 0)
 
   return (
     <section className="bg-neutral-950 rounded-2xl mx-4 lg:mx-8 xl:mx-16 mb-8">
@@ -79,6 +85,13 @@ const DefiTable: React.FC<FungibleDefiTableProps> = async ({ accountHoldings, ac
       <LiquidityPoolV1 defi={defiWithPrice}/>
       <LiquidityFarmsV1 farms={farms} />
       {/* <LiquidityPoolV2 positionsV2={positionsV2} hbarPrice={hbarPrice}/> */}
+      <div className='flex justify-start items-center mx-4 mb-6'>
+        <CollectionAvatar url={bonzoIcon ?? '/NotFound.png'} />
+        <h3 className='text-xl font-bold ml-2'>
+          Bonzo Finance
+        </h3>
+      </div>
+      <BonzoLending lendingData={bonzoLendingData}/>
     </section>
   )
 }

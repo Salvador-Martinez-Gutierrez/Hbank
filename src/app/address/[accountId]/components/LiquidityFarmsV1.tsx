@@ -46,7 +46,7 @@ const LiquidityFarmsV1: React.FC<LiquidityFarmsV1Props> = async ({ farms }) => {
                 const iconTokenB = await getTokenIcon(lpData.tokenB.id)
 
                 return (
-              <div key={index} className="rounded-2xl bg-neutral-800 p-2 mb-4">
+              <div key={index} className="rounded-2xl bg-neutral-800 p-2">
                 <Table>
                   <TableHeader>
                     <TableRow className='hover:bg-neutral-800'>

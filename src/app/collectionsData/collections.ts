@@ -342,6 +342,17 @@ const collections: Record<string, TokenData> = {
     mintedSupply: 777,
     burntSupply: 0,
     volume30d: null
+  },
+  '0.0.5959530': {
+    name: 'Kabila Early Years',
+    sentxName: 'kabila-early-years',
+    url: 'https://pbs.twimg.com/media/GawozbHaAAMcqOI?format=jpg&name=large',
+    floorPrice: null,
+    royalties: 7,
+    maxSupply: 1000000,
+    mintedSupply: 5348,
+    burntSupply: 4352,
+    volume30d: null
   }
 }
 

@@ -346,7 +346,7 @@ const collections: Record<string, TokenData> = {
   '0.0.5959530': {
     name: 'Kabila Early Years',
     sentxName: 'kabila-early-years',
-    url: 'https://pbs.twimg.com/media/GawozbHaAAMcqOI?format=jpg&name=large',
+    url: 'https://pbs.twimg.com/media/Gc7xCjKW4AAdDnI?format=jpg&name=large',
     floorPrice: null,
     royalties: 7,
     maxSupply: 1000000,

@@ -133,8 +133,6 @@ const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({
     return 0
   })
 
-  console.log('Sorted NFTs', sortedNfts)
-
   return (
     <>
        <NftGalleryByTokenIdClient nfts={sortedNfts} accountId={accountId} tokenId={tokenId} royalty={royalty}/>

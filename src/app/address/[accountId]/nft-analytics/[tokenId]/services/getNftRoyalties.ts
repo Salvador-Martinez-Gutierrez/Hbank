@@ -38,9 +38,10 @@ export const getNftRoyalties = cache(async (tokenId: string): Promise<number> =>
     const data: TokenInfo = await response.json()
 
     if (data.custom_fees.royalty_fees.length > 0) {
-      const royalties = data.custom_fees.royalty_fees[0]
-      const royaltyFee = (royalties.amount.numerator / royalties.amount.denominator)
-      return royaltyFee
+      const totalRoyaltyFee = data.custom_fees.royalty_fees.reduce((total, royalty) => {
+        return total + (royalty.amount.numerator / royalty.amount.denominator)
+      }, 0)
+      return totalRoyaltyFee
     }
 
     return 0 // Return 0 if no royalty fees are found

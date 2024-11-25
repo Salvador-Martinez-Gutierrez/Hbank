@@ -353,6 +353,17 @@ const collections: Record<string, TokenData> = {
     mintedSupply: 5348,
     burntSupply: 4352,
     volume30d: null
+  },
+  '0.0.872340': {
+    name: 'Dead Pixels Ghost Pass (DPGP)',
+    sentxName: 'dead-pixels-ghost-pass',
+    url: 'https://pbs.twimg.com/media/Gc7xCjKW4AAdDnI?format=jpg&name=large',
+    floorPrice: null,
+    royalties: 5,
+    maxSupply: 800,
+    mintedSupply: 800,
+    burntSupply: 0,
+    volume30d: null
   }
 }
 

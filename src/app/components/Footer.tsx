@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className='bg-black h-[125px]'>
       <div className='flex justify-center items-center p-4 pt-8 gap-4'>
-        <Link href="https://twitter.com/300SMG" target="_blank" className="flex items-center">
+        <Link href="https://x.com/HbankApp" target="_blank" className="flex items-center">
           <svg
             viewBox="0 0 24 24"
             width="30"

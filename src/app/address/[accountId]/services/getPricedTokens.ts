@@ -1,6 +1,7 @@
 import getTokenPrice from '../../../services/getTokenPrice'
 import { getFloorPriceKabila } from '@/app/services/getFloorPriceKabila'
 import { getFloorPriceSentx } from '@/app/services/getFloorPriceSentx'
+import { getNftRoyalties } from '../nft-analytics/[tokenId]/services/getNftRoyalties'
 
 interface Token {
   token_id: string
@@ -42,11 +43,17 @@ interface AggregatedNft {
 }
 */
 export async function getPricedNFTs (nfts: Token[], hbarPrice: number) {
+  const MARKET_FEE = 0.02 // 2% market fee
+
   const pricedNFTs = await Promise.all(nfts.map(async (nft) => {
     let price = null
     let priceUsd = 0
+    let netPrice = 0
+    let netPriceUsd = 0
+
     const priceKabila = await getFloorPriceKabila(nft.token_id)
     const priceSentx = await getFloorPriceSentx(nft.token_id)
+    const royaltyFee = await getNftRoyalties(nft.token_id)
 
     if (typeof priceKabila === 'number' && typeof priceSentx === 'number') {
       price = Math.min(priceSentx, priceKabila)
@@ -59,7 +66,18 @@ export async function getPricedNFTs (nfts: Token[], hbarPrice: number) {
       priceUsd = priceKabila * hbarPrice
     }
 
-    return { ...nft, price, priceUsd }
+    if (price !== null) {
+      netPrice = price * (1 - MARKET_FEE) * (1 - royaltyFee)
+      netPriceUsd = netPrice * hbarPrice
+    }
+
+    return {
+      ...nft,
+      price,
+      priceUsd,
+      netPrice,
+      netPriceUsd
+    }
   }))
 
   // Filter out NFTs with a price of 0

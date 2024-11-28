@@ -194,7 +194,7 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs text-zinc-400">Total Value:</span>
+                    <span className="text-xs text-zinc-400">Total:</span>
                     <span className="text-xs font-semibold">
                       {showUsd
                         ? `$${(token.balance * (priceCalculation === 'floor'

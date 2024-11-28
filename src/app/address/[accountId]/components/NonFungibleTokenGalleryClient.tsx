@@ -59,8 +59,8 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="bg-zinc-900 border-zinc-800">
-                  <SelectItem value="floor">Floor Price</SelectItem>
-                  <SelectItem value="net">Net Price</SelectItem>
+                  <SelectItem value="floor" className="text-white">Floor Price</SelectItem>
+                  <SelectItem value="net" className="text-white">Net Price</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -103,8 +103,8 @@ const NonFungibleTokenGalleryClient: React.FC<NonFungibleTokenGalleryClientProps
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="bg-zinc-900 border-zinc-800">
-                  <SelectItem value="floor">Floor Price</SelectItem>
-                  <SelectItem value="net">Net Price</SelectItem>
+                  <SelectItem value="floor" className="text-white">Floor Price</SelectItem>
+                  <SelectItem value="net" className="text-white">Net Price</SelectItem>
                 </SelectContent>
               </Select>
             </div>

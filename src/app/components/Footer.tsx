@@ -1,10 +1,15 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const Footer = () => {
+  const pathname = usePathname()
+  const isCollectionRoute = pathname?.startsWith('/collections/')
+
   return (
-    <footer className='bg-black h-[125px]'>
+    <footer className={`bg-black h-[125px] ${isCollectionRoute ? 'sm:block hidden' : ''}`}>
       <div className='flex justify-center items-center p-4 pt-8 gap-4'>
         <Link href="https://x.com/HbankApp" target="_blank" className="flex items-center">
           <svg

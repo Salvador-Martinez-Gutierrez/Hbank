@@ -53,7 +53,7 @@ const HoldersClient: React.FC<HoldersClientProps> = ({ ownersList, tokenId }) =>
                 </Link>
               </TableCell>
               <TableCell className={`whitespace-nowrap truncate text-left p-0 ${isCurrentAccount ? 'text-blue-500' : ''}`}>
-                <Link href={`/address/${account}`} className="block w-full h-full p-4">
+                <Link href={`/address/${account}`} className="hover:text-blue-500 transition-colors block w-full h-full p-4">
                   {account}
                 </Link>
               </TableCell>

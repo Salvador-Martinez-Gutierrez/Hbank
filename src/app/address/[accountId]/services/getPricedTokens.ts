@@ -11,18 +11,22 @@ interface Token {
   balance: number
   decimals?: number
   price?: number
+  priceHbar?: number
   priceUsd?: number
 }
 
 export async function getPricedTokens (tokens: Token[], hbarPrice: number): Promise<Token[]> {
   return await Promise.all(tokens.map(async (token) => {
-    let priceUsd
+    let priceUsd, priceHbar
     if (token.token_id === 'HBAR') {
       priceUsd = hbarPrice
+      priceHbar = 1
     } else {
-      priceUsd = await getTokenPrice(token.token_id)
+      const tokenData = await getTokenPrice(token.token_id)
+      priceUsd = tokenData.priceUsd
+      priceHbar = tokenData.price * 1e-8
     }
-    return { ...token, priceUsd }
+    return { ...token, priceUsd, priceHbar }
   }))
 }
 

@@ -20,12 +20,24 @@ async function getAccountTokenBalance (accountId: string) {
     interface Token {
       token_id: string
       balance: number
+      decimals?: number
+      priceUsd?: number
+      priceHbar?: number
+      priceChangeHour?: number
+      priceChangeDay?: number
+      priceChangeWeek?: number
+      name?: string
+      symbol?: string
+      type?: string
+      valueUsd: number
+      iconUrl?: string
     }
 
     // Create HBAR token object
     const hbarToken: Token = {
       token_id: 'HBAR',
-      balance: balance.balance
+      balance: balance.balance,
+      valueUsd: 0
     }
 
     // Add HBAR token to the beginning of the tokens array

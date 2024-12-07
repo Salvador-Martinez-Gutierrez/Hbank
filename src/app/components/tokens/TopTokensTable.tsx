@@ -1,10 +1,8 @@
-/*
-'use client'
-import React, { useState, useEffect } from 'react'
-import updateFungiblePrice from '../../services/saucer/updateFungiblePrices'
+import updateFungiblePrices from '../../services/saucer/updateFungiblePrices'
 import Link from 'next/link'
 import TokenAvatar from './TokenAvatar'
 import getTokenIcon from '@/app/services/getTokenIcon'
+// import updateFungibleVolume from '@/app/services/saucer/updateFungibleVolume'
 import {
   Table,
   TableBody,
@@ -13,6 +11,8 @@ import {
   TableHeader,
   TableRow
 } from '@/app/collections/components/ui/table'
+
+export const revalidate = 300
 
 interface TopTokensProps {
   variant?: 'simple' | 'advanced'
@@ -23,8 +23,9 @@ const formatNumber = (number: number | string | null) => {
   const num = typeof number === 'string' ? parseFloat(number) : number
   if (isNaN(num)) return '0'
 
-  if (num < 1) {
-    const significantDigits = num.toFixed(20).match(/^-?\d*\.?0*\d{0,3}/)[0]
+  if (num < 1 && num !== null) {
+    const matchResult = num.toFixed(20).match(/^-?\d*\.?0*\d{0,3}/)
+    const significantDigits = matchResult !== null ? matchResult[0] : '0'
     return parseFloat(significantDigits).toString()
   }
 
@@ -52,27 +53,18 @@ const formatLiquidity = (value: number | string | null) => {
 }
 
 const TopTokensTable: React.FC<TopTokensProps> = async ({ variant }) => {
-  const [icons, setIcons] = useState<Record<string, string>>({})
-  const updatedTokenData = await updateFungiblePrice()
+  const updatedTokenData = await updateFungiblePrices()
+  // updatedTokenData = await updateFungibleVolume()
   const tokens = Object.entries(updatedTokenData)
   const displayedTokens = variant === 'simple' ? tokens.slice(0, 5) : tokens
 
-  useEffect(() => {
-    const fetchIcons = async () => {
-      const newIcons: Record<string, string> = {}
-      for (const [tokenId] of displayedTokens) {
-        try {
-          const iconUrl = await getTokenIcon(tokenId)
-          newIcons[tokenId] = iconUrl
-        } catch (error) {
-          console.error(`Failed to fetch icon for token ${tokenId}`, error)
-        }
-      }
-      setIcons(newIcons)
-    }
-
-    fetchIcons()
-  }, [displayedTokens])
+  // Fetch all icons in parallel
+  const icons: Record<string, string> = {}
+  await Promise.all(
+    displayedTokens.map(async ([tokenId]) => {
+      icons[tokenId] = await getTokenIcon(tokenId)
+    })
+  )
 
   return (
     <Table className={`mx-auto ${variant === 'simple' ? 'max-w-[450px] md:max-w-[1100px]' : ''}`}>
@@ -84,6 +76,7 @@ const TopTokensTable: React.FC<TopTokensProps> = async ({ variant }) => {
           <TableHead className='text-right'>24h %</TableHead>
           <TableHead className='text-right'>7d %</TableHead>
           <TableHead className='text-right'>Price (USD)</TableHead>
+          {/* <TableHead className='text-right'>Volume (24H)</TableHead> */}
           <TableHead className='text-right'>Liquidity (USD)</TableHead>
         </TableRow>
       </TableHeader>
@@ -93,24 +86,31 @@ const TopTokensTable: React.FC<TopTokensProps> = async ({ variant }) => {
             <TableCell className='font-medium text-left whitespace-nowrap'>{index + 1}</TableCell>
             <TableCell className='whitespace-nowrap truncate text-left'>
               <Link className='flex' href={`/tokens/${tokenId}`} prefetch>
-                <TokenAvatar url={icons[tokenId] ?? '/NotFound.png' } size="sm" />
+              <TokenAvatar url={icons[tokenId] ?? '/NotFound.png' } size="sm" />
                 <div className='flex flex-col ml-2 overflow-hidden'>
                   <span className='truncate'>{tokenData.symbol}</span>
                   <span className='text-muted-foreground text-sm truncate'>{tokenData.id}</span>
                 </div>
               </Link>
             </TableCell>
-            <TableCell className={`text-right whitespace-nowrap ${parseFloat(tokenData.priceChangeHour) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+            <TableCell className={`text-right whitespace-nowrap ${Number(tokenData.priceChangeHour) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
               {formatPercentage(tokenData.priceChangeHour)}
             </TableCell>
-            <TableCell className={`text-right whitespace-nowrap ${parseFloat(tokenData.priceChangeDay) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+            <TableCell className={`text-right whitespace-nowrap ${Number(tokenData.priceChangeDay) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
               {formatPercentage(tokenData.priceChangeDay)}
             </TableCell>
-            <TableCell className={`text-right whitespace-nowrap ${parseFloat(tokenData.priceChangeWeek) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+            <TableCell className={`text-right whitespace-nowrap ${Number(tokenData.priceChangeWeek) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
               {formatPercentage(tokenData.priceChangeWeek)}
             </TableCell>
-            <TableCell className='text-right whitespace-nowrap'>{`$${formatNumber(tokenData.priceUsd)}`}</TableCell>
-            <TableCell className='text-right whitespace-nowrap'>{formatLiquidity(tokenData.liquidityUsd)}</TableCell>
+            <TableCell className='text-right whitespace-nowrap'>
+              {`$${formatNumber(tokenData.priceUsd)}`}
+            </TableCell>
+            {/* <TableCell className='text-right whitespace-nowrap'>
+              {`$${formatNumber(tokenData.vol)}`}
+            </TableCell> */}
+            <TableCell className='text-right whitespace-nowrap'>
+              {formatLiquidity(tokenData.liquidityUsd)}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -119,4 +119,3 @@ const TopTokensTable: React.FC<TopTokensProps> = async ({ variant }) => {
 }
 
 export default TopTokensTable
-*/

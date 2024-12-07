@@ -1,4 +1,3 @@
-/*
 import { tokens } from '../../tokensData/tokens'
 import type { FungibleData } from '../../tokensData/tokens'
 import getFungiblePrices from './getFungiblePrices'
@@ -9,7 +8,7 @@ const updateFungiblePrices = async (): Promise<Record<string, FungibleData>> => 
     const updatedTokens = { ...tokens }
 
     fungiblePrices.forEach(price => {
-      if (updatedTokens.hasOwnProperty(price.id)) {
+      if (Object.prototype.hasOwnProperty.call(updatedTokens, price.id)) {
         updatedTokens[price.id] = {
           ...updatedTokens[price.id],
           priceUsd: price.priceUsd,
@@ -30,4 +29,3 @@ const updateFungiblePrices = async (): Promise<Record<string, FungibleData>> => 
 }
 
 export default updateFungiblePrices
-*/

@@ -1,4 +1,3 @@
-/*
 import {
   Avatar,
   AvatarFallback,
@@ -12,7 +11,7 @@ interface TokenAvatarProps {
 
 const TokenAvatar: React.FC<TokenAvatarProps> = ({ url, size }) => {
   return (
-    <Avatar className={size ? `h-${size} w-${size}` : undefined}>
+    <Avatar className={size !== null ? `h-${size} w-${size}` : undefined}>
       <AvatarImage src={url} alt='Token' />
       <AvatarFallback>TK</AvatarFallback>
     </Avatar>
@@ -20,4 +19,3 @@ const TokenAvatar: React.FC<TokenAvatarProps> = ({ url, size }) => {
 }
 
 export default TokenAvatar
-*/

@@ -36,7 +36,7 @@
     "src/app/collectionsData/collections.js",
     "src/app/components/TopCollections.tsx",
     "src/app/collections/[tokenId]/page.tsx"
-, "src/app/tokensData", "src/app/collections/[tokenId]/api/getActivitySentx", "src/app/api/getActivitySentx"  ],
+, "src/app/tokensData", "src/app/collections/[tokenId]/api/getActivitySentx", "src/app/api/getActivitySentx.tsx", "src/downloads/getNfts.js"  ],
   "exclude": [
     "node_modules"
   ]

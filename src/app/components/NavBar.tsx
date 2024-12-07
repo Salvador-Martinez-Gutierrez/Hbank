@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation'
 import HomeButton from './HomeButton'
 import AddressTrackerButton from './AddressTrackerButton'
 import MarketAggregatorButton from './MarketAggregatorButton'
-import DexAggregatorButton from './DexAggregatorButton'
+// import DexAggregatorButton from './DexAggregatorButton'
 import SurveyButton from './SurveyButton'
 import LoginButton from './LoginButton'
 import { WalletProvider } from '../context/WalletContext'
@@ -17,7 +17,7 @@ const NavBar = () => {
       <div className='gap-1 items-center hidden lg:flex'>
         <HomeButton/>
         <AddressTrackerButton active={pathname === '/portfolio'} isWalletCheckerHidden={false} />
-        <DexAggregatorButton active={pathname === '/tokens'}/>
+        {/* <DexAggregatorButton active={pathname === '/tokens'}/> */}
         <MarketAggregatorButton active={pathname === '/collections'} />
         <SurveyButton/>
       </div>

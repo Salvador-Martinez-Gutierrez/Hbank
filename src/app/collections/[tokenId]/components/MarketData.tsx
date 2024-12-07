@@ -31,9 +31,9 @@ const MarketData: React.FC<MarketDataProps> = ({ tokenInfo }) => {
         </thead>
         <tbody>
           <tr>
-            <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${tokenInfo.floorPrice} ℏ` ?? '-'}</td>
-            <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${marketCap} ℏ` ?? '-'}</td>
-            <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${FDV} ℏ` ?? '-'}</td>
+            <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${tokenInfo.floorPrice} ℏ`}</td>
+            <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${marketCap} ℏ`}</td>
+            <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${FDV} ℏ`}</td>
             <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${tokenInfo.mintedSupply} / ${tokenInfo.maxSupply}`}</td>
             <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{tokenInfo.burntSupply}</td>
             <td className="text-left px-4 whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${formatNumber(tokenInfo.royalties)}%`}</td>
@@ -45,16 +45,16 @@ const MarketData: React.FC<MarketDataProps> = ({ tokenInfo }) => {
         <div className="flex flex-col md:items-end">
           <p className="whitespace-nowrap text-[0.65rem] text-muted-foreground xl:text-sm">Floor Price</p>
           <div className="whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">
-            <span id="floor-price">{`${tokenInfo.floorPrice} ℏ` ?? '-'}</span>
+            <span id="floor-price">{`${tokenInfo.floorPrice} ℏ`}</span>
           </div>
         </div>
         <div className="flex flex-col md:items-end">
           <p className="whitespace-nowrap text-[0.65rem] text-muted-foreground xl:text-sm">Market Cap</p>
-            <div className="whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${marketCap} ℏ` ?? '-'}</div>
+            <div className="whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${marketCap} ℏ`}</div>
         </div>
         <div className="flex flex-col md:items-end">
           <p className="whitespace-nowrap text-[0.65rem] text-muted-foreground xl:text-sm">FDV</p>
-            <div className="whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${FDV} ℏ` ?? '-'}</div>
+            <div className="whitespace-nowrap text-sm font-semibold tabular-nums xl:text-lg">{`${FDV} ℏ`}</div>
         </div>
         <div className="flex flex-col md:items-end">
           <p className="whitespace-nowrap text-[0.65rem] text-muted-foreground xl:text-sm">Minted / Supply</p>

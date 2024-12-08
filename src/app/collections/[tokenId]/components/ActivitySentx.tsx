@@ -17,27 +17,33 @@ interface SentxActivityProps {
   tokenId: string
 }
 
+interface ErrorResponse {
+  message?: string
+}
+
 const SentxActivity: React.FC<SentxActivityProps> = ({ tokenId }) => {
   const [activity, setActivity] = useState<SentxActivityType[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [page, setPage] = useState(1)
 
   useEffect(() => {
     const fetchActivity = async () => {
       setIsLoading(true)
+      setError(null)
       try {
         const response = await fetch(`/api/getActivitySentx?tokenId=${tokenId}&page=${page}`)
 
         if (!response.ok) {
-          throw new Error('Failed to fetch activity')
+          const errorData: ErrorResponse = await response.json().catch(() => ({}))
+          throw new Error(errorData.message ?? `HTTP error! status: ${response.status}`)
         }
 
         const data: SentxActivityType[] = await response.json()
-        setActivity(prevActivity => {
-          return [...prevActivity, ...data]
-        })
+        setActivity(prevActivity => [...prevActivity, ...data])
       } catch (error) {
         console.error('Error fetching activity:', error)
+        setError(error instanceof Error ? error.message : 'Failed to fetch activity')
       } finally {
         setIsLoading(false)
       }
@@ -45,6 +51,14 @@ const SentxActivity: React.FC<SentxActivityProps> = ({ tokenId }) => {
 
     fetchActivity()
   }, [tokenId, page])
+
+  if (error !== null) {
+    return (
+      <div className="text-red-500 flex items-center gap-2 border-2 border-red-800 rounded-md p-3 mt-6">
+        <p>Error: {error}</p>
+      </div>
+    )
+  }
 
   if (!isLoading && activity.length === 0) {
     return (

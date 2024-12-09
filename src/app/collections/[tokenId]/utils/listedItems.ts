@@ -37,8 +37,8 @@ export interface KabilaItem {
 }
 
 export interface NormalizedItem {
-  listingId: string | number
-  serialNumber: number
+  listingId: string
+  serialNumber: string
   price: number
   sellerId: string
   metadataCid: string
@@ -53,7 +53,7 @@ export const updateListedItems = async (tokenId: string): Promise<NormalizedItem
   const listedItemsKabila = await getListedTokensKabila(tokenId)
 
   const normalizedSentx = listedItemsSentx.map((item: SentxItem) => ({
-    listingId: item.marketplaceListingId,
+    listingId: item.marketplaceListingId.toString(),
     serialNumber: item.serialId,
     price: item.salePrice,
     sellerId: item.sellerAccount,

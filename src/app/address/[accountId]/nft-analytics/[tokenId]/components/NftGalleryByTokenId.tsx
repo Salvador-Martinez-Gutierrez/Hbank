@@ -4,7 +4,7 @@ import NftGalleryByTokenIdClient from './NftGalleryByTokenIdClient'
 import { fetchNftMetadata } from '../services/fetchNftMetadata'
 import { getListedTokensSentx } from '@/app/services/getListedTokensSentx'
 import { getListedTokensKabila } from '@/app/services/getListedTokensKabila'
-import type { normalizedItem } from '../../../../../collections/[tokenId]/components/TabNav'
+import type { NormalizedItem } from '@/app/collections/[tokenId]/utils/listedItems'
 import { getNftRoyalties } from '../services/getNftRoyalties'
 
 interface NonFungibleTokenGalleryProps {
@@ -95,7 +95,7 @@ const updateListedItems = async (tokenId: string) => {
   const combinedListedItems = [...normalizedSentx, ...normalizedKabila]
 
   // Sort combined items by price from lower to higher
-  const sortedListedItems: normalizedItem [] = combinedListedItems.sort((a, b) => a.price - b.price)
+  const sortedListedItems: NormalizedItem [] = combinedListedItems.sort((a, b) => a.price - b.price)
 
   return sortedListedItems
 }
@@ -108,7 +108,7 @@ const NonFungibleTokenGallery: React.FC<NonFungibleTokenGalleryProps> = async ({
   const extendedNfts: ExtendedNFT[] = await Promise.all(
     nfts.map(async (nft) => {
       const { name, imageUrl } = await fetchNftMetadata(nft.metadata)
-      const listedItem = updatedListedItems.find(item => item.serialNumber === nft.serial_number)
+      const listedItem = updatedListedItems.find(item => item.serialNumber.toString() === nft.serial_number.toString())
 
       if (listedItem !== null && listedItem !== undefined) {
         return {

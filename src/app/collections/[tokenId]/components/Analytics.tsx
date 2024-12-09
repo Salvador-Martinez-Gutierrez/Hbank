@@ -34,7 +34,7 @@ const Analytics: React.FC<AnalyticsProps> = async ({ tokenId }) => {
             <span>Trends</span>
             <Badge
               variant="default"
-              className="bg-blue-500 hover:bg-blue-500 text-white absolute top-[-4px] right-[-4px] transform translate-x-1/2 -translate-y-1/2"
+              className="bg-blue-500 hover:bg-blue-500 text-white absolute top-[-4px] md:right-[-8px] right-[6px] transform translate-x-1/2 -translate-y-1/2"
             >
               Soon
             </Badge>

@@ -31,11 +31,12 @@ function createVolumeBins (items: NormalizedItem[]): VolumeBin[] {
     { threshold: 1.5, label: '+50%' },
     { threshold: 2, label: '+100%' },
     { threshold: 3, label: '+200%' },
-    { threshold: Infinity, label: '>200%' }
+    { threshold: 4, label: '+300%' }
   ]
 
   const bins: VolumeBin[] = []
   let prevThreshold = 1
+  let cumulativeVolume = 0
 
   for (const { threshold, label } of thresholds) {
     const rangeItems = items.filter(item =>
@@ -46,9 +47,10 @@ function createVolumeBins (items: NormalizedItem[]): VolumeBin[] {
     const volumeInRange = rangeItems.reduce((sum, item) => sum + item.price, 0)
 
     if (volumeInRange > 0) {
+      cumulativeVolume += volumeInRange
       bins.push({
         range: label,
-        volume: Math.round(volumeInRange)
+        volume: Number(cumulativeVolume.toFixed(2))
       })
     }
     prevThreshold = threshold
@@ -70,12 +72,12 @@ const chartConfig = {
 
 function formatNumber (num: number): string {
   if (num >= 1000000) {
-    return (num / 1000000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + 'M'
+    return (num / 1000000).toLocaleString('en-US', { maximumFractionDigits: 2 }) + 'M'
   }
   if (num >= 1000) {
-    return (num / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + 'K'
+    return (num / 1000).toLocaleString('en-US', { maximumFractionDigits: 2 }) + 'K'
   }
-  return num.toString()
+  return num.toFixed(2)
 }
 
 export default function PriceResistanceChart ({ updatedListedItems }: PriceResistanceChartProps) {

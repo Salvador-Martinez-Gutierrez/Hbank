@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import SerialBadge from './Badge'
-import type { normalizedItem } from './TabNav'
+import type { NormalizedItem } from './TabNav'
 import buyNFT from '@/app/collections/services/buyNft'
 import { useState, useCallback } from 'react'
 import LoginModal from '@/app/components/LoginModal'
@@ -13,7 +13,7 @@ import SuccessfulPurchaseModal from './SuccessfulPurchaseModal'
 import ManageNftModal from '@/app/address/[accountId]/nft-analytics/[tokenId]/components/ManageNftModal'
 
 interface NftCardProps {
-  token: normalizedItem
+  token: NormalizedItem
   tokenId: string
   isTokenAssociated: boolean | null
   accountId: string | null

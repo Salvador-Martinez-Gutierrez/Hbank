@@ -9,7 +9,7 @@ React.HTMLAttributes<HTMLDivElement>
   <div
     ref={ref}
     className={cn(
-      'rounded-lg border bg-card text-card-foreground shadow-sm',
+      'rounded-lg bg-card text-card-foreground shadow-sm bg-neutral-950',
       className
     )}
     {...props}
@@ -36,7 +36,7 @@ React.HTMLAttributes<HTMLHeadingElement>
   <h3
     ref={ref}
     className={cn(
-      'text-2xl font-semibold leading-none tracking-tight',
+      'text-2xl text-white font-semibold leading-none tracking-tight',
       className
     )}
     {...props}

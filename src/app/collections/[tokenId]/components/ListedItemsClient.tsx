@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import NftCard from './NftCard'
 import { Button } from '@/app/collections/components/ui/button'
-import type { normalizedItem } from './TabNav'
+import type { NormalizedItem } from '../utils/listedItems'
 import checkTokenAssociation from '@/app/collections/services/checkTokenAssociation'
 import { useAccountId } from '@buidlerlabs/hashgraph-react-wallets'
 
 const ITEMS_PER_PAGE = 20
 
 interface ListedItemsProps {
-  updatedListedItems: normalizedItem[]
+  updatedListedItems: NormalizedItem[]
   tokenId: string
   royalty: number
 }

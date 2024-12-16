@@ -33,7 +33,7 @@ export default async function getActivityKabila (tokenId: string, skip: number, 
 
     // If the data is empty, handle it
     if (!Array.isArray(data) || data.length === 0) {
-      console.warn(`No activity found for tokenId: ${tokenId}`)
+      console.warn(`No activity found in Kabila for tokenId: ${tokenId}`)
       return null
     }
 

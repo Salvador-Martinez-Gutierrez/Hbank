@@ -7,10 +7,11 @@ interface PaymentToken {
 
 export interface SentxActivityType {
   saletype: string
+  saletypeSub?: string
   salePrice: number
   salePriceSymbol: string
   saleDate: string
-  buyerAddress: string
+  buyerAddress: string | null
   sellerAddress: string
   collectionName: string
   collectionTokenAddress: string
@@ -18,9 +19,15 @@ export interface SentxActivityType {
   nftTokenAddress: string
   nftSerialId: number
   nftImage: string
+  nftMetadata?: string
   listingUrl: string
-  buyerNickname: string
+  previousPrice?: number
+  listingDate?: string
+  dateFromNow?: string
   sellerNickname: string
+  buyerNickname?: string
+  pricechg?: number
+  pricechglabel?: string
   paymentToken: PaymentToken
 }
 
@@ -46,7 +53,6 @@ export default async function getActivitySentx ({
     })
 
     const responseText = await response.text()
-    console.log('Raw response:', responseText)
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status} - ${response.statusText} - ${responseText}`)
@@ -57,7 +63,7 @@ export default async function getActivitySentx ({
     const activity = data.marketActivity
     return activity
   } catch (error) {
-    console.error('Failed to fetch activity:', error)
+    console.error('Failed to fetch activity from Sentx:', error)
     if (error instanceof Error) {
       console.error('Error message:', error.message)
     }

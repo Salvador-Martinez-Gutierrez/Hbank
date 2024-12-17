@@ -10,7 +10,7 @@ const Home = async () => {
           Manage your Hedera Investments like a Pro
         </h1>
         <h2 className='text-lg sm:text-xl md:text-2xl lg:text-xl text-muted-foreground max-w-[450px] md:max-w-[900px] mx-auto'>
-          Trade, track your Portfolio and find new investment opportunities on the Hashgraph.
+          Trade, track your portfolio and make smarter investment decisions based on data.
         </h2>
       </div>
       <div className="grid grid-cols-2 gap-4 mb-10 px-4 w-full max-w-[300px] mx-auto">

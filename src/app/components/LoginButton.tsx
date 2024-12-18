@@ -10,6 +10,8 @@ const LoginButton = ({ tittle }: { tittle: string }) => {
   const { isConnected, disconnect } = useWallet()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  console.log('Current modal state:', isModalOpen)
+
   const handleDisconnect = async () => {
     await disconnect()
     // ⚠️ SOLUCION MOMENTANEA PARA SINCRONIZAR CONTEXTO
@@ -25,7 +27,11 @@ const LoginButton = ({ tittle }: { tittle: string }) => {
         : (
         <Button
           className='bg-blue-500 hover:bg-blue-600'
-          onClick={() => { setIsModalOpen(true) }}
+          onClick={() => {
+            console.log('Button clicked!')
+            setIsModalOpen(true)
+            console.log('State should be true now')
+          }}
         >
           <span className='pr-1 pt-[2.5px]'>
             <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#e8eaed">
@@ -35,7 +41,15 @@ const LoginButton = ({ tittle }: { tittle: string }) => {
           {tittle}
         </Button>
           )}
-      <LoginModal isOpen={isModalOpen} onClose={() => { setIsModalOpen(false) }} />
+      {isModalOpen &&
+       <>
+         <div>Debug: Modal should be visible</div>
+         <LoginModal onClose={() => {
+           console.log('Modal close triggered')
+           setIsModalOpen(false)
+         }} />
+       </>
+      }
     </div>
   )
 }

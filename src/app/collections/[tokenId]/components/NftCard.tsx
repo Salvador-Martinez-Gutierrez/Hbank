@@ -58,7 +58,7 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated, ac
   }
 
   const executePurchase = async () => {
-    if (balance.value > token.price && accountId !== null) {
+    if (balance?.value > token.price && accountId !== null) {
       try {
         const result: PurchaseResult = await buyNFT(tokenId, token.serialNumber, accountId, token.price)
         setPurchaseResult(result)
@@ -116,88 +116,98 @@ const NftCard: React.FC<NftCardProps> = ({ token, tokenId, isTokenAssociated, ac
 
   return (
     <>
-    {!isPurchased && (
-      <div className='overflow-hidden rounded-xl bg-card text-card-foreground shadow-md group relative flex cursor-pointer flex-col shadow-custom'>
-        <div className='relative w-full pb-[100%]'>
-          <Image
-            src={imageUrl}
-            alt={token.name}
-            width={100}
-            height={100}
-            className='absolute top-0 left-0 w-full h-full object-cover'
-          />
-          <div className='absolute top-1 right-1 z-20 w-8 h-8 rounded-full overflow-hidden shadow-md'>
+      {!isPurchased && (
+        <div className='overflow-hidden rounded-xl bg-card text-card-foreground shadow-md group relative flex cursor-pointer flex-col shadow-custom'>
+          <div className='relative w-full pb-[100%]'>
             <Image
-              src={marketUrl}
-              alt={token.marketplace}
-              width={32}
-              height={32}
-              className='w-full h-full object-cover'
+              src={imageUrl}
+              alt={token.name}
+              width={100}
+              height={100}
+              className='absolute top-0 left-0 w-full h-full object-cover'
             />
+            <div className='absolute top-1 right-1 z-20 w-8 h-8 rounded-full overflow-hidden shadow-md'>
+              <Image
+                src={marketUrl}
+                alt={token.marketplace}
+                width={32}
+                height={32}
+                className='w-full h-full object-cover'
+              />
+            </div>
           </div>
-        </div>
-        <div className='p-2'>
-          <div className='flex justify-between text-sm'>
-            <SerialBadge serialId={token.serialNumber}/>
-            <span className='text-base'>{`${token.price} ℏ`}</span>
+          <div className='p-2'>
+            <div className='flex justify-between text-sm'>
+              <SerialBadge serialId={token.serialNumber}/>
+              <span className='text-base'>{`${token.price} ℏ`}</span>
+            </div>
           </div>
+          <button
+            onClick={handleButtonClick}
+            className={`h-8 mx-1 mb-1 text-white rounded-lg ${
+              isOwner
+                ? ('bg-blue-500')
+                : ('bg-green-500')
+            }`}
+          >
+            {isOwner
+              ? ('Manage Listing')
+              : ('Buy')
+            }
+          </button>
         </div>
-        <button
-          onClick={handleButtonClick}
-          className={`h-8 mx-1 mb-1 text-white rounded-lg ${
-            isOwner
-              ? ('bg-blue-500')
-              : ('bg-green-500')
-          }`}
-        >
-          {isOwner
-            ? ('Manage Listing')
-            : ('Buy')
-          }
-        </button>
-      </div>
-    )}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => { setIsLoginModalOpen(false) }}
-      />
-      <AssociateTokenModal
-        isOpen={isAssociateModalOpen}
-        onClose={() => { setIsAssociateModalOpen(false) }}
-        tokenId={tokenId}
-        onSuccess={handleAssociateSuccess}
-        price={token.price}
-      />
-      <ExecutePurchaseModal
-        isOpen={isExecutePurchaseModalOpen}
-        onClose={() => { setIsExecutePurchaseModalOpen(false) }}
-        result={purchaseResult}
-        onSuccess={handlePurchaseSuccess}
-      />
-      <InsufficientFundsModal
-        isOpen={isInsufficientFundsModalOpen}
-        onClose={() => { setIsInsufficientFundsModalOpen(false) }}
-        requiredAmount={token.price}
-      />
-      <SuccessfulPurchaseModal
-        isOpen={isSuccessfulPurchaseModal}
-        onClose={() => { setIsSuccessfulPurchaseModal(false) }}
-      />
-      <ManageNftModal
-        isOpen={isManageModalOpen}
-        onClose={() => { setIsManageModalOpen(false) }}
-        onUnlistSucces={handleUnlistSuccess}
-        onUpdateSuccess={handleUpdateSuccess}
-        token={{
-          ...token,
-          imageUrl,
-          serial_number: token.serialNumber,
-          isListed: true
-        }}
-        tokenId={tokenId}
-        connectedAccountId={accountId}
-        royalty={royalty}
-      />
+      )}
+
+      {isLoginModalOpen && (
+        <LoginModal onClose={() => { setIsLoginModalOpen(false) }} />
+      )}
+
+      {isAssociateModalOpen && (
+        <AssociateTokenModal
+          onClose={() => { setIsAssociateModalOpen(false) }}
+          tokenId={tokenId}
+          onSuccess={handleAssociateSuccess}
+          price={token.price}
+        />
+      )}
+
+      {isExecutePurchaseModalOpen && (
+        <ExecutePurchaseModal
+          onClose={() => { setIsExecutePurchaseModalOpen(false) }}
+          result={purchaseResult}
+          onSuccess={handlePurchaseSuccess}
+        />
+      )}
+
+      {isInsufficientFundsModalOpen && (
+        <InsufficientFundsModal
+          onClose={() => { setIsInsufficientFundsModalOpen(false) }}
+          requiredAmount={token.price}
+        />
+      )}
+
+      {isSuccessfulPurchaseModal && (
+        <SuccessfulPurchaseModal
+          onClose={() => { setIsSuccessfulPurchaseModal(false) }}
+        />
+      )}
+
+      {isManageModalOpen && (
+        <ManageNftModal
+          onClose={() => { setIsManageModalOpen(false) }}
+          onUnlistSucces={handleUnlistSuccess}
+          onUpdateSuccess={handleUpdateSuccess}
+          token={{
+            ...token,
+            imageUrl,
+            serial_number: token.serialNumber,
+            isListed: true
+          }}
+          tokenId={tokenId}
+          connectedAccountId={accountId}
+          royalty={royalty}
+        />
+      )}
     </>
   )
 }

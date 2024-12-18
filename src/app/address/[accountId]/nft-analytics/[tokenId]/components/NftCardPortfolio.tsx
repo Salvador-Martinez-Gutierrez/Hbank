@@ -197,55 +197,69 @@ const NftCardPortfolio: React.FC<NftCardPortfolioProps> = ({ token, tokenId, con
           </button>
         </div>
       )}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => { setIsLoginModalOpen(false) }}
-      />
-      <AssociateTokenModal
-        isOpen={isAssociateModalOpen}
-        onClose={() => { setIsAssociateModalOpen(false) }}
-        tokenId={tokenId}
-        onSuccess={handleAssociateSuccess}
-        price={token.price}
-      />
-      <ExecutePurchaseModal
-        isOpen={isExecutePurchaseModalOpen}
-        onClose={() => { setIsExecutePurchaseModalOpen(false) }}
-        result={purchaseResult}
-        onSuccess={handlePurchaseSuccess}
-      />
-      <InsufficientFundsModal
-        isOpen={isInsufficientFundsModalOpen}
-        onClose={() => { setIsInsufficientFundsModalOpen(false) }}
-        requiredAmount={token.price}
-      />
-      <SuccessfulPurchaseModal
-        isOpen={isSuccessfulPurchaseModal}
-        onClose={() => { setIsSuccessfulPurchaseModal(false) }}
-      />
-      <ListNftModal
-        isOpen={isListModalOpen}
-        onClose={() => { setIsListModalOpen(false) }}
-        connectedAccountId={connectedAccountId}
-        token={localToken}
-        tokenId={tokenId}
-        onSuccess={handleListSuccess}
-        royalty={royalty}
-      />
-      <SuccessfulListModal
-        isOpen={isSuccessfulListModal}
-        onClose={() => { setIsSuccessfulListModal(false) }}
-      />
-      <ManageNftModal
-        isOpen={isManageModalOpen}
-        onClose={() => { setIsManageModalOpen(false) }}
-        onUnlistSucces={handleUnlistSuccess}
-        onUpdateSuccess={handleUpdateSuccess}
-        token={localToken}
-        tokenId={tokenId}
-        connectedAccountId={connectedAccountId}
-        royalty={royalty}
-      />
+
+      {isLoginModalOpen && (
+        <LoginModal onClose={() => { setIsLoginModalOpen(false) }} />
+      )}
+
+      {isAssociateModalOpen && (
+        <AssociateTokenModal
+          onClose={() => { setIsAssociateModalOpen(false) }}
+          tokenId={tokenId}
+          onSuccess={handleAssociateSuccess}
+          price={token.price}
+        />
+      )}
+
+      {isExecutePurchaseModalOpen && (
+        <ExecutePurchaseModal
+          onClose={() => { setIsExecutePurchaseModalOpen(false) }}
+          result={purchaseResult}
+          onSuccess={handlePurchaseSuccess}
+        />
+      )}
+
+      {isInsufficientFundsModalOpen && (
+        <InsufficientFundsModal
+          onClose={() => { setIsInsufficientFundsModalOpen(false) }}
+          requiredAmount={token.price}
+        />
+      )}
+
+      {isSuccessfulPurchaseModal && (
+        <SuccessfulPurchaseModal
+          onClose={() => { setIsSuccessfulPurchaseModal(false) }}
+        />
+      )}
+
+      {isListModalOpen && (
+        <ListNftModal
+          onClose={() => { setIsListModalOpen(false) }}
+          connectedAccountId={connectedAccountId}
+          token={localToken}
+          tokenId={tokenId}
+          onSuccess={handleListSuccess}
+          royalty={royalty}
+        />
+      )}
+
+      {isSuccessfulListModal && (
+        <SuccessfulListModal
+          onClose={() => { setIsSuccessfulListModal(false) }}
+        />
+      )}
+
+      {isManageModalOpen && (
+        <ManageNftModal
+          onClose={() => { setIsManageModalOpen(false) }}
+          onUnlistSucces={handleUnlistSuccess}
+          onUpdateSuccess={handleUpdateSuccess}
+          token={localToken}
+          tokenId={tokenId}
+          connectedAccountId={connectedAccountId}
+          royalty={royalty}
+        />
+      )}
     </>
   )
 }

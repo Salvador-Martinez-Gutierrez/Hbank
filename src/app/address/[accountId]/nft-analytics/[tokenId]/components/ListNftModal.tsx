@@ -57,7 +57,6 @@ interface ExtendedNFT {
 }
 
 interface ListNftModalProps {
-  isOpen: boolean
   onClose: () => void
   onSuccess: (price: number) => void
   token: ExtendedNFT
@@ -66,7 +65,7 @@ interface ListNftModalProps {
   royalty: number
 }
 
-const ListNftModal = ({ isOpen, onClose, onSuccess, token, tokenId, connectedAccountId, royalty }: ListNftModalProps) => {
+const ListNftModal = ({ onClose, onSuccess, token, tokenId, connectedAccountId, royalty }: ListNftModalProps) => {
   const [price, setPrice] = useState('')
   const [isExecuting, setIsExecuting] = useState(false)
   const [fees, setFees] = useState<{ royalties: number, marketFee: number, youReceive: number } | null>(null)
@@ -141,7 +140,7 @@ const ListNftModal = ({ isOpen, onClose, onSuccess, token, tokenId, connectedAcc
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog defaultOpen onOpenChange={onClose}>
       <DialogContent className="rounded-xl bg-neutral-950 items-center w-[90%] sm:max-w-xl border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
         <DialogHeader>
           <DialogTitle className='text-white text-center text-2xl'>

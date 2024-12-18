@@ -43,13 +43,12 @@ interface UnlistResult {
 }
 
 interface UnlistNftModalProps {
-  isOpen: boolean
   onClose: () => void
   result: UnlistResult | null
   onSuccess: () => void
 }
 
-const UnlistNftModal = ({ isOpen, onClose, result, onSuccess }: UnlistNftModalProps) => {
+const UnlistNftModal = ({ onClose, result, onSuccess }: UnlistNftModalProps) => {
   const [isExecuting, setIsExecuting] = useState(false)
   const wallet = useWallet()
   const signer = wallet.signer as Signer
@@ -99,7 +98,7 @@ const UnlistNftModal = ({ isOpen, onClose, result, onSuccess }: UnlistNftModalPr
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open onOpenChange={onClose}>
       <DialogContent className="rounded-xl bg-neutral-950 items-center w-[90%] sm:max-w-xl border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
         <DialogHeader>
           <DialogTitle className='text-white text-center text-2xl'>

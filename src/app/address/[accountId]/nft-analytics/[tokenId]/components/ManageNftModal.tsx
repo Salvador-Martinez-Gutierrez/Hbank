@@ -43,7 +43,6 @@ interface ExtendedNFT {
 }
 
 interface ManageNftModalProps {
-  isOpen: boolean
   onClose: () => void
   onUnlistSucces: () => void
   onUpdateSuccess: (price: number) => void
@@ -90,7 +89,7 @@ interface ListResult {
   }
 }
 
-const ManageNftModal: React.FC<ManageNftModalProps> = ({ isOpen, onClose, onUnlistSucces, onUpdateSuccess, token, royalty, tokenId, connectedAccountId }) => {
+const ManageNftModal: React.FC<ManageNftModalProps> = ({ onClose, onUnlistSucces, onUpdateSuccess, token, royalty, tokenId, connectedAccountId }) => {
   const [unlistResult, setUnlistResult] = useState<UnlistResult | null>(null)
   const [isUnlistModalOpen, setIsUnlistModalOpen] = useState(false)
   const [isSuccessfulUnlistModal, setIsSuccessfulUnlistModal] = useState(false)
@@ -202,7 +201,7 @@ const ManageNftModal: React.FC<ManageNftModalProps> = ({ isOpen, onClose, onUnli
 
   return (
     <>
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open onOpenChange={onClose}>
       <DialogContent className="rounded-xl bg-neutral-950 items-center w-[90%] sm:max-w-xl border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
         <DialogHeader>
           <DialogTitle className='text-white text-center text-2xl'>
@@ -262,20 +261,26 @@ const ManageNftModal: React.FC<ManageNftModalProps> = ({ isOpen, onClose, onUnli
         </div>
       </DialogContent>
     </Dialog>
-    <UnlistNftModal
-      isOpen={isUnlistModalOpen}
-      onClose={() => { setIsUnlistModalOpen(false) }}
-      result={unlistResult}
-      onSuccess={handleUnlistSuccess}
-    />
-    <SuccessfulUnlistModal
-      isOpen={isSuccessfulUnlistModal}
-      onClose={() => { setIsSuccessfulUnlistModal(false) }}
-    />
-    <SuccessfulUpdateModal
-      isOpen={isSuccessfulUpdateModal}
-      onClose={() => { setIsSuccessfulUpdateModal(false) }}
-    />
+
+    {isUnlistModalOpen && (
+      <UnlistNftModal
+        onClose={() => { setIsUnlistModalOpen(false) }}
+        result={unlistResult}
+        onSuccess={handleUnlistSuccess}
+      />
+    )}
+
+    {isSuccessfulUnlistModal && (
+      <SuccessfulUnlistModal
+        onClose={() => { setIsSuccessfulUnlistModal(false) }}
+      />
+    )}
+
+    {isSuccessfulUpdateModal && (
+      <SuccessfulUpdateModal
+        onClose={() => { setIsSuccessfulUpdateModal(false) }}
+      />
+    )}
     </>
   )
 }
